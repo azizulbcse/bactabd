@@ -101,8 +101,7 @@ return [
     'disable_darkmode_routes' => false,
 
     'laravel_asset_bundling' => false,
-
-        'menu' => [
+    'menu' => [
         [
             'type'         => 'navbar-search',
             'text'         => 'Search Member...',
@@ -127,7 +126,7 @@ return [
             'icon' => 'fas fa-fw fa-users-cog',
         ],
 
-        // 🚀 NEW UPDATE: SMART MASTER DATA CONTROL HUB (ড্রপডাউন সাব-মেনু)
+        // 🚀 MASTER DATA CONTROL HUB (ড্রপডাউন সাব-মেনু ১)
         [
             'text'    => 'Master Control Hub',
             'icon'    => 'fas fa-fw fa-cogs',
@@ -139,24 +138,38 @@ return [
                 ],
                 [
                     'text'  => 'Medical Designations',
-                    'route' => 'admin.med_desig.store', // নোট: পেজ ভিউ উইন্ডো রেডি হলে রাউট আইডি আপডেট হবে
+                    'route' => 'admin.med_desig.index',
                     'icon'  => 'fas fa-fw fa-user-md',
                 ],
                 [
                     'text'  => 'BACTA Designations',
-                    'route' => 'admin.bacta_desig.store',
+                    'route' => 'admin.bacta_desig.index',
                     'icon'  => 'fas fa-fw fa-award',
                 ],
             ],
         ],
 
-        ['header' => 'MEMBER DIRECTORIES'],
+        // 🚀 NEW UPDATE: GOVERNANCE & MEMBERSHIP HUB (ড্রপডাউন সাব-মেনু ২)
         [
-            'text'        => 'Pending Applications',
-            'route'       => 'admin.members.pending',
-            'icon'        => 'fas fa-fw fa-user-clock',
-            'label'       => 5, 
-            'label_color' => 'danger',
+            'text'    => 'Governance & Membership',
+            'icon'    => 'fas fa-fw fa-shield-alt',
+            'submenu' => [
+                [
+                    'text'  => 'Executive Committee',
+                    'route' => 'admin.members.index',
+                    'icon'  => 'fas fa-fw fa-users',
+                ],
+                [
+                    'text'  => 'Lifetime Fellows',
+                    'route' => 'admin.members.index',
+                    'icon'  => 'fas fa-fw fa-award',
+                ],
+                [
+                    'text'  => 'Active Members',
+                    'route' => 'admin.members.index',
+                    'icon'  => 'fas fa-fw fa-user-md',
+                ],
+            ],
         ],
 
         ['header' => 'ACCOUNT SECURITY'],
@@ -173,7 +186,6 @@ return [
             'attributes'  => ['onclick' => "event.preventDefault(); document.getElementById('logout-form').submit();"],
         ],
     ],
-
 
     'filters' => [
         JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,

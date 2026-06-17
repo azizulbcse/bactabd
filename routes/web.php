@@ -1,38 +1,22 @@
 <?php
-
+use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\MemberController;
-use App\Http\Controllers\Admin\MasterSetupController;
+use App\Http\Controllers\Admin\HospitalController;
+use App\Http\Controllers\Admin\MedicalDesignationController;
+use App\Http\Controllers\Admin\BactaDesignationController;
+use App\Http\Controllers\Admin\CommitteeMemberController;
+use App\Http\Controllers\Admin\MemberHubController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-// ==========================================
-// ১. পাবলিক ফ্রন্টএন্ড এবং কাস্টম স্ট্যাটিক পেজ রাউটস
-// ==========================================
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', function () { return view('welcome'); })->name('home');
+Route::get('/about-bacta', function () { return view('about'); })->name('about');
+Route::get('/executive-committee', [FrontendController::class, 'executiveCommittee'])->name('committee');
+Route::get('/members/lifetime-fellows', [FrontendController::class, 'lifetimeFellows'])->name('members.lifetime');
+Route::get('/members/active-directory', [FrontendController::class, 'activeMembers'])->name('members.active');
+Route::get('/president-message', [FrontendController::class, 'presidentMessage'])->name('president.message');
 
-Route::get('/about-bacta', function () { 
-    return view('about'); 
-})->name('about');
-
-Route::get('/executive-committee', function () { 
-    return "Executive Committee Page Coming Soon"; 
-})->name('committee');
-
-Route::get('/members/lifetime-fellows', function () { 
-    return "Lifetime Fellows Page Coming Soon"; 
-})->name('members.lifetime');
-
-Route::get('/members/active-directory', function () { 
-    return "Active Members Directory Coming Soon"; 
-})->name('members.active');
-
-
-// ==========================================
-// ২. সেন্ট্রাল গেটওয়ে রাউট (স্মার্ট রোল বেসড রিডাইরেকশন লজিক)
-// ==========================================
 Route::get('/dashboard', function () {
     if (Auth::user()->status !== 2) {
         $status = Auth::user()->status;
@@ -48,59 +32,52 @@ Route::get('/dashboard', function () {
         }
     }
 
-    if (Auth::user()->email === 'admin@bactabd.org' || Auth::id() === 1 || Auth::user()->email === 'azizulbcse@gmail.com') {
+    if (Auth::user()->email === 'azizulbcse@gmail.com' || Auth::id() === 1) {
         return redirect()->route('admin.dashboard');
     }
 
     return view('dashboard'); 
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-
-// ==========================================
-// ৩. সুপার অ্যাডমিন প্যানেল রাউট গ্রুপ (সর্বোচ্চ সুরক্ষিত জোন)
-// ==========================================
-Route::middleware(['auth'])->prefix('admin')->group(function () {
-    
-    // অ্যাডমিন ড্যাশবোর্ড কোর হোমপেজ
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
-
-    // বিএসিটিএ মেম্বারশিপ ওয়ান-ক্লিক এপ্রুভাল ট্র্যাকিং রাউটস
+    Route::middleware(['auth'])->prefix('admin')->group(function () {  
+    Route::get('/dashboard', function () { return view('admin.dashboard'); })->name('admin.dashboard');
     Route::get('/members/pending', [MemberController::class, 'pendingList'])->name('admin.members.pending');
     Route::post('/members/approve/{id}', [MemberController::class, 'approve'])->name('admin.members.approve');
     Route::delete('/members/delete/{id}', [MemberController::class, 'destroy'])->name('admin.members.delete');
 
-    // অ্যাডমিন ও স্টাফ ডিরেক্টরি এবং ওয়ান-ক্লিক AJAX অপারেশন রাউটস
     Route::get('/staff-directory', [MemberController::class, 'adminList'])->name('admin.staff.list');
     Route::post('/members/ajax-store', [MemberController::class, 'ajaxStore'])->name('admin.members.ajax.store');
     Route::get('/members/ajax-edit/{id}', [MemberController::class, 'ajaxEdit'])->name('admin.members.ajax.edit');
     Route::post('/members/ajax-update/{id}', [MemberController::class, 'ajaxUpdate'])->name('admin.members.ajax.update');
 
-    // =========================================================================
-    // 🚀 MASTER CONTROL HUB ROUTES (সাইডবার মেনুর সাথে ১০০% মিল রেখে ফিক্সড)
-    // =========================================================================
+    Route::get('/hospitals', [HospitalController::class, 'index'])->name('admin.hospitals.index');
+    Route::post('/hospitals/store', [HospitalController::class, 'store'])->name('admin.hospitals.store');
+    Route::post('/hospitals/{id}/update', [HospitalController::class, 'update'])->name('admin.hospitals.update');
+    Route::delete('/hospitals/{id}/destroy', [HospitalController::class, 'destroy'])->name('admin.hospitals.delete');
+
+    Route::get('/medical-designations', [MedicalDesignationController::class, 'index'])->name('admin.med_desig.index');
+    Route::post('/medical-designations/store', [MedicalDesignationController::class, 'store'])->name('admin.med_desig.store');
+    Route::post('/medical-designations/{id}/update', [MedicalDesignationController::class, 'update'])->name('admin.med_desig.update');
+    Route::delete('/medical-designations/{id}/destroy', [MedicalDesignationController::class, 'destroy'])->name('admin.med_desig.delete');
     
-    // A. Hospitals Master Engine (পেজ ভিউ + AJAX সেভ ও ডিলিট)
-    Route::get('/hospitals', [MasterSetupController::class, 'indexHospitals'])->name('admin.hospitals.index');
-    Route::post('/hospitals/store', [MasterSetupController::class, 'storeHospital'])->name('admin.hospitals.store');
-    Route::delete('/hospitals/delete/{id}', [MasterSetupController::class, 'deleteHospital'])->name('admin.hospitals.delete');
+    Route::get('/bacta-designations', [BactaDesignationController::class, 'index'])->name('admin.bacta_desig.index');
+    Route::post('/bacta-designations/store', [BactaDesignationController::class, 'store'])->name('admin.bacta_desig.store');
+    Route::post('/bacta-designations/{id}/update', [BactaDesignationController::class, 'update'])->name('admin.bacta_desig.update');
+    Route::delete('/bacta-designations/{id}/destroy', [BactaDesignationController::class, 'destroy'])->name('admin.bacta_desig.delete');
+    
+    Route::get('/committee-members', [CommitteeMemberController::class, 'index'])->name('admin.committee.index');
+    Route::post('/committee-members/store', [CommitteeMemberController::class, 'store'])->name('admin.committee.store');
+    Route::post('/committee-members/{id}/update', [CommitteeMemberController::class, 'update'])->name('admin.committee.update');
+    Route::delete('/committee-members/{id}/destroy', [CommitteeMemberController::class, 'destroy'])->name('admin.committee.delete');
 
-    // B. Medical Designations Master Engine (পেজ ভিউ + AJAX সেভ ও ডিলিট)
-    Route::get('/medical-designations', [MasterSetupController::class, 'indexMedicalDesignations'])->name('admin.med_desig.index');
-    Route::post('/medical-designations/store', [MasterSetupController::class, 'storeMedicalDesignation'])->name('admin.med_desig.store');
-    Route::delete('/medical-designations/delete/{id}', [MasterSetupController::class, 'deleteMedicalDesignation'])->name('admin.med_desig.delete');
+    Route::get('/members-hub', [MemberHubController::class, 'index'])->name('admin.members.index');
+    Route::post('/members-hub/store', [MemberHubController::class, 'store'])->name('admin.members.store');
+    Route::post('/members-hub/{id}/update', [MemberHubController::class, 'update'])->name('admin.members.update');
+    Route::delete('/members-hub/{id}/destroy', [MemberHubController::class, 'destroy'])->name('admin.members.delete');
 
-    // C. BACTA Board Designations Master Engine (পেজ ভিউ + AJAX সেভ ও ডিলিট)
-    Route::get('/bacta-designations', [MasterSetupController::class, 'indexBactaDesignations'])->name('admin.bacta_desig.index');
-    Route::post('/bacta-designations/store', [MasterSetupController::class, 'storeBactaDesignation'])->name('admin.bacta_desig.store');
-    Route::delete('/bacta-designations/delete/{id}', [MasterSetupController::class, 'deleteBactaDesignation'])->name('admin.bacta_desig.delete');
-});
+    });
 
 
-// ==========================================
-// ৪. গ্লোবাল মেম্বার প্রোফাইল সেটিংস রাউট গ্রুপ
-// ==========================================
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

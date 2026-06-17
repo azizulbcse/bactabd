@@ -1,22 +1,22 @@
 <link rel="icon" type="image/x-icon" href="{{ asset('images/logo.png') }}" /> 
 @extends('adminlte::page')
 
-@section('title', 'Hospitals Setup | BACTA')
+@section('title', 'BACTA Designations Setup | BACTA')
 
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center flex-wrap">
         {{-- BACTA অফিশিয়াল লোগোর স্কাই ব্লু (#0284C7) আইকন ও টাইটেল --}}
-        <h1 class="font-weight-bold text-dark" style="font-size: 24px; font-weight: 700 !important; letter-spacing: -0.5px;"><i class="fas fa-hospital mr-2 text-[#0284C7]"></i> Hospital Registries Setup</h1>
+        <h1 class="font-weight-bold text-dark" style="font-size: 24px; font-weight: 700 !important; letter-spacing: -0.5px;"><i class="fas fa-award mr-2 text-[#0284C7]"></i> BACTA Constitutional Designations Setup</h1>
         
         {{-- BACTA অফিশিয়াল লোগোর রয়্যাল ব্লু (#1E40AF) কালার ম্যাচড প্লাস বাটন --}}
-        <button type="button" class="btn text-white font-weight-bold shadow-sm mb-2" data-toggle="modal" data-target="#addHospitalModal" style="background-color: #1E40AF; border-radius: 4px; font-size: 14px; border: none; transition: 0.3s;">
-            <i class="fas fa-plus-circle mr-1"></i> Add New Hospital
+        <button type="button" class="btn text-white font-weight-bold shadow-sm mb-2" data-toggle="modal" data-target="#addBactaDesigModal" style="background-color: #1E40AF; border-radius: 4px; font-size: 14px; border: none; transition: 0.3s;">
+            <i class="fas fa-plus-circle mr-1"></i> Add New Board Designation
         </button>
     </div>
 @stop
 
 @section('content')
-{{-- ৩ সেকেন্ড পর অটো-হাইড সাকসেস অ্যালার্ট (আপনার নওগাঁও প্যাটার্ন সিঙ্ক) --}}
+{{-- ৩ সেকেন্ড পর অটো-হাইড সাকসেস অ্যালার্ট (আপনার মূল নওগাঁও প্যাটার্ন সিঙ্ক) --}}
 @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show shadow-sm text-white border-0 m-2 animate__animated animate__fadeInDown" 
          id="success-alert" style="background: linear-gradient(135deg, #28a745 0%, #218838 100%); border-radius: 4px; font-weight: 600;">
@@ -27,7 +27,7 @@
     </div>
 @endif
 
-{{-- ল্যারাভেল ব্যাকএন্ড ভ্যালিডেশন এরর অ্যালার্ট (ডুপ্লিকেট এন্ট্রি এলার্ট গেট) --}}
+{{-- ল্যারাভেল ব্যাকএন্ড ভ্যালিডেশন এরর অ্যালার্ট (যেমন: ডুপ্লিকেট এন্ট্রি বা ছোট-বড় হাতের অক্ষরের অমিল এলার্ট) --}}
 @if($errors->any())
     <div class="alert alert-danger alert-dismissible fade show shadow-sm text-white border-0 m-2 animate__animated animate__shakeX" 
          style="background: linear-gradient(135deg, #dc3545 0%, #bd2130 100%); border-radius: 4px; font-weight: 600;">
@@ -43,28 +43,22 @@
         
         {{-- 📱 ১০০% মোবাইল ও ট্যাবলেট রেসপন্সিভ কন্টেইনার ডিব --}}
         <div class="table-responsive w-100" style="border-radius: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch;">
-            <table class="table table-bordered table-striped mb-0 text-center" id="hospitalTable" style="background: #fff; font-size: 13px; min-width: 800px;">
+            <table class="table table-bordered table-striped mb-0 text-center" id="bactaDesigTable" style="background: #fff; font-size: 13px; min-width: 800px;">
                 <thead class="bg-light" style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: #1E40AF !important;">
                     <tr>
                         <th style="width: 60px;">SL</th>
-                        <th class="text-left">HOSPITAL INSTITUTION FULL NAME</th>
-                        <th>SHORT NAME</th>
+                        <th class="text-left">CONSTITUTIONAL BOARD DESIGNATION NAME</th>
                         <th>STATUS</th>
                         <th style="width: 120px;">OPTIONS</th>
                     </tr>
                 </thead>
                 <tbody style="color: #333; font-weight: 500;">
-                    @foreach($hospitals as $key => $row)
+                    @foreach($bactaDesignations as $key => $row)
                     <tr>
                         <td class="text-muted font-weight-bold">{{ $key + 1 }}</td>
-                        <td class="text-left font-weight-bold text-dark" style="font-size: 14px;">{{ $row->name }}</td>
-                        <td><span class="badge badge-secondary px-2 py-1" style="font-size: 11px; border-radius: 2px;">{{ $row->short_name ?? 'N/A' }}</span></td>
+                        <td class="text-left font-weight-bold text-dark" style="font-size: 14px;">{{ $row->title }}</td>
                         <td>
-                            @if($row->status == 1)
-                                <span class="badge badge-success px-2 py-1" style="font-size: 10px; font-weight: bold; border-radius: 2px; background-color: #28a745 !important;">Active</span>
-                            @else
-                                <span class="badge badge-danger px-2 py-1" style="font-size: 10px; font-weight: bold; border-radius: 2px; background-color: #dc3545 !important;">Archived</span>
-                            @endif
+                            <span class="badge badge-success px-2 py-1" style="font-size: 10px; font-weight: bold; border-radius: 2px; background-color: #28a745 !important;">Active</span>
                         </td>
                         <td class="text-center">
                             <div class="btn-group">
@@ -74,12 +68,12 @@
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right shadow-sm" style="font-size: 13px; border-radius: 4px;">
                                     <a class="dropdown-item text-primary font-weight-bold btn-edit-trigger" href="javascript:void(0)"
-                                       data-toggle="modal" data-target="#editHospitalModal"
-                                       data-id="{{ $row->id }}" data-name="{{ $row->name }}" data-short="{{ $row->short_name }}"><i class="fas fa-edit mr-2 text-primary"></i> Edit Record</a>
+                                       data-toggle="modal" data-target="#editBactaDesigModal"
+                                       data-id="{{ $row->id }}" data-name="{{ $row->title }}"><i class="fas fa-edit mr-2 text-primary"></i> Edit Record</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item text-danger font-weight-bold btn-delete-trigger" href="javascript:void(0)"
-                                       data-toggle="modal" data-target="#deleteHospitalModal"
-                                       data-id="{{ $row->id }}" data-name="{{ $row->name }}"><i class="fas fa-trash-alt mr-2 text-danger"></i> Archive / Delete</a>
+                                       data-toggle="modal" data-target="#deleteBactaDesigModal"
+                                       data-id="{{ $row->id }}" data-name="{{ $row->title }}"><i class="fas fa-trash-alt mr-2 text-danger"></i> Archive / Delete</a>
                                 </div>
                             </div>
                         </td>
@@ -91,36 +85,26 @@
     </div>
 </div>
 
-{{-- 📥 মডাল ১: অ্যাড হসপিটাল পপ-আপ ফর্ম 📥 --}}
-<div class="modal fade" id="addHospitalModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+{{-- 📥 মডাল ১: অ্যাড BACTA ডেজিগনেশন পপ-আপ ফর্ম 📥 --}}
+<div class="modal fade" id="addBactaDesigModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-md modal-dialog-centered" role="document">
         <div class="modal-content" style="border-radius: 8px; overflow: hidden; border: none;">
             <div class="modal-header text-white" style="background: #1E40AF;">
-                <h5 class="modal-title font-weight-bold" style="font-size: 15px;"><i class="fas fa-hospital mr-2"></i> Configure New Hospital Registry</h5>
+                <h5 class="modal-title font-weight-bold" style="font-size: 15px;"><i class="fas fa-award mr-2"></i> Configure New BACTA Designation</h5>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
-            <form action="{{ route('admin.hospitals.store') }}" method="POST" id="addForm" autocomplete="off" novalidate onsubmit="return false;">
+            <form action="{{ route('admin.bacta_desig.store') }}" method="POST" id="addForm" autocomplete="off" novalidate onsubmit="return false;">
                 @csrf
                 <div class="modal-body p-4 bg-white" style="font-size: 13px;">
                     <div id="add-modal-alert" class="alert alert-danger d-none text-sm font-weight-bold border-0 rounded mb-3 animate__animated animate__fadeIn"></div>
                     
-                    <div class="form-group mb-3">
-                        <label class="font-weight-bold text-navy mb-2"><i class="fas fa-network-wired mr-1 text-info"></i> HOSPITAL INSTITUTION FULL NAME *</label>
+                    <div class="form-group mb-0">
+                        <label class="font-weight-bold text-navy mb-2"><i class="fas fa-network-wired mr-1 text-info"></i> CONSTITUTIONAL DESIGNATION NAME *</label>
                         <div class="input-group shadow-sm bct-input-wrapper" style="border-radius: 4px; overflow: hidden;">
                             <div class="input-group-prepend">
-                                <span class="input-group-text bg-light border-right-0" style="color: #1E40AF;"><i class="fas fa-university"></i></span>
+                                <span class="input-group-text bg-light border-right-0" style="color: #1E40AF;"><i class="fas fa-award"></i></span>
                             </div>
-                            <input type="text" name="name" id="add_name_field" class="form-control form-control-sm font-weight-bold border-left-0" required placeholder="e.g. National Institute of Cardiovascular Diseases" style="height: 42px; font-size: 14px;">
-                        </div>
-                    </div>
-
-                    <div class="form-group mb-0">
-                        <label class="font-weight-bold text-navy mb-2"><i class="fas fa-tags mr-1 text-info"></i> SHORT NAME / CODE</label>
-                        <div class="input-group shadow-sm" style="border-radius: 4px; overflow: hidden;">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text bg-light border-right-0" style="color: #1E40AF;"><i class="fas fa-tag"></i></span>
-                            </div>
-                            <input type="text" name="short_name" id="add_short_field" class="form-control form-control-sm font-weight-bold border-left-0" placeholder="e.g. NICVD" style="height: 42px; font-size: 14px;">
+                            <input type="text" name="title" id="add_name_field" class="form-control form-control-sm font-weight-bold border-left-0" required placeholder="e.g. President, General Secretary, Treasurer" style="height: 42px; font-size: 14px;">
                         </div>
                     </div>
                 </div>
@@ -132,36 +116,26 @@
         </div>
     </div>
 </div>
-{{-- 🔄 মডাল ২: ডাইনামিক এডিট হসপিটাল পপ-আপ ফর্ম 🔄 --}}
-<div class="modal fade" id="editHospitalModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+{{-- 🔄 মডাল ২: ডাইনামিক এডিট BACTA ডেজিগনেশন পপ-আপ ফর্ম 🔄 --}}
+<div class="modal fade" id="editBactaDesigModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-md modal-dialog-centered" role="document">
         <div class="modal-content" style="border-radius: 8px; overflow: hidden; border: none;">
             <div class="modal-header text-white" style="background: #e41e26;">
-                <h5 class="modal-title font-weight-bold" style="font-size: 15px;"><i class="fas fa-edit mr-2"></i> Update Hospital Configuration</h5>
+                <h5 class="modal-title font-weight-bold" style="font-size: 15px;"><i class="fas fa-edit mr-2"></i> Update Designation Configuration</h5>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
-            <form action="" method="POST" id="editHospitalForm" autocomplete="off" novalidate onsubmit="return false;">
+            <form action="" method="POST" id="editBactaDesigForm" autocomplete="off" novalidate onsubmit="return false;">
                 @csrf
                 <div class="modal-body p-4 bg-white" style="font-size: 13px;">
                     <div id="edit-modal-alert" class="alert alert-danger d-none text-sm font-weight-bold border-0 rounded mb-3 animate__animated animate__fadeIn"></div>
                     
-                    <div class="form-group mb-3">
-                        <label class="font-weight-bold text-danger mb-2"><i class="fas fa-network-wired mr-1 text-danger"></i> HOSPITAL INSTITUTION FULL NAME *</label>
+                    <div class="form-group mb-0">
+                        <label class="font-weight-bold text-danger mb-2"><i class="fas fa-network-wired mr-1 text-danger"></i> CONSTITUTIONAL DESIGNATION NAME *</label>
                         <div class="input-group shadow-sm bct-edit-input-wrapper" style="border-radius: 4px; overflow: hidden;">
                             <div class="input-group-prepend">
-                                <span class="input-group-text bg-light border-right-0" style="color: #e41e26;"><i class="fas fa-university"></i></span>
+                                <span class="input-group-text bg-light border-right-0" style="color: #e41e26;"><i class="fas fa-award"></i></span>
                             </div>
-                            <input type="text" name="name" id="edit_name" class="form-control form-control-sm font-weight-bold border-left-0" required style="height: 42px; font-size: 14px; color: #e41e26;">
-                        </div>
-                    </div>
-
-                    <div class="form-group mb-0">
-                        <label class="font-weight-bold text-danger mb-2"><i class="fas fa-tags mr-1 text-danger"></i> SHORT NAME / CODE</label>
-                        <div class="input-group shadow-sm" style="border-radius: 4px; overflow: hidden;">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text bg-light border-right-0" style="color: #e41e26;"><i class="fas fa-tag"></i></span>
-                            </div>
-                            <input type="text" name="short_name" id="edit_short" class="form-control form-control-sm font-weight-bold border-left-0" style="height: 42px; font-size: 14px; color: #e41e26;">
+                            <input type="text" name="title" id="edit_name" class="form-control form-control-sm font-weight-bold border-left-0" required style="height: 42px; font-size: 14px; color: #e41e26;">
                         </div>
                     </div>
                 </div>
@@ -175,7 +149,7 @@
 </div>
 
 {{-- 🗑️ মডাল ৩: ডিলিট কনফার্মেশন পপ-আপ মডাল 🗑️ --}}
-<div class="modal fade" id="deleteHospitalModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="deleteBactaDesigModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content" style="border-radius: 8px; overflow: hidden; border: none;">
             <div class="modal-header text-white bg-danger" style="background-color: #be0b12 !important;">
@@ -185,7 +159,7 @@
             <div class="modal-body p-4 text-center bg-white">
                 <div class="text-danger mb-3" style="font-size: 40px; color: #be0b12 !important;"><i class="fas fa-trash-alt animate__animated animate__bounceIn"></i></div>
                 <h5 class="font-weight-bold text-dark">আপনি কি নিশ্চিত?</h5>
-                <p class="text-muted" style="font-size: 13px;">হাসপাতাল রেজিস্ট্রি: <strong id="delete_title" class="text-danger text-uppercase" style="color: #be0b12 !important;"></strong><br>আর্কাইভ করার পর একে মেইন ক্লিনিকাল ডিরেক্টরি লিস্ট থেকে safely লুকিয়ে রাখা হবে।</p>
+                <p class="text-muted" style="font-size: 13px;">কমিটির পদবি: <strong id="delete_title" class="text-danger text-uppercase" style="color: #be0b12 !important;"></strong><br>আর্কাইভ করার পর একে মেইন ডিরেক্টরি লিস্ট থেকে safely লুকিয়ে রাখা হবে।</p>
             </div>
             <div class="modal-footer bg-light justify-content-center pt-3">
                 <button type="button" class="btn btn-default btn-sm px-4 mr-2 shadow-sm" data-dismiss="modal" style="border-radius: 4px; height: 38px; font-weight: 600;"><i class="fas fa-times-circle mr-1.5"></i> বাতিল</button>
@@ -229,7 +203,7 @@
 <script>
     $(document).ready(function() {
         // ১. বিল্ট-ইন সার্চ ও শর্টিং ডাটাটেবল কনফিগারেশন (আপনার মূল ব্লুপ্রিন্ট সিঙ্ক)
-        var table = $('#hospitalTable').DataTable({
+        var table = $('#bactaDesigTable').DataTable({
             "destroy": true, 
             "responsive": true, 
             "autoWidth": false, 
@@ -238,7 +212,7 @@
             "dom": '<"row p-2"<"col-md-6"l><"col-md-6 text-right"f>>rt<"row p-2"<"col-md-5"i><"col-md-7"p>>',
             "language": { 
                 "search": "Search:", 
-                "searchPlaceholder": "Search hospitals directory..." 
+                "searchPlaceholder": "Search designations..." 
             }
         });
 
@@ -250,7 +224,7 @@
         }).draw();
 
         // মডাল ওপেন হওয়ার সাথে সাথে ডিরেক্ট টাইপিং অটো-ফোকাস ট্র্যাকিং
-        $('#addHospitalModal').on('shown.bs.modal', function () {
+        $('#addBactaDesigModal').on('shown.bs.modal', function () {
             $('#add_name_field').focus();
         });
 
@@ -258,15 +232,12 @@
         $(document).on('click', '.btn-edit-trigger', function() {
             let id = $(this).data('id');
             let name = $(this).data('name');
-            let short = $(this).data('short');
 
-            // আপনার নতুন রাউট 'admin.hospitals.update' এর সাথে নিখুঁতভাবে ম্যাপ করা হলো
-            let actionUrl = "{{ route('admin.hospitals.update', ':id') }}"; 
+            let actionUrl = "{{ route('admin.bacta_desig.update', ':id') }}"; 
             actionUrl = actionUrl.replace(':id', id);
-            $('#editHospitalForm').attr('action', actionUrl);
+            $('#editBactaDesigForm').attr('action', actionUrl);
 
             $('#edit_name').val(name);
-            $('#edit_short').val(short);
             $('#edit-modal-alert').addClass('d-none');
             $('#edit_name').removeClass('is-invalid');
         });
@@ -276,8 +247,7 @@
             let id = $(this).data('id');
             let name = $(this).data('name');
 
-            // আপনার নতুন ডিলিট রাউট 'admin.hospitals.delete' এর সাথে নিখুঁতভাবে ম্যাপ করা হলো
-            let deleteUrl = "{{ route('admin.hospitals.delete', ':id') }}";
+            let deleteUrl = "{{ route('admin.bacta_desig.delete', ':id') }}";
             deleteUrl = deleteUrl.replace(':id', id);
 
             $('#delete_title').text(name);
@@ -291,7 +261,8 @@
             }, 3000);
         }
     });
-    // ২. 💡 আল্ট্রা-স্মার্ট অ্যাড ভ্যালিডেশন এবং নেটিভ সাবমিশন ইঞ্জিন (BACTA থিম)
+
+    // ২. 💡 আল্ট্রা-স্মার্ট অ্যাড ভ্যালিডেশন এবং নে티브 সাবমিশন ইঞ্জিন (BACTA থিম)
     function submitBactaAddForm() {
         let inputName = $('#add_name_field').val().trim();
         
@@ -299,7 +270,7 @@
             $('#add-modal-alert').removeClass('d-none').html(
                 '<div class="d-flex align-items-center">' +
                 '<i class="fas fa-hand-point-right text-warning mr-2 animate__animated animate__flash animate__infinite" style="font-size: 16px; margin-right: 8px;"></i> ' +
-                '<span>দয়া করে প্রথমে <b>হাসপাতালের নাম (Hospital Name)</b> টাইপ করুন, তারপর নিচে কনফর্ম বাটনে প্রেস করুন।</span>' +
+                '<span>দয়া করে প্রথমে <b>কমিটির পদবি (Designation Title)</b> টাইপ করুন, তারপর নিচে কনফর্ম বাটনে প্রেস করুন।</span>' +
                 '</div>'
             );
             $('#add_name_field').addClass('is-invalid').focus();
@@ -315,7 +286,7 @@
         document.getElementById('addForm').submit();
     }
 
-    // ৩. 💡 আল্ট্রা-স্মার্ট এডিট ভ্যালিডেশন এবং নেティブ সাবমিশন ইঞ্জিন (BACTA থিম)
+    // ৩. 💡 আল্ট্রা-স্মার্ট এডিট ভ্যালিডেশন এবং নেটিভ সাবমিশন ইঞ্জিন (BACTA থিম)
     function submitBactaEditForm() {
         let inputName = $('#edit_name').val().trim();
         
@@ -323,7 +294,7 @@
             $('#edit-modal-alert').removeClass('d-none').html(
                 '<div class="d-flex align-items-center">' +
                 '<i class="fas fa-hand-point-right text-warning mr-2 animate__animated animate__flash animate__infinite" style="font-size: 16px; margin-right: 8px;"></i> ' +
-                '<span>দয়া করে প্রথমে <b>হাসপাতালের নাম</b> টাইপ করুন, তারপর আপডেট বাটনে প্রেস করুন।</span>' +
+                '<span>দয়া করে প্রথমে <b>কমিটির পদবি</b> টাইপ করুন, তারপর আপডেট বাটনে প্রেস করুন।</span>' +
                 '</div>'
             );
             $('#edit_name').addClass('is-invalid').focus();
@@ -334,7 +305,7 @@
         }
         
         $('#editSaveBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-1"></i> Updating changes...');
-        document.getElementById('editHospitalForm').submit();
+        document.getElementById('editBactaDesigForm').submit();
     }
 </script>
 @stop
