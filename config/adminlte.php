@@ -61,14 +61,14 @@ return [
     'classes_auth_btn' => 'btn-flat btn-primary',
 
     'classes_body' => '',
-    'classes_brand' => '',
-    'classes_brand_text' => '',
-    'classes_content_wrapper' => '',
+    'classes_brand' => 'bg-[#0F172A] border-bottom border-slate-800/60', // 🎯 লোগো হেডার বক্সের ব্যাকগ্রাউন্ড রয়্যাল ডার্ক ব্লু ভাই
+    'classes_brand_text' => 'font-weight-bold text-white tracking-tight',
+    'classes_content_wrapper' => 'bg-[#F8FAFC]', // 💻 মেইন ব্যাকগ্রাউন্ড স্ক্রিনকে রিফ্রেশিং গ্রে-হোয়াইট লুক দেওয়া হলো
     'classes_content_header' => '',
     'classes_content' => '',
-    'classes_sidebar' => 'sidebar-dark-primary elevation-4',
-    'classes_sidebar_nav' => '',
-    'classes_topnav' => 'navbar-white navbar-light',
+    'classes_sidebar' => 'sidebar-dark-primary bg-[#0F172A] elevation-2 border-right border-slate-800/60', // 👑 আপনার সাইডবার মেইন কালার লকড ভাই
+    'classes_sidebar_nav' => 'nav-flat nav-child-indent', // 💡 সাব-মেনুগুলোকে সুন্দর খাঁটি ইনডেন্টেশন লুক দেওয়া হলো
+    'classes_topnav' => 'navbar-light bg-white border-bottom border-slate-200/80', // ⚡ ওপরের টপবারকে লোগো ফ্রেমের বর্ডারে ক্লিন করা হলো ভাই
     'classes_topnav_nav' => 'navbar-expand',
     'classes_topnav_container' => 'container',
 
@@ -101,91 +101,121 @@ return [
     'disable_darkmode_routes' => false,
 
     'laravel_asset_bundling' => false,
-    'menu' => [
-        [
-            'type'         => 'navbar-search',
-            'text'         => 'Search Member...',
-            'topnav_right' => true,
-        ],
-        [
-            'type'         => 'fullscreen-widget',
-            'topnav_right' => true,
-        ],
-        [
-            'type' => 'sidebar-menu-search',
-            'text' => 'Quick Find...',
-        ],
-        [
-            'text' => 'Main Dashboard',
-            'route' => 'admin.dashboard',
-            'icon' => 'fas fa-fw fa-tachometer-alt',
-        ],
-        [
-            'text' => 'Admin & Staff Directory',
-            'route' => 'admin.staff.list',
-            'icon' => 'fas fa-fw fa-users-cog',
-        ],
 
-        // 🚀 MASTER DATA CONTROL HUB (ড্রপডাউন সাব-মেনু ১)
-        [
-            'text'    => 'Master Control Hub',
-            'icon'    => 'fas fa-fw fa-cogs',
-            'submenu' => [
-                [
-                    'text'  => 'Hospitals Registry',
-                    'route' => 'admin.hospitals.index',
-                    'icon'  => 'fas fa-fw fa-hospital',
-                ],
-                [
-                    'text'  => 'Medical Designations',
-                    'route' => 'admin.med_desig.index',
-                    'icon'  => 'fas fa-fw fa-user-md',
-                ],
-                [
-                    'text'  => 'BACTA Designations',
-                    'route' => 'admin.bacta_desig.index',
-                    'icon'  => 'fas fa-fw fa-award',
-                ],
+'menu' => [
+    [
+        'type'         => 'navbar-search',
+        'text'         => 'Search Member...',
+        'topnav_right' => true,
+    ],
+    [
+        'type'         => 'fullscreen-widget',
+        'topnav_right' => true,
+    ],
+    [
+        'type' => 'sidebar-menu-search',
+        'text' => 'Quick Find...',
+    ],
+    [
+        'text' => 'Main Dashboard',
+        'route' => 'admin.dashboard',
+        'icon' => 'fas fa-fw fa-tachometer-alt',
+    ],
+    [
+        'text' => 'Admin & Staff Directory',
+        'route' => 'admin.staff.list',
+        'icon' => 'fas fa-fw fa-users-cog',
+    ],
+    [
+        'text'    => 'Master Control Hub',
+        'icon'    => 'fas fa-fw fa-cogs',
+        'submenu' => [
+            [
+                'text'  => 'Hospitals Registry',
+                'route' => 'admin.hospitals.index',
+                'icon'  => 'fas fa-fw fa-hospital',
             ],
-        ],
-
-        // 🚀 NEW UPDATE: GOVERNANCE & MEMBERSHIP HUB (ড্রপডাউন সাব-মেনু ২)
-        [
-            'text'    => 'Governance & Membership',
-            'icon'    => 'fas fa-fw fa-shield-alt',
-            'submenu' => [
-                [
-                    'text'  => 'Executive Committee',
-                    'route' => 'admin.members.index',
-                    'icon'  => 'fas fa-fw fa-users',
-                ],
-                [
-                    'text'  => 'Lifetime Fellows',
-                    'route' => 'admin.members.index',
-                    'icon'  => 'fas fa-fw fa-award',
-                ],
-                [
-                    'text'  => 'Active Members',
-                    'route' => 'admin.members.index',
-                    'icon'  => 'fas fa-fw fa-user-md',
-                ],
+            [
+                'text'  => 'Medical Designations',
+                'route' => 'admin.med_desig.index',
+                'icon'  => 'fas fa-fw fa-user-md',
             ],
-        ],
-
-        ['header' => 'ACCOUNT SECURITY'],
-        [
-            'text'  => 'Change Password',
-            'route' => 'profile.edit',
-            'icon'  => 'fas fa-fw fa-key',
-        ],
-        [
-            'text'        => 'Sign Out Application',
-            'url'         => 'logout',
-            'icon'        => 'fas fa-fw fa-sign-out-alt',
-            'icon_color'  => 'red',
-            'attributes'  => ['onclick' => "event.preventDefault(); document.getElementById('logout-form').submit();"],
+            [
+                'text'  => 'BACTA Designations',
+                'route' => 'admin.bacta_desig.index',
+                'icon'  => 'fas fa-fw fa-award',
+            ],
         ],
     ],
+    [
+        'text'    => 'Governance & Membership',
+        'icon'    => 'fas fa-fw fa-shield-alt',
+        'submenu' => [
+            [
+                'text'  => 'Executive Committee',
+                'route' => 'admin.members.index',
+                'icon'  => 'fas fa-fw fa-users',
+            ],
+            [
+                'text'  => 'Lifetime Fellows',
+                'route' => 'admin.members.index',
+                'icon'  => 'fas fa-fw fa-award',
+            ],
+            [
+                'text'  => 'Active Members',
+                'route' => 'admin.members.index',
+                'icon'  => 'fas fa-fw fa-user-md',
+            ],
+        ],
+    ],
+    [
+        'text'    => 'News & Publications',
+        'icon'    => 'fas fa-fw fa-newspaper',
+        'submenu' => [
+            [
+                'text'  => 'Announcements',
+                'route' => 'admin.notices.index',
+                'icon'  => 'fas fa-fw fa-bullhorn',
+            ],
+            [
+                'text'  => 'Executive Minutes',
+                'route' => 'admin.minutes.index',
+                'icon'  => 'fas fa-fw fa-history',
+            ],
+            [
+                'text'  => 'Events & Gallery',
+                'route' => 'admin.gallery.hub_index', 
+                'icon'  => 'fas fa-fw fa-camera-retro',
+            ],
+            [
+                'text'  => 'Journals (BACTA)',
+                'route' => 'admin.journals.index', 
+                'icon'  => 'fas fa-fw fa-book-medical',
+            ],
+            [
+                'text'  => 'Secretariat Inbox',
+                'route' => 'admin.contacts.index',
+                'icon'  => 'fas fa-fw fa-envelope-open-text',
+            ],
+        ],
+    ],
+
+    ['header' => 'ACCOUNT SECURITY'],
+    [
+        'text'  => 'Change Password',
+        'route' => 'profile.edit',
+        'icon'  => 'fas fa-fw fa-key',
+    ],
+    [
+        'text'        => 'Sign Out Application',
+        'url'         => 'logout',
+        'icon'        => 'fas fa-fw fa-sign-out-alt',
+        'icon_color'  => 'red',
+        'attributes'  => [
+            'onclick' => "event.preventDefault(); var f = document.createElement('form'); f.method = 'POST'; f.action = '/logout'; var s = document.createElement('input'); s.type = 'hidden'; s.name = '_token'; s.value = document.querySelector('meta[name=\"csrf-token\"]') ? document.querySelector('meta[name=\"csrf-token\"]').content : ''; f.appendChild(s); document.body.appendChild(f); f.submit();"
+        ],
+    ],
+],
 
     'filters' => [
         JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,

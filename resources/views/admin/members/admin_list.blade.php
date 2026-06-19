@@ -1,3 +1,5 @@
+<link rel="icon" type="image/x-icon" href="{{ asset('images/logo.png') }}" /> 
+
 @extends('adminlte::page')
 
 @section('title', 'Admin & Staff Hub')

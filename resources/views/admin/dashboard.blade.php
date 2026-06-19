@@ -3,128 +3,158 @@
 @section('title', 'Admin Dashboard | BACTA')
 
 @section('content_header')
-    {{-- smooth fade-in effect সহ প্রফেশনাল অ্যাডমিন টাইটেল বার --}}
-    <div class="d-flex justify-content-between align-items-center animate__animated animate__fadeIn">
-        <h1 style="color: #00496A; font-weight: 700; font-family: 'Poppins', sans-serif;">
-            <i class="fas fa-chart-pie mr-2" style="color: #00ADEF;"></i> BACTA Control Center
-        </h1>
-        <ol class="breadcrumb float-sm-right small text-muted d-none d-md-flex">
-            <li class="breadcrumb-item"><a href="#" style="color: #00496A; font-weight: 600; text-decoration: none;">Home</a></li>
-            <li class="breadcrumb-item active">Admin Dashboard</li>
-        </ol>
+    <div style="font-family: 'Poppins', sans-serif; padding-left: 5px;">
+        <h1 style="color: #0F172A; font-weight: 800; font-size: 24px; margin: 0;">BACTA Control Center</h1>
     </div>
 @stop
+
 @section('content')
-<div class="container-fluid animate__animated animate__fadeInUp" style="font-family: 'Poppins', sans-serif;">
+<div style="font-family: 'Poppins', sans-serif; padding: 5px 5px 30px;">
     
-    {{-- Top Executive Stats Row --}}
-    <div class="row">
-        {{-- Card 1: Pending Approvals (আপনার নিয়ম অনুযায়ী লাল রঙে হাইলাইট করা) --}}
-        <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box shadow-sm border-0" style="border-radius: 12px; transition: 0.3s ease;">
-                <span class="info-box-icon bg-danger elevation-1" style="background-color: #e74c3c !important; border-radius: 10px;">
-                    <i class="fas fa-clock fa-xs"></i>
-                </span>
-                <div class="info-box-content">
-                    <span class="info-box-text font-weight-bold text-muted small">Pending Applications</span>
-                    <span class="info-box-number h4 font-weight-bold mb-0 text-dark">5</span>
-                </div>
+    <!-- 👑 ওফিসিয়াল ৪-কলাম ড্যাশবোর্ড কার্ড গ্রিড জোন -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; margin-bottom: 20px;">
+
+        <!-- ==========================================
+             🔒 কার্ড ১: Pending Applications (সলিড লাল বক্স ভাই)
+             ========================================== -->
+        <div class="small-box bg-danger" onclick="window.location='{{ route('admin.members.pending') }}'" style="border-radius: 4px; overflow: hidden; margin-bottom: 0; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='translateY(-2px)';" onmouseleave="this.style.transform='translateY(0)';">
+            <div class="inner" style="padding: 15px 20px 20px;">
+                <h3 style="font-size: 38px; font-weight: 700; margin: 0 0 3px 0; line-height: 1;">{{ $counts['pending_apps'] }}</h3>
+                <p style="font-size: 13px; font-weight: 600; margin: 0; opacity: 0.9;">Pending Applications</p>
             </div>
+            <div class="icon" style="top: 15px; right: 15px; opacity: 0.15; font-size: 65px; position: absolute; transition: all 0.3s linear;">
+                <i class="fas fa-clock"></i>
+            </div>
+            <a href="{{ route('admin.members.pending') }}" class="small-box-footer" style="padding: 4px 0; background: rgba(0,0,0,0.1); font-size: 12px; display: block; text-align: center; text-decoration: none; color: rgba(255,255,255,0.8); font-weight: 600;">
+                Review Approvals <i class="fas fa-arrow-circle-right" style="margin-left: 3px; font-size: 11px;"></i>
+            </a>
         </div>
 
-        {{-- Card 2: Lifetime Members (ব্লু থিম) --}}
-        <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box shadow-sm border-0" style="border-radius: 12px; transition: 0.3s ease;">
-                <span class="info-box-icon bg-primary elevation-1" style="background-color: #00496A !important; border-radius: 10px;">
-                    <i class="fas fa-award fa-xs"></i>
-                </span>
-                <div class="info-box-content">
-                    <span class="info-box-text font-weight-bold text-muted small">Lifetime Members</span>
-                    <span class="info-box-number h4 font-weight-bold mb-0 text-dark">142</span>
-                </div>
+        <!-- ==========================================
+             🔒 কার্ড ২: Lifetime Members (ডিপ রয়্যাল ডার্ক ব্লু বক্স ভাই)
+             ========================================== -->
+        <div class="small-box bg-dark" onclick="window.location='{{ route('admin.members.index') }}'" style="border-radius: 4px; overflow: hidden; margin-bottom: 0; cursor: pointer; background-color: #1E293B !important; transition: transform 0.2s ease;" onmouseenter="this.style.transform='translateY(-2px)';" onmouseleave="this.style.transform='translateY(0)';">
+            <div class="inner" style="padding: 15px 20px 20px;">
+                <h3 style="font-size: 38px; font-weight: 700; margin: 0 0 3px 0; line-height: 1;">{{ $counts['lifetime_fel'] }}</h3>
+                <p style="font-size: 13px; font-weight: 600; margin: 0; opacity: 0.9;">Lifetime Members</p>
             </div>
+            <div class="icon" style="top: 15px; right: 15px; opacity: 0.12; font-size: 65px; position: absolute; transition: all 0.3s linear;">
+                <i class="fas fa-award"></i>
+            </div>
+            <a href="{{ route('admin.members.index') }}" class="small-box-footer" style="padding: 4px 0; background: rgba(0,0,0,0.15); font-size: 12px; display: block; text-align: center; text-decoration: none; color: rgba(255,255,255,0.8); font-weight: 600;">
+                View Fellows Directory <i class="fas fa-arrow-circle-right" style="margin-left: 3px; font-size: 11px;"></i>
+            </a>
         </div>
 
-        {{-- Card 3: General Members (লাইট ব্লু থিম) --}}
-        <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box shadow-sm border-0" style="border-radius: 12px; transition: 0.3s ease;">
-                <span class="info-box-icon bg-info elevation-1" style="background-color: #00ADEF !important; border-radius: 10px;">
-                    <i class="fas fa-user-md fa-xs"></i>
-                </span>
-                <div class="info-box-content">
-                    <span class="info-box-text font-weight-bold text-muted small">General Members</span>
-                    <span class="info-box-number h4 font-weight-bold mb-0 text-dark">218</span>
-                </div>
+        <!-- ==========================================
+             🔒 কার্ড ৩: General Members (উজ্জ্বল আকাশী নীল বক্স ভাই)
+             ========================================== -->
+        <div class="small-box bg-info" onclick="window.location='{{ route('admin.members.index') }}'" style="border-radius: 4px; overflow: hidden; margin-bottom: 0; cursor: pointer; background-color: #0EA5E9 !important; transition: transform 0.2s ease;" onmouseenter="this.style.transform='translateY(-2px)';" onmouseleave="this.style.transform='translateY(0)';">
+            <div class="inner" style="padding: 15px 20px 20px;">
+                <h3 style="font-size: 38px; font-weight: 700; margin: 0 0 3px 0; line-height: 1;">{{ $counts['active_mems'] }}</h3>
+                <p style="font-size: 13px; font-weight: 600; margin: 0; opacity: 0.9;">General Members</p>
             </div>
+            <div class="icon" style="top: 15px; right: 15px; opacity: 0.15; font-size: 65px; position: absolute; transition: all 0.3s linear;">
+                <i class="fas fa-users"></i>
+            </div>
+            <a href="{{ route('admin.members.index') }}" class="small-box-footer" style="padding: 4px 0; background: rgba(0,0,0,0.1); font-size: 12px; display: block; text-align: center; text-decoration: none; color: rgba(255,255,255,0.8); font-weight: 600;">
+                Manage Active Roster <i class="fas fa-arrow-circle-right" style="margin-left: 3px; font-size: 11px;"></i>
+            </a>
         </div>
 
-        {{-- Card 4: Published Notices (সবুজ থিম) --}}
-        <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box shadow-sm border-0" style="border-radius: 12px; transition: 0.3s ease;">
-                <span class="info-box-icon bg-success elevation-1" style="border-radius: 10px;">
-                    <i class="fas fa-bullhorn fa-xs"></i>
-                </span>
-                <div class="info-box-content">
-                    <span class="info-box-text font-weight-bold text-muted small">Active Notices</span>
-                    <span class="info-box-number h4 font-weight-bold mb-0 text-dark">12</span>
-                </div>
+        <!-- ==========================================
+             🔒 🏥 কার্ড ৪: Hospitals Registry (মেডিকেল সবুজ বক্স ভাই)
+             ========================================== -->
+        <div class="small-box bg-success" onclick="window.location='{{ route('admin.hospitals.index') }}'" style="border-radius: 4px; overflow: hidden; margin-bottom: 0; cursor: pointer; background-color: #10B981 !important; transition: transform 0.2s ease;" onmouseenter="this.style.transform='translateY(-2px)';" onmouseleave="this.style.transform='translateY(0)';">
+            <div class="inner" style="padding: 15px 20px 20px;">
+                <h3 style="font-size: 38px; font-weight: 700; margin: 0 0 3px 0; line-height: 1;">{{ $counts['hospitals'] }}</h3>
+                <p style="font-size: 13px; font-weight: 600; margin: 0; opacity: 0.9;">Hospitals Registry</p>
             </div>
-        </div>
-    </div>
-    {{-- Main Admin Welcome & Quick Actions Row --}}
-    <div class="row mt-4">
-        <div class="col-lg-12">
-            <div class="card border-0 shadow-sm" style="border-radius: 16px; overflow: hidden; border-top: 4px solid #00496A !important;">
-                <div class="card-body p-4 text-center">
-                    <!-- BACTA Animating Logo Layer -->
-                    <img src="{{ asset('images/logo.png') }}" alt="BACTA" style="width: 110px; margin-bottom: 15px;" class="animate__animated animate__pulse animate__infinite">
-                    
-                    <h3 class="font-weight-bold text-dark mb-2">System Administrator Control Center</h3>
-                    <p class="text-muted mx-auto" style="max-width: 650px; font-size: 14.5px;">
-                        Welcome back! You have secure root privileges over BACTA Bangladesh database. From this control tower, you can instantly approve pending medical credentials, manage global science journals, and track registration audit logs.
-                    </p>
-                    
-                    <!-- Quick Action Button to Route Pending Directory -->
-                    <div class="mt-4">
-                        <a href="{{ route('admin.members.pending') }}" class="btn btn-primary px-4 py-2 font-weight-bold shadow-sm" style="background-color: #00496A; border: none; border-radius: 8px; transition: 0.3s;">
-                            <i class="fas fa-user-check mr-2"></i> Review Pending Applications
-                        </a>
-                    </div>
-                </div>
+            <div class="icon" style="top: 15px; right: 15px; opacity: 0.15; font-size: 65px; position: absolute; transition: all 0.3s linear;">
+                <i class="fas fa-hospital"></i>
             </div>
+            <a href="{{ route('admin.hospitals.index') }}" class="small-box-footer" style="padding: 4px 0; background: rgba(0,0,0,0.1); font-size: 12px; display: block; text-align: center; text-decoration: none; color: rgba(255,255,255,0.8); font-weight: 600;">
+                Configure Institutes <i class="fas fa-arrow-circle-right" style="margin-left: 3px; font-size: 11px;"></i>
+            </a>
         </div>
-    </div>
-</div>
-@stop
-@section('css')
-    <!-- Animate.css for entrance animations -->
-    <link rel="stylesheet" href="https://cloudflare.com"/>
-    
-    <style>
-        /* Info-Box Smooth Floating Interactive Transitions */
-        .info-box { 
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
-        }
-        .info-box:hover { 
-            transform: translateY(-4px); 
-            box-shadow: 0 12px 24px rgba(0, 73, 106, 0.15) !important; 
-        }
-        
-        /* Central Action Button Hover Animation */
-        .btn-primary:hover {
-            background-color: #00ADEF !important;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 10px rgba(0, 173, 239, 0.3) !important;
-        }
-    </style>
-@stop
+        <!-- ==========================================
+             🔒 কার্ড ৫: Official Medical & BACTA Designations (পার্পল বক্স ভাই)
+             ========================================= -->
+        <div class="small-box bg-purple" onclick="window.location='{{ route('admin.med_desig.index') }}'" style="border-radius: 4px; overflow: hidden; margin-bottom: 0; cursor: pointer; background-color: #A855F7 !important; color: #ffffff !important; transition: transform 0.2s ease;" onmouseenter="this.style.transform='translateY(-2px)';" onmouseleave="this.style.transform='translateY(0)';">
+            <div class="inner" style="padding: 15px 20px 20px;">
+                <h3 style="font-size: 38px; font-weight: 700; margin: 0 0 3px 0; line-height: 1;">{{ $counts['designations'] }}</h3>
+                <p style="font-size: 13px; font-weight: 600; margin: 0; opacity: 0.9;">Official Titles</p>
+            </div>
+            <div class="icon" style="top: 15px; right: 15px; opacity: 0.15; font-size: 65px; position: absolute; transition: all 0.3s linear; color: rgba(255,255,255,0.4) !important;">
+                <i class="fas fa-id-badge"></i>
+            </div>
+            <a href="{{ route('admin.med_desig.index') }}" class="small-box-footer" style="padding: 4px 0; background: rgba(0,0,0,0.1); font-size: 12px; display: block; text-align: center; text-decoration: none; color: rgba(255,255,255,0.8); font-weight: 600;">
+                Manage Ranks <i class="fas fa-arrow-circle-right" style="margin-left: 3px; font-size: 11px;"></i>
+            </a>
+        </div>
 
-@section('js')
-    <script> 
-        console.log("BACTA Command Center Loaded and Secured Successfully!"); 
-    </script>
-    {{-- AdminLTE লগআউট সচল করার জন্য হিডেন লারাভেল সিকিউর ফর্ম --}}
-<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-    @csrf
-</form>
+        <!-- ==========================================
+             🔒 কার্ড ৬: Live Announcements / Notices Dispatch (কমলা বক্স ভাই)
+             ========================================== -->
+        <div class="small-box bg-warning" onclick="window.location='{{ route('admin.notices.index') }}'" style="border-radius: 4px; overflow: hidden; margin-bottom: 0; cursor: pointer; background-color: #EA580C !important; color: #ffffff !important; transition: transform 0.2s ease;" onmouseenter="this.style.transform='translateY(-2px)';" onmouseleave="this.style.transform='translateY(0)';">
+            <div class="inner" style="padding: 15px 20px 20px;">
+                <h3 style="font-size: 38px; font-weight: 700; margin: 0 0 3px 0; line-height: 1;">{{ $counts['notices'] }}</h3>
+                <p style="font-size: 13px; font-weight: 600; margin: 0; opacity: 0.9;">Active Notices</p>
+            </div>
+            <div class="icon" style="top: 15px; right: 15px; opacity: 0.15; font-size: 65px; position: absolute; transition: all 0.3s linear; color: rgba(255,255,255,0.4) !important;">
+                <i class="fas fa-bullhorn"></i>
+            </div>
+            <a href="{{ route('admin.notices.index') }}" class="small-box-footer" style="padding: 4px 0; background: rgba(0,0,0,0.1); font-size: 12px; display: block; text-align: center; text-decoration: none; color: rgba(255,255,255,0.8); font-weight: 600;">
+                Broadcast Bulletin <i class="fas fa-arrow-circle-right" style="margin-left: 3px; font-size: 11px;"></i>
+            </a>
+        </div>
+
+        <!-- ==========================================
+             🔒 कार्ड ७: Executive Board Minutes & Resolutions (স্টিল গ্রে বক্স ভাই)
+             ========================================== -->
+        <div class="small-box bg-secondary" onclick="window.location='{{ route('admin.minutes.index') }}'" style="border-radius: 4px; overflow: hidden; margin-bottom: 0; cursor: pointer; background-color: #4B5563 !important; transition: transform 0.2s ease;" onmouseenter="this.style.transform='translateY(-2px)';" onmouseleave="this.style.transform='translateY(0)';">
+            <div class="inner" style="padding: 15px 20px 20px;">
+                <h3 style="font-size: 38px; font-weight: 700; margin: 0 0 3px 0; line-height: 1;">{{ $counts['minutes'] }}</h3>
+                <p style="font-size: 13px; font-weight: 600; margin: 0; opacity: 0.9;">Resolutions Log</p>
+            </div>
+            <div class="icon" style="top: 15px; right: 15px; opacity: 0.12; font-size: 65px; position: absolute; transition: all 0.3s linear;">
+                <i class="fas fa-history"></i>
+            </div>
+            <a href="{{ route('admin.minutes.index') }}" class="small-box-footer" style="padding: 4px 0; background: rgba(0,0,0,0.15); font-size: 12px; display: block; text-align: center; text-decoration: none; color: rgba(255,255,255,0.8); font-weight: 600;">
+                Closed Minutes <i class="fas fa-arrow-circle-right" style="margin-left: 3px; font-size: 11px;"></i>
+            </a>
+        </div>
+
+        <!-- ==========================================
+             🔒 📚 কার্ড ৮: Research Journals & Secretariat Mail Inbox (ম্যাজেন্টা পিঙ্ক বক্স ভাই)
+             ========================================== -->
+        <div class="small-box bg-maroon" onclick="window.location='{{ route('admin.journals.index') }}'" style="border-radius: 4px; overflow: hidden; margin-bottom: 0; cursor: pointer; background-color: #D946EF !important; color: #ffffff !important; transition: transform 0.2s ease;" onmouseenter="this.style.transform='translateY(-2px)';" onmouseleave="this.style.transform='translateY(0)';">
+            <div class="inner" style="padding: 15px 20px 20px;">
+                <h3 style="font-size: 38px; font-weight: 700; margin: 0 0 3px 0; line-height: 1;">{{ $counts['journals_mail'] }}</h3>
+                <p style="font-size: 13px; font-weight: 600; margin: 0; opacity: 0.9;">Journals & Inbox</p>
+            </div>
+            <div class="icon" style="top: 15px; right: 15px; opacity: 0.15; font-size: 65px; position: absolute; transition: all 0.3s linear; color: rgba(255,255,255,0.4) !important;">
+                <i class="fas fa-book-medical"></i>
+            </div>
+            <a href="{{ route('admin.journals.index') }}" class="small-box-footer" style="padding: 4px 0; background: rgba(0,0,0,0.1); font-size: 12px; display: block; text-align: center; text-decoration: none; color: rgba(255,255,255,0.8); font-weight: 600;">
+                Asset Pipeline <i class="fas fa-arrow-circle-right" style="margin-left: 3px; font-size: 11px;"></i>
+            </a>
+        </div>
+    </div> {{-- গ্রিড কন্টেইনার ক্লোজিং ভাই --}}
+    <!-- ==========================================
+         👑 আন্তর্জাতিক স্ট্যান্ডার্ড: গ্লোবাল মিনিমালিস্ট লেআউট ফুটার
+         ========================================== -->
+    <footer style="margin-top: 50px; padding-top: 15px; border-top: 1px solid #E2E8F0; width: 100%; box-sizing: border-box; font-family: 'Poppins';">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; width: 100%;">
+            <div style="font-size: 11.5px; font-weight: 600; color: #64748B;">
+                &copy; {{ date('Y') }} <a href="https://bactabd.org" target="_blank" style="color: #0284C7; text-decoration: none; font-weight: 700;">BACTA Bangladesh</a>. All Research Rights Reserved.
+            </div>
+            <div style="display: flex; align-items: center; gap: 15px; font-size: 11.5px; font-weight: 600; color: #94A3B8;">
+                <span><i class="fas fa-server text-emerald-400"></i> v3.2.5 Core</span>
+                <span><i class="fas fa-lock text-sky-400"></i> SSL Encrypted</span>
+            </div>
+        </div>
+    </footer>
+
+</div> {{-- মেইন কন্টেইনার ক্লোজিং ভাই --}}
 @stop
