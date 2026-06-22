@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\ExecutiveMinuteController;
 use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\EventGalleryController;
 use App\Http\Controllers\Admin\BactaJournalController;
+use App\Http\Controllers\Admin\HospitalSurgeryController; 
+use App\Http\Controllers\Admin\SurgeryTypeController; // 🎯 আপনার ফ্রেশ অফিশিয়াল কন্ট্রোলার পাথ সিঙ্কড ভাই
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,10 +25,11 @@ Route::get('/members/active-directory', [FrontendController::class, 'activeMembe
 Route::get('/president-message', [FrontendController::class, 'presidentMessage'])->name('president.message');
 Route::get('/announcements', [FrontendController::class, 'noticeArchive'])->name('notice.archive');
 Route::get('/executive-minutes', [FrontendController::class, 'minutesArchive'])->middleware(['auth'])->name('minutes.list');
-Route::get('/events-gallery', [FrontendController::class, 'eventsGalleryPage'])->name('admin.gallery.index'); // 🎯 আপনার মেনুবারের সাথে সিঙ্ক করে এটিকে পাবলিক রাস্তা করা হলো ভাই
+Route::get('/events-gallery', [FrontendController::class, 'eventsGalleryPage'])->name('admin.gallery.index');
 Route::get('/bacta-journals', [FrontendController::class, 'journalsPage'])->name('journals.archive');
 Route::get('/contact-us', [FrontendController::class, 'contactPage'])->name('contact.archive');
 Route::post('/contact/store', [FrontendController::class, 'contactStore'])->name('contact.store');
+Route::get('/cardiac-surgery-statistics', [FrontendController::class, 'cardiacSurgeryStats'])->name('frontend.surgeries.stats');
 
 Route::get('/dashboard', function () {
     if (Auth::user()->status !== 2) {
@@ -89,14 +92,15 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::post('/notices/update/{id}', [NoticeController::class, 'update'])->name('admin.notices.update');
     Route::delete('/notices/delete/{id}', [NoticeController::class, 'destroy'])->name('admin.notices.delete');
     Route::post('/notices/publish-direct/{id}', [NoticeController::class, 'publishDirect'])->name('admin.notices.publish_direct');
-    
+
     Route::get('/minutes', [ExecutiveMinuteController::class, 'index'])->name('admin.minutes.index');
     Route::post('/minutes/store', [ExecutiveMinuteController::class, 'store'])->name('admin.minutes.store');
     Route::post('/minutes/update/{id}', [ExecutiveMinuteController::class, 'update'])->name('admin.minutes.update');
     Route::delete('/minutes/delete/{id}', [ExecutiveMinuteController::class, 'destroy'])->name('admin.minutes.delete');
     Route::post('/minutes/publish-direct/{id}', [ExecutiveMinuteController::class, 'publishDirect'])->name('admin.minutes.publish_direct');
     
-    Route::get('/gallery-hub', [EventGalleryController::class, 'index'])->name('admin.gallery.hub_index'); // 🎯 আপনার অ্যাডমিন ব্যাকএন্ডের মেইন ইউনিক রাস্তা লকড ভাই
+    // 🎯 👑 গ্যালারির ওরিজিনাল রাউট নেম 'admin.gallery.hub_index' ফিক্সড সিঙ্কড ভাই
+    Route::get('/gallery-hub', [EventGalleryController::class, 'index'])->name('admin.gallery.hub_index');
     Route::post('/gallery-hub/store', [EventGalleryController::class, 'store'])->name('admin.gallery.store');
     Route::post('/gallery-hub/update/{id}', [EventGalleryController::class, 'update'])->name('admin.gallery.update');
     Route::delete('/gallery-hub/delete/{id}', [EventGalleryController::class, 'destroy'])->name('admin.gallery.delete');
@@ -110,6 +114,17 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::get('/contacts', [ContactMessageController::class, 'index'])->name('admin.contacts.index');
     Route::delete('/contacts/delete/{id}', [ContactMessageController::class, 'destroy'])->name('admin.contacts.delete');
+
+    // 👑 🔒 ইয়ারলি কার্ডিয়াক সার্জারি ডাটা এন্ট্রি রাউটস ভাই
+    Route::get('/cardiac-surgeries', [HospitalSurgeryController::class, 'index'])->name('admin.surgeries.index');
+    Route::get('/cardiac-surgeries/fetch-matrix', [HospitalSurgeryController::class, 'fetchMatrix'])->name('admin.surgeries.fetch');
+    Route::post('/cardiac-surgeries/bulk-store', [HospitalSurgeryController::class, 'storeOrUpdate'])->name('admin.surgeries.store');
+
+    // 👑 🔒 ওয়ান-পেজ মডাল কাস্টম ক্রুড এবং ইউনিক স্ট্যাটাস ট্র্যাকিং রাউটস ভাই
+    Route::get('/surgery-types-config', [SurgeryTypeController::class, 'index'])->name('admin.surgery_types.index');
+    Route::post('/surgery-types-config/store', [SurgeryTypeController::class, 'store'])->name('admin.surgery_types.store');
+    Route::post('/surgery-types-config/update/{id}', [SurgeryTypeController::class, 'update'])->name('admin.surgery_types.update');
+    Route::delete('/surgery-types-config/delete/{id}', [SurgeryTypeController::class, 'destroy'])->name('admin.surgery_types.delete');
 });
 
 Route::middleware('auth')->group(function () {

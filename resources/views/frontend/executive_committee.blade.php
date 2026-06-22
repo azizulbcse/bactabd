@@ -160,6 +160,20 @@
             margin-top: 2px;
         }
 
+        /* 👑 ওফিসিয়াল র‍্যাংক ইন্ডিকেটর ব্যাজ সিএসএস */
+        .modern-rank-indicator {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(30, 64, 175, 0.06);
+            color: #1E40AF;
+            font-size: 10.5px;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(30, 64, 175, 0.1);
+        }
+
         @media (max-width: 991px) {
             .modern-card { width: calc(50% - 15px); }
         }
@@ -167,151 +181,100 @@
             .modern-card { width: 100%; max-width: 100%; }
         }
     </style>
+
 <div class="modern-body-wrapper">
     <div class="nhcs-container">
 
         <!-- ==========================================
-             🚀 LAYER 1: TOP EXECUTIVE LEADERSHIP (১ম সারি)
+             🚀 👑 আপনার মেইন লজিক: কন্ডিশনাল ইয়ার ভাঙা জটলা মুক্ত পিওর 'sort_order' asc গ্রিড ভাই
              ========================================== -->
-        <div class="modern-grid">
-            @foreach($executives as $row)
-                @if(in_array(strtolower($row->bactaDesignation->title ?? ''), ['president', 'general secretary']))
-                    <div class="modern-card">
-                        <div class="modern-avatar-zone">
-                            <div class="modern-avatar-inner">
-                                @if($row->member_pic)
-                                    <img src="{{ asset('storage/' . $row->member_pic) }}" alt="{{ $row->name }}" loading="lazy">
-                                @else
-                                    <div style="font-size:42px; color:#64748B;"><i class="fas fa-user-md"></i></div>
-                                @endif
-                            </div>
-                        </div>
-                        <div><span class="modern-badge-title">{{ $row->bactaDesignation->title }}</span></div>
-                        <h3 class="modern-doc-name">{{ $row->name }}</h3>
-                        <div class="modern-med-title">{{ $row->medicalDesignation->title ?? 'N/A' }}</div>
-                        
-                        {{-- 💡 বড় নাম এবং শর্ট নাম উইজেট সিঙ্ক --}}
-                        <div class="modern-hospital-tag">
-                            <span class="text-center"><i class="fas fa-hospital text-[#1E40AF] mr-1"></i> {{ $row->hospital->name ?? 'N/A' }}</span>
-                            @if($row->hospital->short_name)
-                                <span class="modern-short-badge">({{ $row->hospital->short_name }})</span>
-                            @endif
-                        </div>
-                    </div>
-                @endif
-            @endforeach
-        </div>
-
-        <!-- ==========================================
-             🚀 LAYER 2: MIDDLE BOARD LEADERSHIP (২য় সারি)
-             ========================================== -->
-        <div class="modern-grid">
-            @foreach($executives as $row)
-                @if(in_array(strtolower($row->bactaDesignation->title ?? ''), ['vice president', 'treasurer', 'joint secretary']))
-                    <div class="modern-card">
-                        <div class="modern-avatar-zone">
-                            <div class="modern-avatar-inner">
-                                @if($row->member_pic)
-                                    <img src="{{ asset('storage/' . $row->member_pic) }}" alt="{{ $row->name }}" loading="lazy">
-                                @else
-                                    <div style="font-size:38px; color:#64748B;"><i class="fas fa-user-md"></i></div>
-                                @endif
-                            </div>
-                        </div>
-                        <div><span class="modern-badge-title">{{ $row->bactaDesignation->title }}</span></div>
-                        <h3 class="modern-doc-name">{{ $row->name }}</h3>
-                        <div class="modern-med-title">{{ $row->medicalDesignation->title ?? 'N/A' }}</div>
-                        
-                        {{-- 💡 বড় নাম এবং শর্ট নাম উইজেট সিঙ্ক --}}
-                        <div class="modern-hospital-tag">
-                            <span class="text-center"><i class="fas fa-hospital text-[#1E40AF] mr-1"></i> {{ $row->hospital->name ?? 'N/A' }}</span>
-                            @if($row->hospital->short_name)
-                                <span class="modern-short-badge">({{ $row->hospital->short_name }})</span>
-                            @endif
-                        </div>
-                    </div>
-                @endif
-            @endforeach
-        </div>
-        <!-- ==========================================
-             🚀 LAYER 3: EXECUTIVE MEMBERS CORE PANEL (৩য় সারি)
-             ========================================== -->
-        {{-- 🎯 এই কন্টেইনারের আইডির ভেতরেই জাভাস্ক্রিপ্ট স্ক্রল ডাটাগুলো সুন্দরভাবে পুশ করবে --}}
         <div class="modern-grid" id="infinite-member-container">
             @foreach($executives as $row)
-                @if(!in_array(strtolower($row->bactaDesignation->title ?? ''), ['president', 'general secretary', 'vice president', 'treasurer', 'joint secretary']))
-                    <div class="modern-card animate__animated animate__fadeIn">
-                        <div class="modern-avatar-zone">
-                            <div class="modern-avatar-inner">
-                                @if($row->member_pic)
-                                    <img src="{{ asset('storage/' . $row->member_pic) }}" alt="{{ $row->name }}" loading="lazy">
-                                @else
-                                    <div style="font-size:32px; color:#64748B;"><i class="fas fa-user-md"></i></div>
-                                @endif
-                            </div>
-                        </div>
-                        <div><span class="modern-badge-title">{{ $row->bactaDesignation->title ?? 'Executive Member' }}</span></div>
-                        <h3 class="modern-doc-name" style="font-size: 16px;">{{ $row->name }}</h3>
-                        <div class="modern-med-title" style="font-size: 12.5px;">{{ $row->medicalDesignation->title ?? 'N/A' }}</div>
-                        
-                        {{-- 💡 বড় নাম এবং শর্ট নাম উইজেট সিঙ্ক --}}
-                        <div class="modern-hospital-tag">
-                            <span class="text-center" style="font-size: 11px;"><i class="fas fa-hospital text-[#1E40AF] mr-1"></i> {{ $row->hospital->name ?? 'N/A' }}</span>
-                            @if($row->hospital->short_name)
-                                <span class="modern-short-badge">({{ $row->hospital->short_name }})</span>
+                <div class="modern-card animate__animated animate__fadeIn">
+                    
+                    {{-- 🎯 🔒 ডাটাবেজের আসল কাস্টম sort_order র‍্যাংক ভ্যালু (১, ২, ৩...) প্রিন্ট হবে ভাই --}}
+                    <div class="modern-rank-indicator">
+                        <i class="fas fa-hashtag" style="font-size: 8px;"></i> Rank {{ $row->sort_order }}
+                    </div>
+
+                    <div class="modern-avatar-zone">
+                        <div class="modern-avatar-inner">
+                            @if($row->member_pic)
+                                <img src="{{ asset('storage/' . $row->member_pic) }}" alt="{{ $row->name }}" loading="lazy">
+                            @else
+                                <div style="font-size:38px; color:#64748B;"><i class="fas fa-user-md"></i></div>
                             @endif
                         </div>
                     </div>
-                @endif
+
+                    <div>
+                        <span class="modern-badge-title">
+                            {{ $row->bactaDesignation->name ?? ($row->bactaDesignation->title ?? 'Executive Member') }}
+                        </span>
+                    </div>
+
+                    <h3 class="modern-doc-name">{{ $row->name }}</h3>
+                    <div class="modern-med-title">{{ $row->medicalDesignation->name ?? ($row->medicalDesignation->title ?? 'N/A') }}</div>
+                    
+                    <div class="modern-hospital-tag">
+                        <span class="text-center"><i class="fas fa-hospital text-[#1E40AF] mr-1"></i> {{ $row->hospital->name ?? 'N/A' }}</span>
+                        @if($row->hospital->short_name)
+                            <span class="modern-short-badge">({{ $row->hospital->short_name }})</span>
+                        @endif
+                    </div>
+                </div>
             @endforeach
         </div>
-
-        {{-- ⏳ সাইলেন্ট গর্জিয়াস স্ক্রল লোডার এলিমেন্ট (মাউস নিচে নামলে এটি ট্রিপ করবে) --}}
-        <div id="scroll-infinity-loader" class="text-center my-4 d-none" style="padding: 20px 0;">
+        <!-- ⏳ সাইলেন্ট গর্জিয়াস স্ক্রল লোডার এলিমেন্ট (মাউস নিচে নামলে এটি ট্রিপ করবে) -->
+        <div id="scroll-infinity-loader" class="text-center my-4 d-none" style="padding: 20px 0; width: 100%;">
             <div class="spinner-border text-primary" role="status" style="width: 2.5rem; height: 2.5rem; color: #1E40AF !important;">
                 <span class="sr-only">Loading more members...</span>
             </div>
             <p class="text-muted mt-2 font-weight-bold" style="font-size: 13px; letter-spacing: 0.5px;">Loading more committee experts...</p>
         </div>
 
-    </div> {{-- .nhcs-container ক্লোজিং --}}
-</div> {{-- .modern-body-wrapper ক্লোজিং --}}
-{{-- 🚀 আল্ট্রা-স্মার্ট ইনফিনিটি স্ক্রল অবজার্ভার জাভাস্ক্রিপ্ট জোন --}}
+    </div> {{-- .nhcs-container ক্লোজিং ভাই --}}
+</div> {{-- .modern-body-wrapper ক্লোজিং ভাই --}}
+
+<!-- ==========================================
+     🚀 ৪. আল্ট্রা-লাইটওয়েট ইনফিনিটি স্ক্রল ইন্টারসেকশন অবজার্ভার ইঞ্জিন (লাস্ট ডাটা হাইড মেকানিজম সহ)
+     ========================================== -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // ল্যারাভেলের পেজিনেশন ট্র্যাকিং ভেরিয়েবল (কন্ট্রোলার থেকে ডাইনামিক লিংক রিড)
         let nextPageUrl = "{{ method_exists($executives, 'nextPageUrl') ? $executives->nextPageUrl() : '' }}";
         let container = document.getElementById('infinite-member-container');
         let loader = document.getElementById('scroll-infinity-loader');
         let isLoading = false;
 
-        // যদি কোনো কারণে পেজ লিংক না থাকে, তবে অবজার্ভার রান করার দরকার নেই
-        if (!nextPageUrl) return;
+        // 🎯 আপনার রিকোয়ারমেন্ট: প্রথম লোডেই যদি আর কোনো এক্সট্রা পেজ না থাকে, তবে লোডার বক্সটি সরাসরি ভ্যানিশ হয়ে যাবে ভাই
+        if (!nextPageUrl && loader) {
+            loader.style.setProperty('display', 'none', 'important');
+            loader.classList.add('d-none');
+            return;
+        }
 
-        // আন্তর্জাতিক মানের নেটিভ ইন্টারসেকশন অবজার্ভার ইঞ্জিন
         const observerOptions = {
             root: null,
-            rootMargin: '0px 0px 300px 0px', // ইউজার নিচে পৌঁছানোর ৩০০ পিক্সেল আগেই ডাটা লোড শুরু হবে ভাই
+            rootMargin: '0px 0px 300px 0px',
             threshold: 0
         };
 
         const scrollObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
-                // ইউজার যখনই স্ক্রল করে লোডারের কাছাকাছি যাবে এবং কোনো রানিং লোড থাকবে না
                 if (entry.isIntersecting && !isLoading && nextPageUrl) {
                     loadMoreCommitteeData();
                 }
             });
         }, observerOptions);
 
-        // লোডার এলিমেন্টটিকে অবজার্ভারের ট্র্যাকিং লিস্টে যুক্ত করা হলো
-        scrollObserver.observe(loader);
+        if (loader) {
+            scrollObserver.observe(loader);
+        }
 
         function loadMoreCommitteeData() {
             isLoading = true;
-            loader.classList.remove('d-none'); // সাইলেন্ট স্পিনার চালু হলো
+            if (loader) loader.classList.remove('d-none');
 
-            // ব্রাউজারের সিকিউর ভ্যানিলা ফেচ এপিআই (Fetch API) দিয়ে ডাটা কল
             fetch(nextPageUrl, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
@@ -319,37 +282,36 @@
             })
             .then(response => response.text())
             .then(html => {
-                // ফেচ করা HTML টেক্সট থেকে শুধু ৩ নম্বর লেয়ারের নতুন মেম্বার কার্ডের পার্টটুকু ফিল্টার করা হলো
                 let parser = new DOMParser();
                 let doc = parser.parseFromString(html, 'text/html');
                 let newCards = doc.getElementById('infinite-member-container');
 
                 if (newCards && newCards.children.length > 0) {
-                    // নতুন কার্ডগুলো আমাদের মেইন লেআউট গ্রিডের নিচে সুন্দর নতুন হাসপাতালের ডাবল ট্যাগসহ যুক্ত করে দেওয়া হলো
                     Array.from(newCards.children).forEach(card => {
                         container.appendChild(card);
                     });
                 }
 
-                // ল্যারাভেলের পরবর্তী পেজের ইউআরএল ব্যাকএন্ড থেকে রি-আপডেট
                 let paginationNextElement = doc.querySelector('a[rel="next"]');
                 nextPageUrl = paginationNextElement ? paginationNextElement.getAttribute('href') : '';
 
                 isLoading = false;
-                loader.classList.add('d-none'); // লোডিং শেষ, স্পিনার হাইд হলো
+                if (loader) loader.classList.add('d-none');
 
-                // যদি আর কোনো ডাটা না থাকে, তবে অবজার্ভার বন্ধ হয়ে যাবে ভাই
-                if (!nextPageUrl) {
+                // 👑 ম্যাজিক লজিক: ১৯ নম্বর লাস্ট ডাটা চলে আসা মাত্রই পুরো লোডিং এরিয়া ও লেখা স্ক্রিন থেকে চিরতরে উধাও হয়ে যাবে ভাই
+                if (!nextPageUrl && loader) {
                     scrollObserver.unobserve(loader);
+                    loader.style.setProperty('display', 'none', 'important');
+                    loader.innerHTML = ''; // ভেতরের সব লেখা সাফ করা হলো ভাই
                 }
             })
             .catch(error => {
                 console.error("Infinity scroll gating error:", error);
                 isLoading = false;
-                loader.classList.add('d-none');
+                if (loader) loader.classList.add('d-none');
             });
         }
     });
 </script>
-
 @endsection
+

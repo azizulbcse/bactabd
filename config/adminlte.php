@@ -145,6 +145,12 @@ return [
                 'route' => 'admin.bacta_desig.index',
                 'icon'  => 'fas fa-fw fa-award',
             ],
+            // 👑 🔒 ওয়ান-পেজ মডাল কাস্টম ক্রুড কলাম কনফিগারেশন বাটন ভাই
+            [
+                'text'  => 'Surgery Type Settings',
+                'route' => 'admin.surgery_types.index',
+                'icon'  => 'fas fa-fw fa-sliders-h',
+            ],
         ],
     ],
     [
@@ -198,6 +204,15 @@ return [
                 'icon'  => 'fas fa-fw fa-envelope-open-text',
             ],
         ],
+    ],
+    
+    // ==========================================
+    // 👑 🔒 আপনার মেগা প্রজেক্ট: ডেডিকেটেড কার্ডিয়াকছার্জারি ডাটা এন্ট্রি হাব বাটন ভাই
+    // ==========================================
+    [
+        'text'    => 'Cardiac Surgery Records',
+        'route'   => 'admin.surgeries.index',
+        'icon'    => 'fas fa-fw fa-chart-line',
     ],
 
     ['header' => 'ACCOUNT SECURITY'],
