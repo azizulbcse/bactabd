@@ -5,150 +5,202 @@
 @section('content')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <header class="relative bg-slate-950 overflow-hidden min-h-[580px] flex items-center">
+    <header class="relative bg-slate-950 overflow-hidden" style="height:580px;">
         <div id="bacta-image-track" class="absolute inset-0 w-full h-full z-0">
             <div class="bacta-img-slide absolute inset-0 w-full h-full bg-cover bg-center opacity-100 transition-opacity duration-1000 ease-in-out" style="background-image: url('{{ asset('images/banner1.jpg') }}');"></div>
             <div class="bacta-img-slide absolute inset-0 w-full h-full bg-cover bg-center opacity-0 transition-opacity duration-1000 ease-in-out" style="background-image: url('{{ asset('images/banner2.jpg') }}');"></div>
             <div class="bacta-img-slide absolute inset-0 w-full h-full bg-cover bg-center opacity-0 transition-opacity duration-1000 ease-in-out" style="background-image: url('{{ asset('images/banner3.jpg') }}');"></div>
+            <div class="bacta-img-slide absolute inset-0 w-full h-full bg-cover bg-center opacity-0 transition-opacity duration-1000 ease-in-out" style="background-image: url('{{ asset('images/banner4.jpg') }}');"></div>
+            <div class="bacta-img-slide absolute inset-0 w-full h-full bg-cover bg-center opacity-0 transition-opacity duration-1000 ease-in-out" style="background-image: url('{{ asset('images/banner5.jpg') }}');"></div>
         </div>
 
-        <div class="absolute inset-0 bg-slate-950/40 z-10"></div>
-        
-        <button type="button" onclick="navigateBactaDynamicSlide(-1)" class="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-[#0F172A]/60 border border-slate-700 text-white flex items-center justify-center hover:bg-[#DC2626] hover:border-[#DC2626] transition-all duration-300 focus:outline-none shadow-lg">
+        <div class="absolute inset-0 bg-slate-950/30 z-10"></div>
+
+        {{-- Arrow buttons --}}
+        <button type="button" onclick="navigateBactaDynamicSlide(-1)"
+            class="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/40 border border-white/20 text-white flex items-center justify-center hover:bg-[#DC2626] hover:border-[#DC2626] transition-all duration-300 focus:outline-none backdrop-blur-sm">
             <i class="fas fa-chevron-left text-sm"></i>
         </button>
-        <button type="button" onclick="navigateBactaDynamicSlide(1)" class="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-[#0F172A]/60 border border-slate-700 text-white flex items-center justify-center hover:bg-[#DC2626] hover:border-[#DC2626] transition-all duration-300 focus:outline-none shadow-lg">
+        <button type="button" onclick="navigateBactaDynamicSlide(1)"
+            class="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/40 border border-white/20 text-white flex items-center justify-center hover:bg-[#DC2626] hover:border-[#DC2626] transition-all duration-300 focus:outline-none backdrop-blur-sm">
             <i class="fas fa-chevron-right text-sm"></i>
         </button>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-20 py-20 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div class="lg:col-span-7 text-center lg:text-left">
-                <div id="bacta-text-track" class="min-h-[280px] flex flex-col justify-center drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
-                    
-                    <div class="bacta-text-slide block opacity-100 transition-all duration-500">
-                        <span class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-bold bg-[#DC2626]/10 text-[#DC2626] mb-6 backdrop-blur-md border border-[#DC2626]/20 shadow-md">
-                            <span class="w-1.5 h-1.5 inline-block rounded-full bg-[#DC2626] animate-pulse"></span> National Clinical Hub
-                        </span>
-                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight">
-                            Advancing the Science of <br>
-                            <span class="bg-gradient-to-r from-red-500 to-[#DC2626] bg-clip-text text-transparent">Cardiac Anesthesia</span> in Bangladesh.
-                        </h1>
-                        <p class="mt-6 text-sm sm:text-base text-white font-medium leading-relaxed max-w-xl">
-                            Connecting premium clinical specialists, publishing groundbreaking research, and setting national benchmarks for cardiovascular perioperative care.
-                        </p>
-                    </div>
+        {{-- Dot navigation - bottom center --}}
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2">
+    <button onclick="changeBactaDynamicSlide(0)" class="bacta-dot w-8 h-2 rounded-full bg-[#DC2626] transition-all duration-300"></button>
 
-                    <div class="bacta-text-slide hidden opacity-0 transition-all duration-500">
-                        <span class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-bold bg-[#0F172A]/80 text-[#0284C7] mb-6 backdrop-blur-md border border-slate-700/50 shadow-md">
-                            <span class="w-1.5 h-1.5 inline-block rounded-full bg-[#0284C7]"></span> Peer-Reviewed Library
-                        </span>
-                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight">
-                            Explore Breakthrough <br>
-                            <span class="bg-gradient-to-r from-[#0284C7] to-indigo-400 bg-clip-text text-transparent">BJCTA Research Journals</span>
-                        </h1>
-                        <p class="mt-6 text-sm sm:text-base text-white font-medium leading-relaxed max-w-xl">
-                            Access our official scientific papers, perioperative echocardiography studies, and global thoracic case tracking workflows.
-                        </p>
-                    </div>
+    <button onclick="changeBactaDynamicSlide(1)" class="bacta-dot w-2.5 h-2.5 rounded-full bg-white/40 hover:bg-white/70 transition-all duration-300"></button>
 
-                    <div class="bacta-text-slide hidden opacity-0 transition-all duration-500">
-                        <span class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-bold bg-[#0F172A]/80 text-amber-500 mb-6 backdrop-blur-md border border-slate-700/50 shadow-md">
-                            <span class="w-1.5 h-1.5 inline-block rounded-full bg-amber-500"></span> Scientific Congress 2026
-                        </span>
-                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight">
-                            Join BACTA National <br>
-                            <span class="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">Annual Conference</span>
-                        </h1>
-                        <p class="mt-6 text-sm sm:text-base text-white font-medium leading-relaxed max-w-xl">
-                            Book your seats for the largest clinical theater gathering, senior registrar workshops, and expert panel discussions on thoracic anesthesia.
-                        </p>
-                    </div>
+    <button onclick="changeBactaDynamicSlide(2)" class="bacta-dot w-2.5 h-2.5 rounded-full bg-white/40 hover:bg-white/70 transition-all duration-300"></button>
 
+    <button onclick="changeBactaDynamicSlide(3)" class="bacta-dot w-2.5 h-2.5 rounded-full bg-white/40 hover:bg-white/70 transition-all duration-300"></button>
+
+    <button onclick="changeBactaDynamicSlide(4)" class="bacta-dot w-2.5 h-2.5 rounded-full bg-white/40 hover:bg-white/70 transition-all duration-300"></button>
+</div>
+
+        {{-- President Card - bottom right overlay (desktop) --}}
+        <!--<div class="absolute bottom-10 right-8 lg:right-16 z-30 w-80 hidden sm:block">
+            <div class="bg-[#0F172A]/90 backdrop-blur-xl rounded-2xl border border-slate-700/60 p-5 shadow-2xl relative overflow-hidden group hover:border-slate-600 transition-all duration-300">
+                <div class="absolute -top-8 -right-8 w-28 h-28 bg-red-500/10 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="flex items-center justify-between mb-3 pb-3 border-b border-slate-800/80">
+                    <span class="text-[10px] font-black tracking-[0.18em] text-[#DC2626] uppercase">From the President's Desk</span>
+                    <span class="w-2 h-2 rounded-full bg-[#DC2626] animate-pulse flex-shrink-0"></span>
                 </div>
-                
-                <div class="mt-4 flex flex-wrap justify-center lg:justify-start">
-                    <a href="{{ route('journals.archive') }}" class="px-7 py-3.5 bg-gradient-to-r from-[#0284C7] to-[#1E40AF] hover:from-[#DC2626] hover:to-[#991B1B] text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-lg shadow-sky-500/10 transition-all duration-300 transform hover:-translate-y-0.5">
-                        Explore Portal
-                    </a>
+                <div class="flex items-center gap-3">
+                    <div class="w-14 h-14 rounded-xl border border-slate-700 overflow-hidden flex-shrink-0 shadow-md">
+                        <img src="{{ asset('storage/committee_pics/president.jpg') }}"
+                             alt="Prof. A. T. M. Khalilur Rahman"
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                             loading="lazy"
+                             onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1 1\' fill=\'%231e293b\'/>';">
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white leading-snug">Prof. A. T. M. Khalilur Rahman</h3>
+                        <p class="text-[9px] font-semibold text-[#DC2626] uppercase tracking-wider mt-0.5">Founder Member & President, BACTA</p>
+                        <p class="text-slate-500 text-[9px] mt-0.5">NHFH & Research Institute</p>
+                    </div>
+                </div>
+                <div class="mt-3 bg-slate-900/60 rounded-xl p-3 border border-slate-800/60">
+                    <p class="text-slate-300 text-[10px] leading-relaxed italic">
+                        "Welcome to the official digital portal of BACTA. Our mission remains steadfast in advancing perioperative patient safety, fostering thoracic research, and educating the next generation of anesthesiologists across Bangladesh."
+                    </p>
                 </div>
             </div>
-            <div class="lg:col-span-5 w-full max-w-md mx-auto lg:mx-0">
-                <div class="bg-[#0F172A]/85 backdrop-blur-xl rounded-2xl border border-slate-800 p-6 shadow-2xl relative overflow-hidden group">
-                    <div class="absolute -top-10 -right-10 w-32 h-32 bg-red-500/10 rounded-full blur-2xl"></div>
-                    
-                    <div class="border-b border-slate-800 pb-3 mb-4 flex items-center justify-between">
-                        <span class="text-xs font-bold tracking-[0.2em] text-[#DC2626] uppercase">From the President's Desk</span>
-                        <span class="w-2 h-2 rounded-full bg-[#DC2626] animate-pulse"></span>
-                    </div>
+        </div>-->
 
-                    <div class="flex items-start space-x-4">
-                        <div class="w-20 h-20 bg-slate-900 rounded-xl border border-slate-800 flex-shrink-0 flex items-center justify-center overflow-hidden shadow-md">
-                            <img src="{{ asset('storage/committee_pics/president.jpg') }}" 
-                                 alt="Prof. A. T. M. Khalilur Rahman" 
-                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                 loading="lazy"
-                                 onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://w3.org\' viewBox=\'0 0 1 1\' fill=\'%231e293b\'/>';">
-                        </div>
-                        
-                        <div>
-                            <h3 class="text-base font-bold text-white tracking-tight leading-snug">Prof. A. T. M. Khalilur Rahman</h3>
-                            <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mt-0.5">Founder Member & President, BACTA</p>
-                            <p class="text-slate-400 text-[11px] mt-1 leading-normal">National Heart Foundation Hospital and Research Institute [NHFH&RI]</p>
-                        </div>
-                    </div>
-                    <div class="mt-4 bg-[#0F172A]/40 rounded-xl p-3.5 border border-slate-800">
-                        <p class="text-white text-xs leading-relaxed italic opacity-95">
-                            "Welcome to the official digital portal of BACTA. Our mission remains steadfast in advancing perioperative patient safety, fostering thoracic research, and educating the next generation of anesthesiologists across Bangladesh."
-                        </p>
-                    </div>
+        {{-- Mobile: small badge bottom-left --}}
+        <!--<div class="absolute bottom-14 left-4 z-30 sm:hidden">
+            <div class="flex items-center gap-2 bg-[#0F172A]/90 backdrop-blur-md rounded-xl px-3 py-2 border border-slate-700/60 shadow-lg">
+                <div class="w-8 h-8 rounded-lg border border-slate-700 overflow-hidden flex-shrink-0">
+                    <img src="{{ asset('storage/committee_pics/president.jpg') }}" alt="President" class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <p class="text-[9px] font-black text-[#DC2626] uppercase tracking-wider">President's Message</p>
+                    <p class="text-[9px] text-slate-300 font-medium">Prof. A. T. M. Khalilur Rahman</p>
                 </div>
             </div>
-        </div>
+        </div>-->
 
-        <div class="absolute bottom-6 left-1/2 lg:left-32 lg:-translate-x-0 -translate-x-1/2 z-30 flex space-x-3">
-            <button type="button" onclick="changeBactaDynamicSlide(0)" class="bacta-dot w-8 h-2 rounded-full bg-[#DC2626] transition-all duration-300" aria-label="Slide 1"></button>
-            <button type="button" onclick="changeBactaDynamicSlide(1)" class="bacta-dot w-2.5 h-2.5 rounded-full bg-white/40 hover:bg-white/70 transition-all duration-300" aria-label="Slide 2"></button>
-            <button type="button" onclick="changeBactaDynamicSlide(2)" class="bacta-dot w-2.5 h-2.5 rounded-full bg-white/40 hover:bg-white/70 transition-all duration-300" aria-label="Slide 3"></button>
-        </div>
     </header>
 
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-30">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            
-            <!-- Pillar Card 1 (Royal Blue Node) -->
-            <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-xl shadow-slate-100/40 hover:-translate-y-1.5 transition-all duration-300 group">
-                <div class="w-10 h-10 bg-sky-50 text-[#0284C7] rounded-xl flex items-center justify-center mb-5 font-bold text-sm transition-colors group-hover:bg-[#0284C7] group-hover:text-white shadow-sm">01</div>
+
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-30 font-sans">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white rounded-2xl border border-slate-200/60 shadow-xl shadow-slate-100/40 overflow-hidden hover:-translate-y-2 transition-all duration-500 group flex flex-col cursor-pointer">
+            <div class="w-full h-32 overflow-hidden relative bg-gradient-to-br from-[#0284C7] to-[#0369A1] flex items-center justify-center">
+                <div class="absolute top-3 left-3 bg-white/20 backdrop-blur-md text-white text-[11px] font-extrabold px-2.5 py-1 rounded-md tracking-wider z-10">01</div>
+                <i class="fa-solid fa-file-medical text-white/30 text-5xl transition-transform duration-500 group-hover:scale-110"></i>
+            </div>
+            <div class="p-5 flex flex-col flex-grow text-left">
                 <h3 class="text-base font-bold text-slate-900 group-hover:text-[#0284C7] transition-colors">Clinical Guidelines</h3>
-                <p class="text-xs text-slate-500 mt-2 leading-relaxed">Download official perioperative protocols, echo standards, and medical PDFs.</p>
-                <a href="{{ route('admin.gallery.index') }}" class="inline-flex items-center text-xs font-bold text-[#0284C7] mt-4 no-underline hover:underline">Browse Library &rarr;</a>
+                <p class="text-xs text-slate-500 mt-2 leading-relaxed flex-grow">Download official perioperative protocols, echo standards, and medical PDFs.</p>
+                <div class="mt-4 flex items-center justify-between">
+                    <a href="{{ route('admin.gallery.index') }}" class="inline-flex items-center text-xs font-bold text-[#0284C7] no-underline hover:underline">Browse Library &rarr;</a>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs transition-transform duration-300 group-hover:text-[#0284C7] group-hover:translate-x-1"></i>
+                </div>
             </div>
-
-            <!-- Pillar Card 2 (Medical Red Node) -->
-            <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-xl shadow-slate-100/40 hover:-translate-y-1.5 transition-all duration-300 group">
-                <div class="w-10 h-10 bg-red-50 text-[#DC2626] rounded-xl flex items-center justify-center mb-5 font-bold text-sm transition-colors group-hover:bg-[#DC2626] group-hover:text-white shadow-sm">02</div>
-                <h3 class="text-base font-bold text-slate-900 group-hover:text-[#DC2626] transition-colors">Membership Portal</h3>
-                <p class="text-xs text-slate-500 mt-2 leading-relaxed">Join the national elite network of thoracic and cardiac anesthesia veterans.</p>
-                <a href="{{ route('login') }}" class="inline-flex items-center text-xs font-bold text-[#DC2626] mt-4 no-underline hover:underline">Register Portal &rarr;</a>
-            </div>
-
-            <!-- Pillar Card 3 (Royal Blue Node) -->
-            <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-xl shadow-slate-100/40 hover:-translate-y-1.5 transition-all duration-300 group">
-                <div class="w-10 h-10 bg-sky-50 text-[#0284C7] rounded-xl flex items-center justify-center mb-5 font-bold text-sm transition-colors group-hover:bg-[#0284C7] group-hover:text-white shadow-sm">03</div>
-                <h3 class="text-base font-bold text-slate-900 group-hover:text-[#0284C7] transition-colors">CME & Events</h3>
-                <p class="text-xs text-slate-500 mt-2 leading-relaxed">Access upcoming advanced workshops, scientific webinars, and annual congress.</p>
-                <a href="{{ route('admin.gallery.index') }}" class="inline-flex items-center text-xs font-bold text-[#0284C7] mt-4 no-underline hover:underline">View Calendar &rarr;</a>
-            </div>
-
-            <!-- Pillar Card 4 (Medical Red Node) -->
-            <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-xl shadow-slate-100/40 hover:-translate-y-1.5 transition-all duration-300 group">
-                <div class="w-10 h-10 bg-red-50 text-[#DC2626] rounded-xl flex items-center justify-center mb-5 font-bold text-sm transition-colors group-hover:bg-[#DC2626] group-hover:text-white shadow-sm">04</div>
-                <h3 class="text-base font-bold text-slate-900 group-hover:text-[#DC2626] transition-colors">BJCTA Journals</h3>
-                <p class="text-xs text-slate-500 mt-2 leading-relaxed">Explore groundbreaking research, academic articles, and global case studies.</p>
-                <a href="{{ route('journals.archive') }}" class="inline-flex items-center text-xs font-bold text-[#DC2626] mt-4 no-underline hover:underline">Read Research &rarr;</a>
-            </div>
-
         </div>
-    </section>
+
+        <div class="bg-white rounded-2xl border border-slate-200/60 shadow-xl shadow-slate-100/40 overflow-hidden hover:-translate-y-2 transition-all duration-500 group flex flex-col cursor-pointer">
+            <div class="w-full h-32 overflow-hidden relative bg-gradient-to-br from-[#DC2626] to-[#991B1B] flex items-center justify-center">
+                <div class="absolute top-3 left-3 bg-white/20 backdrop-blur-md text-white text-[11px] font-extrabold px-2.5 py-1 rounded-md tracking-wider z-10">02</div>
+                <i class="fa-solid fa-user-doctor text-white/30 text-5xl transition-transform duration-500 group-hover:scale-110"></i>
+            </div>
+            <div class="p-5 flex flex-col flex-grow text-left">
+                <h3 class="text-base font-bold text-slate-900 group-hover:text-[#DC2626] transition-colors">Membership Portal</h3>
+                <p class="text-xs text-slate-500 mt-2 leading-relaxed flex-grow">Join the national elite network of thoracic and cardiac anesthesia veterans.</p>
+                <div class="mt-4 flex items-center justify-between">
+                    <a href="{{ route('login') }}" class="inline-flex items-center text-xs font-bold text-[#DC2626] no-underline hover:underline">Register Portal &rarr;</a>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs transition-transform duration-300 group-hover:text-[#DC2626] group-hover:translate-x-1"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200/60 shadow-xl shadow-slate-100/40 overflow-hidden hover:-translate-y-2 transition-all duration-500 group flex flex-col cursor-pointer">
+            <div class="w-full h-32 overflow-hidden relative bg-gradient-to-br from-[#0EA5E9] to-[#0369A1] flex items-center justify-center">
+                <div class="absolute top-3 left-3 bg-white/20 backdrop-blur-md text-white text-[11px] font-extrabold px-2.5 py-1 rounded-md tracking-wider z-10">03</div>
+                <i class="fa-solid fa-calendar-check text-white/30 text-5xl transition-transform duration-500 group-hover:scale-110"></i>
+            </div>
+            <div class="p-5 flex flex-col flex-grow text-left">
+                <h3 class="text-base font-bold text-slate-900 group-hover:text-[#0284C7] transition-colors">CME & Events</h3>
+                <p class="text-xs text-slate-500 mt-2 leading-relaxed flex-grow">Access upcoming advanced workshops, scientific webinars, and annual congress.</p>
+                <div class="mt-4 flex items-center justify-between">
+                    <a href="{{ route('admin.gallery.index') }}" class="inline-flex items-center text-xs font-bold text-[#0284C7] no-underline hover:underline">View Calendar &rarr;</a>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs transition-transform duration-300 group-hover:text-[#0284C7] group-hover:translate-x-1"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200/60 shadow-xl shadow-slate-100/40 overflow-hidden hover:-translate-y-2 transition-all duration-500 group flex flex-col cursor-pointer">
+            <div class="w-full h-32 overflow-hidden relative bg-gradient-to-br from-[#991B1B] to-[#4C0519] flex items-center justify-center">
+                <div class="absolute top-3 left-3 bg-white/20 backdrop-blur-md text-white text-[11px] font-extrabold px-2.5 py-1 rounded-md tracking-wider z-10">04</div>
+                <i class="fa-solid fa-book-journal-whills text-white/30 text-5xl transition-transform duration-500 group-hover:scale-110"></i>
+            </div>
+            <div class="p-5 flex flex-col flex-grow text-left">
+                <h3 class="text-base font-bold text-slate-900 group-hover:text-[#DC2626] transition-colors">BJCTA Journals</h3>
+                <p class="text-xs text-slate-500 mt-2 leading-relaxed flex-grow">Explore groundbreaking research, academic articles, and global case studies.</p>
+                <div class="mt-4 flex items-center justify-between">
+                    <a href="{{ route('journals.archive') }}" class="inline-flex items-center text-xs font-bold text-[#DC2626] no-underline hover:underline">Read Research &rarr;</a>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs transition-transform duration-300 group-hover:text-[#DC2626] group-hover:translate-x-1"></i>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- =========================================================================
+     👑 🔒 বিএসিটিএ মেগা থিম: BSEcho ইন্সপায়ার্ড আন্তর্জাতিক স্ট্যান্ডার্ড মেগা লোগো গ্রিড ভাই (বড় সাইজ)
+     ========================================================================= -->
+<section class="w-full bg-[#F8FAFC] border-t border-b border-[#E2E8F0] py-16 mt-16 font-sans">
+    <div class="max-w-7xl mx-auto px-6">
+        
+        <!-- ১. মেগা হেডিং এবং ব্র্যান্ড নোড জোন ভাই -->
+        <div class="text-center mb-12">
+            <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-emerald-50 text-[#16A34A] text-xs font-bold tracking-[0.2em] uppercase border border-emerald-100/60">
+                Annual Partners
+            </span>
+            <h4 class="mt-3 text-sm font-extrabold text-slate-500 uppercase tracking-[0.15em]">
+                With thanks to our annual partners
+            </h4>
+        </div>
+
+        <!-- ২. 🔒 আপনার মেগা রিকোয়ারমেন্ট: লোগোর সাইজ আরও বড় ও স্পষ্ট করে সাজানো ফিক্সড গ্রিড ভাই -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-16 gap-y-12 items-center justify-center max-w-5xl mx-auto mt-6">
+            
+            <!-- ক) রো ১: ওয়ান-ক্লিক লিঙ্কড মেগা লোগো ক্যাটালগ ভাই (h-16 লকিং ড্রাইভার) -->
+            <a href="https://gehealthcare.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center h-10 md:h-16 transition-all duration-300 hover:scale-105">
+                <img src="/images/partners/ge.png" class="max-h-full max-w-full object-contain block" alt="GE">
+            </a>
+            
+            <a href="https://philips.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center h-10 md:h-16 transition-all duration-300 hover:scale-105">
+                <img src="/images/partners/philips.png" class="max-h-full max-w-full object-contain block" alt="Philips">
+            </a>
+            
+            <a href="https://siemens-healthineers.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center h-10 md:h-16 transition-all duration-300 hover:scale-105">
+                <img src="/images/partners/siemens.png" class="max-h-full max-w-full object-contain block" alt="Siemens">
+            </a>
+            
+            <a href="https://mindray.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center h-10 md:h-16 transition-all duration-300 hover:scale-105">
+                <img src="/images/partners/mindray.png" class="max-h-full max-w-full object-contain block" alt="Mindray">
+            </a>
+
+            <!-- খ) রো ২: নিচে নিচে নিখুঁত বড় এলাইনমেন্ট ট্র্যাকার নোড ভাই -->
+            <a href="https://abbott.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center h-10 md:h-16 transition-all duration-300 hover:scale-105 lg:col-start-2">
+                <img src="/images/partners/abbott.png" class="max-h-full max-w-full object-contain block" alt="Abbott">
+            </a>
+            
+            <a href="https://draeger.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center h-10 md:h-16 transition-all duration-300 hover:scale-105">
+                <img src="/images/partners/drager.png" class="max-h-full max-w-full object-contain block" alt="Drager">
+            </a>
+            
+        </div> {{-- .grid-end ভাই --}}
+        
+    </div> {{-- .container-end ভাই --}}
+</section>
+
+    
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 grid grid-cols-1 lg:grid-cols-3 gap-12">
         
         <div class="lg:col-span-2 space-y-8">
@@ -257,25 +309,17 @@
     <script>
         let currentBactaSlideIdx = 0;
         const imgSlides = document.querySelectorAll('.bacta-img-slide');
-        const textSlides = document.querySelectorAll('.bacta-text-slide');
         const sliderDots = document.querySelectorAll('.bacta-dot');
 
         function changeBactaDynamicSlide(slideIndex) {
             if (imgSlides.length === 0) return;
-            
             imgSlides[currentBactaSlideIdx].classList.replace('opacity-100', 'opacity-0');
-            textSlides[currentBactaSlideIdx].classList.replace('block', 'hidden');
-            textSlides[currentBactaSlideIdx].classList.replace('opacity-100', 'opacity-0');
             sliderDots[currentBactaSlideIdx].classList.replace('w-8', 'w-2.5');
             sliderDots[currentBactaSlideIdx].classList.replace('bg-[#DC2626]', 'bg-white/40');
 
             currentBactaSlideIdx = slideIndex;
 
             imgSlides[currentBactaSlideIdx].classList.replace('opacity-0', 'opacity-100');
-            textSlides[currentBactaSlideIdx].classList.remove('hidden');
-            setTimeout(() => {
-                textSlides[currentBactaSlideIdx].classList.add('block', 'opacity-100');
-            }, 50);
             sliderDots[currentBactaSlideIdx].classList.replace('w-2.5', 'w-8');
             sliderDots[currentBactaSlideIdx].classList.replace('bg-white/40', 'bg-[#DC2626]');
         }

@@ -1,35 +1,33 @@
 <?php
-
 namespace App\Http\Controllers;
-
-// 🎯 👑 ক্লাসের বাইরে একদম ফাইলের মাথায় সঠিক মডেল নেমস্পেস লিংক লকড ভাই (পুরো ওয়েবসাইট লাইভ হবে)
 use App\Models\Hospital;
 use App\Models\SurgeryType;
 use App\Models\HospitalSurgeryRecord;
+use App\Models\CongenitalSurgeryRecord;
 use App\Models\CommitteeMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\ValvularSurgeryRecord;
 
 class FrontendController extends Controller
 {
-    /**
-     * 👑 বিএসিটিএ অফিশিয়াল: কার্ডিয়াক সার্জারি পাবলিক স্ট্যাটিস্টিকস পোর্টাল ইঞ্জিন ভাই
-     */
     public function cardiacSurgeryStats()
     {
-        // 🎯 লজিক ১: শুধুমাত্র একটিভ হাসপাতালগুলো নামের ক্রমানুসারে (A to Z) সাজানো হবে ভাই
         $hospitals = Hospital::where('status', 1)->orderBy('name', 'asc')->get();
-        
-        // 🎯 🔒 লজিক ২: শুধুমাত্র একটিভ সার্জারি কলামের টাইপগুলো সিরিয়াল অনুযায়ী ফ্রন্টএন্ড গ্রিডে যাবে
         $surgeryTypes = SurgeryType::where('status', 1)->orderBy('sort_order', 'asc')->get();
-        
-        // ডাটাবেজে এন্ট্রি থাকা সব সালের ইউনিক তালিকা ড্রপডাউনের জন্য
         $years = HospitalSurgeryRecord::select('year')->distinct()->orderBy('year', 'desc')->pluck('year');
-
-        // ⚡ রকেট স্পিড অপটিমাইজেশন: ইগার লোডিং (Eager Loading) দিয়ে এক চান্সে সব রেকর্ড মেমরিতে রিড ভাই
         $allRecords = HospitalSurgeryRecord::get()->groupBy(['year', 'hospital_id', 'surgery_type_id']);
 
         return view('frontend.surgery_stats', compact('hospitals', 'surgeryTypes', 'years', 'allRecords'));
+    }
+
+    public function congenitalSurgeryStats()
+    {
+        $hospitals = Hospital::where('status', 1)->orderBy('name', 'asc')->get();
+        $years = CongenitalSurgeryRecord::select('year')->distinct()->orderBy('year', 'desc')->pluck('year');
+        $allRecords = CongenitalSurgeryRecord::get()->groupBy(['year', 'hospital_id']);
+
+        return view('frontend.congenital_stats', compact('hospitals', 'years', 'allRecords'));
     }
 
     public function executiveCommittee()
@@ -42,7 +40,6 @@ class FrontendController extends Controller
 
         return view('frontend.executive_committee', compact('executives'));
     }
-
     public function lifetimeFellows()
     {
         $fellows = CommitteeMember::with(['hospital', 'medicalDesignation', 'bactaDesignation'])
@@ -52,6 +49,7 @@ class FrontendController extends Controller
                                     ->get();
         return view('frontend.lifetime_fellows', compact('fellows'));
     }
+
     public function activeMembers()
     {
         $activeMembers = CommitteeMember::with(['hospital', 'medicalDesignation', 'bactaDesignation'])
@@ -132,5 +130,19 @@ class FrontendController extends Controller
                                             ->orderBy('id', 'desc')
                                             ->get();
         return view('frontend.journals', compact('journals'));
+    }
+        
+    public function valvularSurgeryStats()
+    {
+        $hospitals = Hospital::where('status', 1)->orderBy('name', 'asc')->get();
+        $years = ValvularSurgeryRecord::select('year')->distinct()->orderBy('year', 'desc')->pluck('year');
+        $allRecords = ValvularSurgeryRecord::get()->groupBy(['year', 'hospital_id']);
+
+        return view('frontend.valvular_stats', compact('hospitals', 'years', 'allRecords'));
+    }
+
+    public function historyOfBacta()
+    {
+        return view('frontend.history_bacta');
     }
 }

@@ -61,14 +61,14 @@ return [
     'classes_auth_btn' => 'btn-flat btn-primary',
 
     'classes_body' => '',
-    'classes_brand' => 'bg-[#0F172A] border-bottom border-slate-800/60', // 🎯 লোগো হেডার বক্সের ব্যাকগ্রাউন্ড রয়্যাল ডার্ক ব্লু ভাই
+    'classes_brand' => 'bg-[#0F172A] border-bottom border-slate-800/60',
     'classes_brand_text' => 'font-weight-bold text-white tracking-tight',
-    'classes_content_wrapper' => 'bg-[#F8FAFC]', // 💻 মেইন ব্যাকগ্রাউন্ড স্ক্রিনকে রিফ্রেশিং গ্রে-হোয়াইট লুক দেওয়া হলো
+    'classes_content_wrapper' => 'bg-[#F8FAFC]', 
     'classes_content_header' => '',
     'classes_content' => '',
-    'classes_sidebar' => 'sidebar-dark-primary bg-[#0F172A] elevation-2 border-right border-slate-800/60', // 👑 আপনার সাইডবার মেইন কালার লকড ভাই
-    'classes_sidebar_nav' => 'nav-flat nav-child-indent', // 💡 সাব-মেনুগুলোকে সুন্দর খাঁটি ইনডেন্টেশন লুক দেওয়া হলো
-    'classes_topnav' => 'navbar-light bg-white border-bottom border-slate-200/80', // ⚡ ওপরের টপবারকে লোগো ফ্রেমের বর্ডারে ক্লিন করা হলো ভাই
+    'classes_sidebar' => 'sidebar-dark-primary bg-[#0F172A] elevation-2 border-right border-slate-800/60',
+    'classes_sidebar_nav' => 'nav-flat nav-child-indent', 
+    'classes_topnav' => 'navbar-light bg-white border-bottom border-slate-200/80',
     'classes_topnav_nav' => 'navbar-expand',
     'classes_topnav_container' => 'container',
 
@@ -145,7 +145,6 @@ return [
                 'route' => 'admin.bacta_desig.index',
                 'icon'  => 'fas fa-fw fa-award',
             ],
-            // 👑 🔒 ওয়ান-পেজ মডাল কাস্টম ক্রুড কলাম কনফিগারেশন বাটন ভাই
             [
                 'text'  => 'Surgery Type Settings',
                 'route' => 'admin.surgery_types.index',
@@ -205,14 +204,29 @@ return [
             ],
         ],
     ],
-    
-    // ==========================================
-    // 👑 🔒 আপনার মেগা প্রজেক্ট: ডেডিকেটেড কার্ডিয়াকছার্জারি ডাটা এন্ট্রি হাব বাটন ভাই
-    // ==========================================
+    // =========================================================================
+    // 👑 🔒 আপনার মেগা রিকোয়ারমেন্ট: ৩টি সার্জারি গ্রিডকে ১টি রাজকীয় প্যারেন্ট সাব-মেনু জোনে ইউনিফাইড লক ভাই
+    // =========================================================================
     [
-        'text'    => 'Cardiac Surgery Records',
-        'route'   => 'admin.surgeries.index',
-        'icon'    => 'fas fa-fw fa-chart-line',
+        'text'    => 'National Surgical Hub',
+        'icon'    => 'fas fa-fw fa-database text-info',
+        'submenu' => [
+            [
+                'text'  => 'Overall Cardiac Grid',
+                'route' => 'admin.surgeries.index',
+                'icon'  => 'fas fa-fw fa-chart-line text-cyan',
+            ],
+            [
+                'text'  => 'Congenital Surgery Grid',
+                'route' => 'admin.congenital.index',
+                'icon'  => 'fas fa-fw fa-baby-carriage text-pink',
+            ],
+            [
+                'text'  => 'Valvular Surgery Grid',
+                'route' => 'admin.valvular.index',
+                'icon'  => 'fas fa-fw fa-heart-pulse text-danger',
+            ],
+        ],
     ],
 
     ['header' => 'ACCOUNT SECURITY'],

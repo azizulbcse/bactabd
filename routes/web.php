@@ -13,7 +13,9 @@ use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\EventGalleryController;
 use App\Http\Controllers\Admin\BactaJournalController;
 use App\Http\Controllers\Admin\HospitalSurgeryController; 
-use App\Http\Controllers\Admin\SurgeryTypeController; // 🎯 আপনার ফ্রেশ অফিশিয়াল কন্ট্রোলার পাথ সিঙ্কড ভাই
+use App\Http\Controllers\Admin\SurgeryTypeController;
+use App\Http\Controllers\Admin\CongenitalSurgeryController;
+use App\Http\Controllers\Admin\ValvularSurgeryController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,6 +32,9 @@ Route::get('/bacta-journals', [FrontendController::class, 'journalsPage'])->name
 Route::get('/contact-us', [FrontendController::class, 'contactPage'])->name('contact.archive');
 Route::post('/contact/store', [FrontendController::class, 'contactStore'])->name('contact.store');
 Route::get('/cardiac-surgery-statistics', [FrontendController::class, 'cardiacSurgeryStats'])->name('frontend.surgeries.stats');
+Route::get('/congenital-surgery-statistics', [FrontendController::class, 'congenitalSurgeryStats'])->name('frontend.congenital.stats');
+Route::get('/valvular-surgery-statistics', [FrontendController::class, 'valvularSurgeryStats'])->name('frontend.valvular.stats');
+Route::get('/history-of-bacta', [FrontendController::class, 'historyOfBacta'])->name('frontend.history.bacta');
 
 Route::get('/dashboard', function () {
     if (Auth::user()->status !== 2) {
@@ -98,8 +103,34 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::post('/minutes/update/{id}', [ExecutiveMinuteController::class, 'update'])->name('admin.minutes.update');
     Route::delete('/minutes/delete/{id}', [ExecutiveMinuteController::class, 'destroy'])->name('admin.minutes.delete');
     Route::post('/minutes/publish-direct/{id}', [ExecutiveMinuteController::class, 'publishDirect'])->name('admin.minutes.publish_direct');
+
+    // =========================================================================
+    // 👑 🔒 বিএসিটিএ স্পেশাল কোড গেটওয়ে: ৩-মেগা ডাইনামিক সার্জারি ডাটা এন্ট্রি রাউট হাব ভাই
+    // =========================================================================
     
-    // 🎯 👑 গ্যালারির ওরিজিনাল রাউট নেম 'admin.gallery.hub_index' ফিক্সড সিঙ্কড ভাই
+    // মডিউল ১: ওরিজিনাল সামগ্রিক কার্ডিয়াক সার্জারি মেমোফাইল রাউট
+    Route::prefix('cardiac-surgeries')->name('admin.surgeries.')->group(function () {
+        Route::get('/', [HospitalSurgeryController::class, 'index'])->name('index');
+        Route::get('/fetch', [HospitalSurgeryController::class, 'fetchMatrix'])->name('fetch');
+        Route::post('/store', [HospitalSurgeryController::class, 'storeOrUpdate'])->name('store');
+    });
+
+    // মডিউল ২: কাস্টম জন্মগত হৃদরোগ (Congenital - ASD, VSD, TOF, PDA) রাউট হাব ভাই
+    Route::prefix('congenital-surgeries')->name('admin.congenital.')->group(function () {
+        Route::get('/', [CongenitalSurgeryController::class, 'index'])->name('index');
+        Route::get('/fetch', [CongenitalSurgeryController::class, 'fetchMatrix'])->name('fetch');
+        Route::post('/store', [CongenitalSurgeryController::class, 'storeOrUpdate'])->name('store');
+    });
+
+    // মডিউল ৩: সমাপনী ভাল্বুলার শল্যচিকিৎসা (Valvular - MVR, AVR, DVR) মেগা রাউট হাব ভাই
+    Route::prefix('valvular-surgeries')->name('admin.valvular.')->group(function () {
+        Route::get('/', [ValvularSurgeryController::class, 'index'])->name('index');
+        Route::get('/fetch', [ValvularSurgeryController::class, 'fetchMatrix'])->name('fetch');
+        Route::post('/store', [ValvularSurgeryController::class, 'storeOrUpdate'])->name('store');
+    });
+    // =========================================================================
+    // 📸 বিএসিটিএ অফিসিয়াল: গ্যালারি হাব, জার্নালস এবং কন্টাক্ট ইনবক্স ডিরেক্টরি ভাই
+    // =========================================================================
     Route::get('/gallery-hub', [EventGalleryController::class, 'index'])->name('admin.gallery.hub_index');
     Route::post('/gallery-hub/store', [EventGalleryController::class, 'store'])->name('admin.gallery.store');
     Route::post('/gallery-hub/update/{id}', [EventGalleryController::class, 'update'])->name('admin.gallery.update');
@@ -115,18 +146,39 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/contacts', [ContactMessageController::class, 'index'])->name('admin.contacts.index');
     Route::delete('/contacts/delete/{id}', [ContactMessageController::class, 'destroy'])->name('admin.contacts.delete');
 
-    // 👑 🔒 ইয়ারলি কার্ডিয়াক সার্জারি ডাটা এন্ট্রি রাউটস ভাই
+    // =========================================================================
+    // 👑 🔒 ৩-মেগা ডাইনামিক সার্জারি ডাটা এন্ট্রি রাউট হাব (নিখুঁত ব্র্যাকেট ও পাথ ফিক্সড ভাই)
+    // =========================================================================
+    
+    // মডিউল ১: ওরিজিনাল সামগ্রিক কার্ডিয়াক সার্জারি মেমোফাইল রাউট নোড
     Route::get('/cardiac-surgeries', [HospitalSurgeryController::class, 'index'])->name('admin.surgeries.index');
     Route::get('/cardiac-surgeries/fetch-matrix', [HospitalSurgeryController::class, 'fetchMatrix'])->name('admin.surgeries.fetch');
     Route::post('/cardiac-surgeries/bulk-store', [HospitalSurgeryController::class, 'storeOrUpdate'])->name('admin.surgeries.store');
 
-    // 👑 🔒 ওয়ান-পেজ মডাল কাস্টম ক্রুড এবং ইউনিক স্ট্যাটাস ট্র্যাকিং রাউটস ভাই
+    // মডিউল ২: কাস্টম জন্মগত হৃদরোগ (Congenital) ফিক্সড রাউট গ্রুপ ভাই
+    Route::prefix('/congenital-surgeries')->name('admin.congenital.')->group(function () {
+        Route::get('/', [CongenitalSurgeryController::class, 'index'])->name('index');
+        Route::get('/fetch', [CongenitalSurgeryController::class, 'fetchMatrix'])->name('fetch');
+        Route::post('/store', [CongenitalSurgeryController::class, 'storeOrUpdate'])->name('store');
+    }); // 🎯 সেফ ক্লোজিং লকিং নোড
+
+    // Mডিউল ৩: সমাপনী ভাল্বুলার শল্যচিকিৎসা (Valvular) মেগা রাউট গ্রুপ ভাই
+    Route::prefix('/valvular-surgeries')->name('admin.valvular.')->group(function () {
+        Route::get('/', [ValvularSurgeryController::class, 'index'])->name('index');
+        Route::get('/fetch', [ValvularSurgeryController::class, 'fetchMatrix'])->name('fetch');
+        Route::post('/store', [ValvularSurgeryController::class, 'storeOrUpdate'])->name('store');
+    }); // 🎯 সেফ ক্লোজিং লকিং নোড
+    
+    // মাস্টার সেটিংস কনফিগারেশন রুট গেটওয়ে ভাই
     Route::get('/surgery-types-config', [SurgeryTypeController::class, 'index'])->name('admin.surgery_types.index');
     Route::post('/surgery-types-config/store', [SurgeryTypeController::class, 'store'])->name('admin.surgery_types.store');
     Route::post('/surgery-types-config/update/{id}', [SurgeryTypeController::class, 'update'])->name('admin.surgery_types.update');
     Route::delete('/surgery-types-config/delete/{id}', [SurgeryTypeController::class, 'destroy'])->name('admin.surgery_types.delete');
-});
+}); // 🎯 🔒 মেগা মেইন অ্যাডমিন প্রিফিক্স গ্রুপের ওরিজিনাল শেষ ব্র্যাকেট ক্লোজিং এখানে লকড ভাই!
 
+// =========================================================================
+// 🔒 লেয়ার ৪: গ্লোবাল মেম্বার প্রোফাইল এডিট এবং সিকিউরড লগ-আউট ড্রাইভার ভাই
+// =========================================================================
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
