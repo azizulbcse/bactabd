@@ -1,58 +1,70 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏥 BACTA Central ERP & National Surgical Registry Portal
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Welcome to the official repository of **BACTA Bangladesh** (Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists). This is an enterprise-grade medical registry and membership management application built with **Laravel 11**, designed to unify surgical statistics, academic publications, and national membership directory tracking.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Key Core Modules Built (From Genesis to Live)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 🥇 1. National Surgical Registries Hub (The Master Matrix)
+A unified, real-time data ingestion engine mapped under the admin sidebar (`National Surgical Hub`). Designed with **Zero-Row Suppression Architecture** and **Asynchronous AJAX Fetch Matrix Engine**.
+*   **Module A: Overall Cardiac Surgery Statistics**
+    *   Tracks dynamic surgery types (e.g., CABG, Valve, Congenital) across all active registered institutes.
+    *   3-Layer Eloquent `groupBy(['year', 'hospital_id', 'surgery_type_id'])` JSON dispatch gateway.
+*   **Module B: Congenital Heart Surgery Grid**
+    *   Dedicated dynamic grid for congenital anomalies: **ASD, VSD, TOF/ICR, and PDA**.
+    *   Upsert automation via Laravel's native `updateOrCreate` engine linked with a real-time horizontal/vertical automated JavaScript live summation calculator.
+*   **Module C: Valvular Heart Surgery Grid**
+    *   Strict 3-column targeted schema tracking: **MVR (Mitral Valve Replacement), AVR (Aortic Valve Replacement), and DVR (Double Valve Replacement)**.
+    *   Optimized database level constraint with unique tracking index `['hospital_id', 'year']` to prevent duplicate ledger entry vulnerabilities.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 👥 2. Membership Control Hub & Governance Directory
+*   **Multi-tier Approval System:** Pending member request workflows with live status tracking counters directly computed via the Admin Dashboard Panel.
+*   **Directory Classification:** Dynamic segregation of Executive Committee members, Lifetime Fellows, and General Members.
+*   **Next-Gen 2-Layer Nested Navigation:** 
+    *   *Desktop:* Micro-engineered multi-layer CSS hover fly-out submenu under `Associate Members`.
+    *   *Mobile:* Unified nested accordion slide-down handler mapped under a centralized `DOMContentLoaded` bubble-proof javascript driver to accommodate **Paramedics, Technicians, and Perfusionists** on smaller viewports.
 
-## Learning Laravel
+### 📰 3. News & Publications Gateway
+*   **Announcements & Executive Minutes:** One-click direct publishing system integrated with secure middleware protection layer to safeguard highly confidential medical board minutes from unauthorized scraping.
+*   **BJCTA Academic Journals & Event Gallery:** Scalable media archival module managing file streams and clinical publications.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 🎨 4. Premium Front-End Optimization (BSEcho Inspired UI)
+*   **Infinite Auto-Scrolling Partner Loop:** Pure CSS `@keyframes` marquee container equipped with a smart interactive pause feature on hover (`hover:animation-paused`) tracking global healthcare leaders (GE, Philips, Siemens, etc.).
+*   **BSEcho Modern Multi-Row Logo Grid:** High-fidelity standard block layout optimizing image cross-contrast scaling configurations (`image-rendering: -webkit-optimize-contrast`) ensuring 100% blur-free color rendering across responsive breakpoints.
+*   **Pixel-Perfect Sticky Ledger Headers:** Cross-browser native scroll management preventing duplicate vertical overflow scrollbars via forced CSS layout overrides (`overflow: visible !important`).
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## 🛠️ Tech Stack & Architecture
 
-## Agentic Development
+*   **Framework:** Laravel 11.x (PHP 8.2+)
+*   **Database:** MySQL / MariaDB (Fully Indexed Schema Optimization)
+*   **UI/UX Component System:** Tailwind CSS, Bootstrap & AdminLTE v3
+*   **Runtime Web Gateway:** CyberPanel / OpenLiteSpeed Deployment Architecture
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+---
+
+## ⚙️ Automated Deployment & Live Sync Commands
+
+To deploy, maintain, or update this multi-tier architecture on production servers, run the integrated server-side optimization routing pipeline:
 
 ```bash
-composer require laravel/boost --dev
+# 📦 Phase 1: Flush and Purge Old Application Views and Cached Layers
+php artisan view:clear && php artisan cache:clear && php artisan route:clear
 
-php artisan boost:install
+# 🚀 Phase 2: Cache Configurations and Optimize Framework Class Map Injections
+php artisan config:clear && php artisan config:cache && php artisan optimize:clear
+
+# 🗄️ Phase 3: Execute Live Non-Destructive Database Schema Migrations via Remote Gateway
+php artisan migrate --force
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+## 🔒 Security Gateways & Safeguards
+*   **Strict CSRF Injection Blocks:** Native token protection dynamically binded across the unified single-sign-out JavaScript dispatch gateway.
+*   **Anti-Spam Secretariat Guard:** Integrated invisible security-trapped honey-pot verification systems blocking automated message transmission loops inside the contact ledger.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+*Developed with ❤️ for the Advancement of Cardiovascular & Thoracic Anesthesia Science.*
