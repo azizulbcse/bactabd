@@ -1,244 +1,99 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
 @extends('layouts.app')
 
 @section('title', 'Executive Committee | BACTA Bangladesh')
 
 @section('content')
-    <!-- 🚀 ১. আপনার About Us পেজ থেকে নেওয়া প্রিমিয়াম ডার্ক হেডার ব্যানার (টেলউইন্ড সিঙ্কড) -->
-    <header class="bg-[#0F172A] relative overflow-hidden py-16 border-b border-slate-800 w-full text-left">
-        <div class="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(2,132,199,0.3),transparent_70%)]"></div>
-        
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center lg:text-left flex flex-col lg:flex-row justify-between items-center gap-4">
+
+    {{-- HEADER BANNER --}}
+    <header class="relative overflow-hidden py-14 border-b border-[#CFEAF5]" style="background: linear-gradient(135deg, #EBF8FF 0%, #F0FDFF 50%, #E0F2FE 100%);">
+        <div class="absolute inset-0 opacity-[0.04] bg-[linear-gradient(to_right,#0284C7_1px,transparent_1px),linear-gradient(to_bottom,#0284C7_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col lg:flex-row justify-between items-center gap-4 text-center lg:text-left">
             <div>
-                <span class="text-xs font-bold tracking-[0.2em] text-[#38BDF8] uppercase block mb-2">Governance & Membership</span>
-                <h1 class="text-3xl lg:text-4xl font-black tracking-tight text-white">Executive Committee</h1>
+                <span class="text-xs font-medium tracking-[0.18em] text-[#0284C7] uppercase block mb-2">Governance & Membership</span>
+                <h1 class="text-3xl lg:text-4xl font-semibold tracking-tight text-[#0F172A]">Executive Committee</h1>
             </div>
-            <div class="flex items-center space-x-2 text-xs font-medium text-slate-400">
-                <a href="{{ route('home') }}" class="hover:text-white transition-colors">Home</a>
-                <svg class="w-3 h-3 text-slate-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                <span class="text-slate-200">Committee Members</span>
+            <div class="flex items-center space-x-2 text-xs text-slate-400">
+                <a href="{{ route('home') }}" class="hover:text-[#0284C7] transition-colors">Home</a>
+                <svg class="w-3 h-3 text-slate-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                <span class="text-[#0F172A]">Committee Members</span>
             </div>
         </div>
     </header>
 
-    <!-- 🚀 ২. আল্ট্রা-মডার্ন কালারফুল গ্রেডিয়েন্ট এবং ভাইব্রেন্ট কার্ড ইউআই থিম (বড় নাম ও শর্ট নাম সিঙ্ক) -->
-    <style>
-        .modern-body-wrapper {
-            background-color: #F8FAFC;
-            font-family: 'Poppins', sans-serif;
-            width: 100%;
-            padding: 50px 0;
-        }
+    {{-- MEMBERS GRID --}}
+    <section class="py-14" style="background: linear-gradient(135deg, #EBF8FF 0%, #F0FDFF 60%, #E0F2FE 100%);">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        .nhcs-container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            box-sizing: border-box;
-        }
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="infinite-member-container">
+                @foreach($executives as $row)
+                <div class="bg-white rounded-2xl border border-[#CFEAF5] shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col">
 
-        .modern-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
+                    {{-- Top accent bar --}}
+                    <div class="h-1 w-full bg-gradient-to-r from-[#0284C7] to-[#00ADB5]"></div>
 
-        /* ধবধবে সাদা বর্ডারলেস প্রিমিয়াম ড্যাশবোর্ড কার্ড */
-        .modern-card {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 35px 24px;
-            text-align: center;
-            border: 1px solid #E2E8F0;
-            box-shadow: 0 10px 30px -5px rgba(148, 163, 184, 0.06);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            box-sizing: border-box;
-            width: calc(33.333% - 20px); /* ১ সারিতে ৩টি কার্ড লক */
-            max-width: 360px;
-            position: relative;
-        }
+                    <div class="p-6 flex flex-col flex-grow">
 
-        .modern-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 5px;
-            background: linear-gradient(90deg, #1E40AF, #0284C7);
-        }
+                        {{-- Rank badge --}}
+                        <div class="flex items-center justify-between mb-5">
+                            <span class="text-[10px] font-medium text-[#0284C7] bg-sky-50 border border-[#CFEAF5] px-2.5 py-1 rounded-lg tracking-wide">
+                                # {{ $row->sort_order }}
+                            </span>
+                            <span class="text-[10px] font-medium text-slate-400 bg-slate-50 border border-slate-100 px-2.5 py-1 rounded-lg uppercase tracking-wide">
+                                {{ $row->bactaDesignation->name ?? 'Executive Member' }}
+                            </span>
+                        </div>
 
-        .modern-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 40px -10px rgba(30, 64, 175, 0.1);
-            border-color: #CBD5E1;
-        }
+                        {{-- Photo — smart rounded square --}}
+                        <div class="flex justify-center mb-5">
+                            <div class="w-28 h-28 rounded-2xl overflow-hidden bg-slate-50 shadow-sm flex items-center justify-center">
+                                @if($row->member_pic)
+                                    <img src="{{ asset('storage/' . $row->member_pic) }}" alt="{{ $row->name }}" class="w-full h-full object-cover" loading="lazy">
+                                @else
+                                    <i class="fas fa-user-md text-4xl text-slate-300"></i>
+                                @endif
+                            </div>
+                        </div>
 
-        /* 📸 ডাইনামিক রয়্যাল বর্ডারসহ বৃত্তাকার ইমেজ ফ্রেম */
-        .modern-avatar-zone {
-            width: 125px;
-            height: 125px;
-            margin: 0 auto 20px;
-            border-radius: 50%;
-            padding: 4px;
-            background: linear-gradient(135deg, #1E40AF 0%, #0284C7 100%);
-            box-shadow: 0 6px 15px rgba(30, 64, 175, 0.12);
-        }
+                        {{-- Name & designation --}}
+                        <div class="text-center space-y-1 mb-5">
+                            <h3 class="text-base font-semibold text-slate-900 leading-snug">{{ $row->name }}</h3>
+                            <p class="text-xs text-slate-400">{{ $row->medicalDesignation->name ?? 'N/A' }}</p>
+                        </div>
 
-        .modern-avatar-inner {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid #ffffff;
-            background-color: #F1F5F9;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modern-avatar-inner img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .modern-badge-title {
-            display: inline-block;
-            background: rgba(30, 64, 175, 0.06);
-            color: #1E40AF;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.75px;
-            padding: 5px 14px;
-            border-radius: 20px;
-            margin-bottom: 12px;
-        }
-
-        .modern-doc-name {
-            color: #0F172A;
-            font-size: 18px;
-            font-weight: 700;
-            margin: 0 0 6px 0;
-        }
-
-        .modern-med-title {
-            color: #64748B;
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: 16px;
-        }
-
-        /* কালারফুল ডাইনামিক বড় নাম এবং শর্ট নাম মিক্সড হসপিটাল উইজেট */
-        .modern-hospital-tag {
-            font-size: 12px;
-            color: #1E293B;
-            font-weight: 600;
-            background-color: #F8FAFC;
-            border: 1px solid #E2E8F0;
-            padding: 10px 14px;
-            border-radius: 10px;
-            margin-top: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-        }
-
-        .modern-short-badge {
-            font-size: 10px;
-            background: linear-gradient(135deg, #1E40AF 0%, #0284C7 100%);
-            color: #ffffff;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-top: 2px;
-        }
-
-        /* 👑 ওফিসিয়াল র‍্যাংক ইন্ডিকেটর ব্যাজ সিএসএস */
-        .modern-rank-indicator {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: rgba(30, 64, 175, 0.06);
-            color: #1E40AF;
-            font-size: 10.5px;
-            font-weight: 800;
-            padding: 3px 10px;
-            border-radius: 6px;
-            border: 1px solid rgba(30, 64, 175, 0.1);
-        }
-
-        @media (max-width: 991px) {
-            .modern-card { width: calc(50% - 15px); }
-        }
-        @media (max-width: 600px) {
-            .modern-card { width: 100%; max-width: 100%; }
-        }
-    </style>
-
-<div class="modern-body-wrapper">
-    <div class="nhcs-container">
-
-        <!-- ==========================================
-             🚀 👑 আপনার মেইন লজিক: কন্ডিশনাল ইয়ার ভাঙা জটলা মুক্ত পিওর 'sort_order' asc গ্রিড ভাই
-             ========================================== -->
-        <div class="modern-grid" id="infinite-member-container">
-            @foreach($executives as $row)
-                <div class="modern-card animate__animated animate__fadeIn">
-                    
-                    {{-- 🎯 🔒 ডাটাবেজের আসল কাস্টম sort_order র‍্যাংক ভ্যালু (১, ২, ৩...) প্রিন্ট হবে ভাই --}}
-                    <div class="modern-rank-indicator">
-                        <i class="fas fa-hashtag" style="font-size: 8px;"></i> Rank {{ $row->sort_order }}
-                    </div>
-
-                    <div class="modern-avatar-zone">
-                        <div class="modern-avatar-inner">
-                            @if($row->member_pic)
-                                <img src="{{ asset('storage/' . $row->member_pic) }}" alt="{{ $row->name }}" loading="lazy">
-                            @else
-                                <div style="font-size:38px; color:#64748B;"><i class="fas fa-user-md"></i></div>
+                        {{-- Hospital --}}
+                        <div class="mt-auto bg-[#F0FDFF] border border-[#CFEAF5] rounded-xl px-4 py-3 text-center">
+                            <p class="text-xs text-slate-600 leading-snug">
+                                <i class="fas fa-hospital text-[#0284C7] mr-1 text-[10px]"></i>
+                                {{ $row->hospital->name ?? 'N/A' }}
+                            </p>
+                            @if($row->hospital->short_name)
+                                <span class="inline-block mt-1.5 text-[10px] font-medium text-[#0284C7] bg-sky-50 border border-[#CFEAF5] px-2 py-0.5 rounded-md tracking-wide uppercase">
+                                    {{ $row->hospital->short_name }}
+                                </span>
                             @endif
                         </div>
-                    </div>
 
-                    <div>
-                        <span class="modern-badge-title">
-                            {{ $row->bactaDesignation->name ?? ($row->bactaDesignation->title ?? 'Executive Member') }}
-                        </span>
-                    </div>
-
-                    <h3 class="modern-doc-name">{{ $row->name }}</h3>
-                    <div class="modern-med-title">{{ $row->medicalDesignation->name ?? ($row->medicalDesignation->title ?? 'N/A') }}</div>
-                    
-                    <div class="modern-hospital-tag">
-                        <span class="text-center"><i class="fas fa-hospital text-[#1E40AF] mr-1"></i> {{ $row->hospital->name ?? 'N/A' }}</span>
-                        @if($row->hospital->short_name)
-                            <span class="modern-short-badge">({{ $row->hospital->short_name }})</span>
-                        @endif
                     </div>
                 </div>
-            @endforeach
-        </div>
-        <!-- ⏳ সাইলেন্ট গর্জিয়াস স্ক্রল লোডার এলিমেন্ট (মাউস নিচে নামলে এটি ট্রিপ করবে) -->
-        <div id="scroll-infinity-loader" class="text-center my-4 d-none" style="padding: 20px 0; width: 100%;">
-            <div class="spinner-border text-primary" role="status" style="width: 2.5rem; height: 2.5rem; color: #1E40AF !important;">
-                <span class="sr-only">Loading more members...</span>
+                @endforeach
             </div>
-            <p class="text-muted mt-2 font-weight-bold" style="font-size: 13px; letter-spacing: 0.5px;">Loading more committee experts...</p>
+
+            {{-- Infinite scroll loader --}}
+            <div id="scroll-infinity-loader" class="text-center mt-10 hidden">
+                <div class="inline-flex items-center gap-2 text-xs text-slate-400">
+                    <svg class="animate-spin w-4 h-4 text-[#0284C7]" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                    </svg>
+                    Loading more members...
+                </div>
+            </div>
+
         </div>
+    </section>
 
-    </div> {{-- .nhcs-container ক্লোজিং ভাই --}}
-</div> {{-- .modern-body-wrapper ক্লোজিং ভাই --}}
-
-<!-- ==========================================
-     🚀 ৪. আল্ট্রা-লাইটওয়েট ইনফিনিটি স্ক্রল ইন্টারসেকশন অবজার্ভার ইঞ্জিন (লাস্ট ডাটা হাইড মেকানিজম সহ)
-     ========================================== -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         let nextPageUrl = "{{ method_exists($executives, 'nextPageUrl') ? $executives->nextPageUrl() : '' }}";
@@ -246,72 +101,34 @@
         let loader = document.getElementById('scroll-infinity-loader');
         let isLoading = false;
 
-        // 🎯 আপনার রিকোয়ারমেন্ট: প্রথম লোডেই যদি আর কোনো এক্সট্রা পেজ না থাকে, তবে লোডার বক্সটি সরাসরি ভ্যানিশ হয়ে যাবে ভাই
-        if (!nextPageUrl && loader) {
-            loader.style.setProperty('display', 'none', 'important');
-            loader.classList.add('d-none');
-            return;
-        }
+        if (!nextPageUrl && loader) { loader.style.display = 'none'; return; }
 
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px 0px 300px 0px',
-            threshold: 0
-        };
-
-        const scrollObserver = new IntersectionObserver((entries, observer) => {
+        const scrollObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting && !isLoading && nextPageUrl) {
-                    loadMoreCommitteeData();
-                }
+                if (entry.isIntersecting && !isLoading && nextPageUrl) loadMore();
             });
-        }, observerOptions);
+        }, { rootMargin: '0px 0px 300px 0px', threshold: 0 });
 
-        if (loader) {
-            scrollObserver.observe(loader);
-        }
+        if (loader) scrollObserver.observe(loader);
 
-        function loadMoreCommitteeData() {
+        function loadMore() {
             isLoading = true;
-            if (loader) loader.classList.remove('d-none');
-
-            fetch(nextPageUrl, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.text())
-            .then(html => {
-                let parser = new DOMParser();
-                let doc = parser.parseFromString(html, 'text/html');
-                let newCards = doc.getElementById('infinite-member-container');
-
-                if (newCards && newCards.children.length > 0) {
-                    Array.from(newCards.children).forEach(card => {
-                        container.appendChild(card);
-                    });
-                }
-
-                let paginationNextElement = doc.querySelector('a[rel="next"]');
-                nextPageUrl = paginationNextElement ? paginationNextElement.getAttribute('href') : '';
-
-                isLoading = false;
-                if (loader) loader.classList.add('d-none');
-
-                // 👑 ম্যাজিক লজিক: ১৯ নম্বর লাস্ট ডাটা চলে আসা মাত্রই পুরো লোডিং এরিয়া ও লেখা স্ক্রিন থেকে চিরতরে উধাও হয়ে যাবে ভাই
-                if (!nextPageUrl && loader) {
-                    scrollObserver.unobserve(loader);
-                    loader.style.setProperty('display', 'none', 'important');
-                    loader.innerHTML = ''; // ভেতরের সব লেখা সাফ করা হলো ভাই
-                }
-            })
-            .catch(error => {
-                console.error("Infinity scroll gating error:", error);
-                isLoading = false;
-                if (loader) loader.classList.add('d-none');
-            });
+            if (loader) loader.classList.remove('hidden');
+            fetch(nextPageUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(r => r.text())
+                .then(html => {
+                    let doc = new DOMParser().parseFromString(html, 'text/html');
+                    let newCards = doc.getElementById('infinite-member-container');
+                    if (newCards) Array.from(newCards.children).forEach(c => container.appendChild(c));
+                    let next = doc.querySelector('a[rel="next"]');
+                    nextPageUrl = next ? next.getAttribute('href') : '';
+                    isLoading = false;
+                    if (loader) loader.classList.add('hidden');
+                    if (!nextPageUrl && loader) { scrollObserver.unobserve(loader); loader.style.display = 'none'; }
+                })
+                .catch(() => { isLoading = false; if (loader) loader.classList.add('hidden'); });
         }
     });
 </script>
-@endsection
 
+@endsection

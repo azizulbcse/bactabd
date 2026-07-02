@@ -35,6 +35,7 @@ Route::get('/cardiac-surgery-statistics', [FrontendController::class, 'cardiacSu
 Route::get('/congenital-surgery-statistics', [FrontendController::class, 'congenitalSurgeryStats'])->name('frontend.congenital.stats');
 Route::get('/valvular-surgery-statistics', [FrontendController::class, 'valvularSurgeryStats'])->name('frontend.valvular.stats');
 Route::get('/history-of-bacta', [FrontendController::class, 'historyOfBacta'])->name('frontend.history.bacta');
+Route::get('/cardiology', [FrontendController::class, 'cardiology'])->name('frontend.cardiology');
 
 Route::get('/dashboard', function () {
     if (Auth::user()->status !== 2) {

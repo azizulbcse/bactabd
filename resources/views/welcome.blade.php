@@ -5,13 +5,110 @@
 @section('content')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <header class="relative bg-slate-950 overflow-hidden" style="height:580px;">
+<style>
+    /* ===== FLOAT ANIMATION ===== */
+    @keyframes floatCard {
+        0%   { transform: translateY(0px); }
+        50%  { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+    @keyframes floatCardSlow {
+        0%   { transform: translateY(0px); }
+        50%  { transform: translateY(-7px); }
+        100% { transform: translateY(0px); }
+    }
+    @keyframes floatCardDelay {
+        0%   { transform: translateY(0px); }
+        50%  { transform: translateY(-12px); }
+        100% { transform: translateY(0px); }
+    }
+    .float-card-1 { animation: floatCard 4s ease-in-out infinite; }
+    .float-card-2 { animation: floatCardSlow 5s ease-in-out infinite 0.5s; }
+    .float-card-3 { animation: floatCard 4.5s ease-in-out infinite 1s; }
+    .float-card-4 { animation: floatCardDelay 5.5s ease-in-out infinite 1.5s; }
+
+    /* ===== CARD BORDER FADE GLOW ===== */
+    .glow-card {
+        position: relative;
+        border: 1px solid transparent;
+        background-clip: padding-box;
+        transition: all 0.5s ease;
+    }
+    .glow-card::before {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        border-radius: inherit;
+        padding: 1px;
+        background: linear-gradient(135deg, rgba(2,132,199,0.3), rgba(220,38,38,0.2), rgba(2,132,199,0.1));
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0.4;
+        transition: opacity 0.4s ease;
+    }
+    .glow-card:hover::before {
+        opacity: 1;
+        background: linear-gradient(135deg, rgba(2,132,199,0.8), rgba(220,38,38,0.6), rgba(124,58,237,0.5));
+    }
+    .glow-card:hover {
+        box-shadow: 0 20px 60px rgba(2,132,199,0.15), 0 8px 25px rgba(0,0,0,0.08);
+    }
+
+    /* ===== BEAUTIFUL PAGE BACKGROUND ===== */
+    .bacta-page-bg {
+        background-color: #f0f7ff;
+        background-image:
+            radial-gradient(ellipse at 20% 20%, rgba(186,230,255,0.5) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 10%, rgba(196,255,214,0.4) 0%, transparent 40%),
+            radial-gradient(ellipse at 60% 80%, rgba(221,214,254,0.35) 0%, transparent 45%),
+            radial-gradient(ellipse at 10% 80%, rgba(186,230,255,0.3) 0%, transparent 40%),
+            linear-gradient(160deg, #eaf6ff 0%, #f0fff4 50%, #f5f3ff 100%);
+    }
+
+    /* ===== SECTION BACKGROUNDS ===== */
+    .section-light {
+        background: rgba(255,255,255,0.7);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.8);
+    }
+
+    /* ===== PARTNER SECTION ===== */
+    .partner-section-bg {
+        background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 50%, #f0fff4 100%);
+        border-top: 1px solid rgba(226,232,240,0.8);
+        border-bottom: 1px solid rgba(226,232,240,0.8);
+    }
+
+    /* ===== HERO SLIDER SMOOTH CROSSFADE ===== */
+    .bacta-img-slide {
+        transform: scale(1.03);
+        transition: opacity 1.5s ease-in-out, transform 6s ease-out;
+        will-change: opacity, transform;
+    }
+    .bacta-img-slide.opacity-100 {
+        transform: scale(1);
+        z-index: 1;
+    }
+    .bacta-img-slide.opacity-0 {
+        z-index: 0;
+    }
+
+    /* ===== MARQUEE ===== */
+    .marquee-slider-container:hover .marquee-slider-track { animation-play-state: paused !important; }
+    @keyframes marqueeInfiniteLoopTracker {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-100%); }
+    }
+</style>
+
+    <header class="relative bg-slate-950 overflow-hidden w-full" style="aspect-ratio: 2 / 1; max-height: 650px;">
         <div id="bacta-image-track" class="absolute inset-0 w-full h-full z-0">
-            <div class="bacta-img-slide absolute inset-0 w-full h-full bg-cover bg-center opacity-100 transition-opacity duration-1000 ease-in-out" style="background-image: url('{{ asset('images/banner1.jpg') }}');"></div>
-            <div class="bacta-img-slide absolute inset-0 w-full h-full bg-cover bg-center opacity-0 transition-opacity duration-1000 ease-in-out" style="background-image: url('{{ asset('images/banner2.jpg') }}');"></div>
-            <div class="bacta-img-slide absolute inset-0 w-full h-full bg-cover bg-center opacity-0 transition-opacity duration-1000 ease-in-out" style="background-image: url('{{ asset('images/banner3.jpg') }}');"></div>
-            <div class="bacta-img-slide absolute inset-0 w-full h-full bg-cover bg-center opacity-0 transition-opacity duration-1000 ease-in-out" style="background-image: url('{{ asset('images/banner4.jpg') }}');"></div>
-            <div class="bacta-img-slide absolute inset-0 w-full h-full bg-cover bg-center opacity-0 transition-opacity duration-1000 ease-in-out" style="background-image: url('{{ asset('images/banner5.jpg') }}');"></div>
+            <div class="bacta-img-slide absolute inset-0 w-full h-full bg-cover bg-center opacity-100 transition-opacity duration-[1500ms] ease-in-out" style="background-image: url('{{ asset('images/banner1.jpg') }}');"></div>
+            <div class="bacta-img-slide absolute inset-0 w-full h-full bg-cover bg-center opacity-0 transition-opacity duration-[1500ms] ease-in-out" style="background-image: url('{{ asset('images/banner2.jpg') }}');"></div>
+            <div class="bacta-img-slide absolute inset-0 w-full h-full bg-cover opacity-0 transition-opacity duration-[1500ms] ease-in-out" style="background-image: url('{{ asset('images/banner3.jpg') }}'); background-position: center 20%;"></div>
+            <div class="bacta-img-slide absolute inset-0 w-full h-full bg-cover opacity-0 transition-opacity duration-[1500ms] ease-in-out" style="background-image: url('{{ asset('images/banner4.jpg') }}'); background-position: center 20%;"></div>
+            <div class="bacta-img-slide absolute inset-0 w-full h-full bg-cover bg-center opacity-0 transition-opacity duration-[1500ms] ease-in-out" style="background-image: url('{{ asset('images/banner5.jpg') }}');"></div>
         </div>
 
         <div class="absolute inset-0 bg-slate-950/30 z-10"></div>
@@ -85,7 +182,7 @@
     </header>
 
 
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-30 font-sans">
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 relative z-30 font-sans">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div class="bg-white rounded-2xl border border-slate-200/60 shadow-xl shadow-slate-100/40 overflow-hidden hover:-translate-y-2 transition-all duration-500 group flex flex-col cursor-pointer">
             <div class="w-full h-32 overflow-hidden relative bg-gradient-to-br from-[#0284C7] to-[#0369A1] flex items-center justify-center">
@@ -103,16 +200,16 @@
         </div>
 
         <div class="bg-white rounded-2xl border border-slate-200/60 shadow-xl shadow-slate-100/40 overflow-hidden hover:-translate-y-2 transition-all duration-500 group flex flex-col cursor-pointer">
-            <div class="w-full h-32 overflow-hidden relative bg-gradient-to-br from-[#DC2626] to-[#991B1B] flex items-center justify-center">
+            <div class="w-full h-32 overflow-hidden relative bg-gradient-to-br from-[#00ADB5] to-[#0F8B8D] flex items-center justify-center">
                 <div class="absolute top-3 left-3 bg-white/20 backdrop-blur-md text-white text-[11px] font-extrabold px-2.5 py-1 rounded-md tracking-wider z-10">02</div>
                 <i class="fa-solid fa-user-doctor text-white/30 text-5xl transition-transform duration-500 group-hover:scale-110"></i>
             </div>
             <div class="p-5 flex flex-col flex-grow text-left">
-                <h3 class="text-base font-bold text-slate-900 group-hover:text-[#DC2626] transition-colors">Membership Portal</h3>
+                <h3 class="text-base font-bold text-slate-900 group-hover:text-[#00ADB5] transition-colors">Membership Portal</h3>
                 <p class="text-xs text-slate-500 mt-2 leading-relaxed flex-grow">Join the national elite network of thoracic and cardiac anesthesia veterans.</p>
                 <div class="mt-4 flex items-center justify-between">
-                    <a href="{{ route('login') }}" class="inline-flex items-center text-xs font-bold text-[#DC2626] no-underline hover:underline">Register Portal &rarr;</a>
-                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs transition-transform duration-300 group-hover:text-[#DC2626] group-hover:translate-x-1"></i>
+                    <a href="{{ route('login') }}" class="inline-flex items-center text-xs font-bold text-[#00ADB5] no-underline hover:underline">Register Portal &rarr;</a>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs transition-transform duration-300 group-hover:text-[#00ADB5] group-hover:translate-x-1"></i>
                 </div>
             </div>
         </div>
@@ -133,16 +230,16 @@
         </div>
 
         <div class="bg-white rounded-2xl border border-slate-200/60 shadow-xl shadow-slate-100/40 overflow-hidden hover:-translate-y-2 transition-all duration-500 group flex flex-col cursor-pointer">
-            <div class="w-full h-32 overflow-hidden relative bg-gradient-to-br from-[#991B1B] to-[#4C0519] flex items-center justify-center">
+            <div class="w-full h-32 overflow-hidden relative bg-gradient-to-br from-[#3B7DC4] to-[#1A4B84] flex items-center justify-center">
                 <div class="absolute top-3 left-3 bg-white/20 backdrop-blur-md text-white text-[11px] font-extrabold px-2.5 py-1 rounded-md tracking-wider z-10">04</div>
                 <i class="fa-solid fa-book-journal-whills text-white/30 text-5xl transition-transform duration-500 group-hover:scale-110"></i>
             </div>
             <div class="p-5 flex flex-col flex-grow text-left">
-                <h3 class="text-base font-bold text-slate-900 group-hover:text-[#DC2626] transition-colors">BJCTA Journals</h3>
+                <h3 class="text-base font-bold text-slate-900 group-hover:text-[#1A4B84] transition-colors">BJCTA Journals</h3>
                 <p class="text-xs text-slate-500 mt-2 leading-relaxed flex-grow">Explore groundbreaking research, academic articles, and global case studies.</p>
                 <div class="mt-4 flex items-center justify-between">
-                    <a href="{{ route('journals.archive') }}" class="inline-flex items-center text-xs font-bold text-[#DC2626] no-underline hover:underline">Read Research &rarr;</a>
-                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs transition-transform duration-300 group-hover:text-[#DC2626] group-hover:translate-x-1"></i>
+                    <a href="{{ route('journals.archive') }}" class="inline-flex items-center text-xs font-bold text-[#1A4B84] no-underline hover:underline">Read Research &rarr;</a>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs transition-transform duration-300 group-hover:text-[#1A4B84] group-hover:translate-x-1"></i>
                 </div>
             </div>
         </div>
@@ -150,55 +247,162 @@
     </div>
 </section>
 
-<!-- =========================================================================
-     👑 🔒 বিএসিটিএ মেগা থিম: BSEcho ইন্সপায়ার্ড আন্তর্জাতিক স্ট্যান্ডার্ড মেগা লোগো গ্রিড ভাই (বড় সাইজ)
-     ========================================================================= -->
-<section class="w-full bg-[#F8FAFC] border-t border-b border-[#E2E8F0] py-16 mt-16 font-sans">
-    <div class="max-w-7xl mx-auto px-6">
-        
-        <!-- ১. মেগা হেডিং এবং ব্র্যান্ড নোড জোন ভাই -->
-        <div class="text-center mb-12">
-            <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-emerald-50 text-[#16A34A] text-xs font-bold tracking-[0.2em] uppercase border border-emerald-100/60">
-                Annual Partners
-            </span>
-            <h4 class="mt-3 text-sm font-extrabold text-slate-500 uppercase tracking-[0.15em]">
-                With thanks to our annual partners
-            </h4>
+<section class="w-full bg-gradient-to-r from-slate-50 via-white to-slate-50 border-y border-slate-200 py-10 mt-16 overflow-hidden font-sans">
+
+    <!-- Heading -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+        <h4 class="text-center font-bold text-sm md:text-base uppercase tracking-[0.30em] text-emerald-600">
+            With Thanks To Our Annual Partners
+        </h4>
+    </div>
+
+    <!-- Slider -->
+    <div class="marquee-slider-container relative overflow-hidden">
+
+        <!-- Left Fade -->
+        <div class="absolute left-0 top-0 w-24 h-full bg-gradient-to-r from-white via-white/90 to-transparent z-10 pointer-events-none"></div>
+
+        <!-- Right Fade -->
+        <div class="absolute right-0 top-0 w-24 h-full bg-gradient-to-l from-white via-white/90 to-transparent z-10 pointer-events-none"></div>
+
+        <div class="marquee-slider-track">
+
+            <!-- First Set -->
+
+            <div class="partner-logo ge">GE HealthCare</div>
+            <div class="partner-logo philips">PHILIPS</div>
+            <div class="partner-logo pfizer">Pfizer</div>
+            <div class="partner-logo siemens">SIEMENS</div>
+            <div class="partner-logo msd">MSD</div>
+            <div class="partner-logo astra">AstraZeneca</div>
+
+            <!-- Duplicate -->
+
+            <div class="partner-logo ge">GE HealthCare</div>
+            <div class="partner-logo philips">PHILIPS</div>
+            <div class="partner-logo pfizer">Pfizer</div>
+            <div class="partner-logo siemens">SIEMENS</div>
+            <div class="partner-logo msd">MSD</div>
+            <div class="partner-logo astra">AstraZeneca</div>
+
         </div>
 
-        <!-- ২. 🔒 আপনার মেগা রিকোয়ারমেন্ট: লোগোর সাইজ আরও বড় ও স্পষ্ট করে সাজানো ফিক্সড গ্রিড ভাই -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-16 gap-y-12 items-center justify-center max-w-5xl mx-auto mt-6">
-            
-            <!-- ক) রো ১: ওয়ান-ক্লিক লিঙ্কড মেগা লোগো ক্যাটালগ ভাই (h-16 লকিং ড্রাইভার) -->
-            <a href="https://gehealthcare.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center h-10 md:h-16 transition-all duration-300 hover:scale-105">
-                <img src="/images/partners/ge.png" class="max-h-full max-w-full object-contain block" alt="GE">
-            </a>
-            
-            <a href="https://philips.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center h-10 md:h-16 transition-all duration-300 hover:scale-105">
-                <img src="/images/partners/philips.png" class="max-h-full max-w-full object-contain block" alt="Philips">
-            </a>
-            
-            <a href="https://siemens-healthineers.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center h-10 md:h-16 transition-all duration-300 hover:scale-105">
-                <img src="/images/partners/siemens.png" class="max-h-full max-w-full object-contain block" alt="Siemens">
-            </a>
-            
-            <a href="https://mindray.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center h-10 md:h-16 transition-all duration-300 hover:scale-105">
-                <img src="/images/partners/mindray.png" class="max-h-full max-w-full object-contain block" alt="Mindray">
-            </a>
+    </div>
 
-            <!-- খ) রো ২: নিচে নিচে নিখুঁত বড় এলাইনমেন্ট ট্র্যাকার নোড ভাই -->
-            <a href="https://abbott.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center h-10 md:h-16 transition-all duration-300 hover:scale-105 lg:col-start-2">
-                <img src="/images/partners/abbott.png" class="max-h-full max-w-full object-contain block" alt="Abbott">
-            </a>
-            
-            <a href="https://draeger.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center h-10 md:h-16 transition-all duration-300 hover:scale-105">
-                <img src="/images/partners/drager.png" class="max-h-full max-w-full object-contain block" alt="Drager">
-            </a>
-            
-        </div> {{-- .grid-end ভাই --}}
-        
-    </div> {{-- .container-end ভাই --}}
 </section>
+
+<style>
+
+.marquee-slider-track{
+    display:flex;
+    align-items:center;
+    gap:80px;
+    width:max-content;
+    animation:marquee 24s linear infinite;
+}
+
+.marquee-slider-container:hover .marquee-slider-track{
+    animation-play-state:paused;
+}
+
+.partner-logo{
+
+    font-size:clamp(22px,2vw,34px);
+    font-weight:900;
+    letter-spacing:-0.5px;
+
+    cursor:pointer;
+
+    padding:12px 18px;
+
+    border-radius:14px;
+
+    transition:all .35s ease;
+
+    white-space:nowrap;
+
+    text-shadow:
+        0 2px 10px rgba(0,0,0,.08);
+
+}
+
+/* Brand Colors */
+
+.ge{
+    color:#0F62FE;
+}
+
+.philips{
+    color:#0070C9;
+}
+
+.pfizer{
+    color:#1D4ED8;
+}
+
+.siemens{
+    color:#009999;
+}
+
+.msd{
+    color:#16A34A;
+}
+
+.astra{
+    color:#7C3AED;
+}
+
+/* Hover */
+
+.partner-logo:hover{
+
+    transform:translateY(-6px) scale(1.08);
+
+    background:white;
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.12);
+
+    filter:brightness(1.15);
+
+}
+
+/* Infinite Animation */
+
+@keyframes marquee{
+
+    from{
+        transform:translateX(0);
+    }
+
+    to{
+        transform:translateX(-50%);
+    }
+
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+    .marquee-slider-track{
+
+        gap:45px;
+
+        animation-duration:18s;
+
+    }
+
+    .partner-logo{
+
+        font-size:22px;
+        padding:8px 10px;
+
+    }
+
+}
+
+</style>
 
     
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -367,4 +571,5 @@
             }
         });
     </script>
+</div>{{-- .bacta-page-bg --}}
 @endsection

@@ -1,262 +1,234 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
 @extends('layouts.app')
 
 @section('title', 'Cardiac Surgery Statistics in Bangladesh | BACTA')
 
 @section('content')
-<!-- 🚀 ১. মোবাইল, প্রতিটি ট্যাবলেট ও ডেক্সটপ ফ্রেন্ডলি এবং আজীবন নো-ভার্টিকাল-স্ক্রল লকিং সিএসএস ইঞ্জিন ভাই -->
-<style>
-    .stats-body-wrapper { background-color: #F8FAFC; font-family: 'Poppins', sans-serif; width: 100%; padding: 40px 0; box-sizing: border-box; }
-    .stats-container { width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 20px; box-sizing: border-box; }
-    
-    /* 👑 🔒 ওয়ান-লাইন অল-ডিвайস ফিক্স: ফিল্টার বারটি সব স্ক্রিনে ছিমছাম এলাইনমেন্টে লকড ভাই */
-    .premium-filter-bar { background: #ffffff; padding: 16px 24px; border-radius: 14px; border: 1px solid #E2E8F0; box-shadow: 0 4px 20px -5px rgba(148, 163, 184, 0.05); margin-bottom: 25px; display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 15px; width: 100%; box-sizing: border-box; }
-    .filter-label-text { font-size: 13.5px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; margin: 0; }
-    
-    .filter-dropdown-wrapper { display: flex; align-items: center; gap: 10px; justify-content: flex-end; }
-    
-    /* 🎯 গ্লসি রেসপন্সিভ ড্রপডাউন সিলেক্ট বক্স ভাই */
-    .smart-year-dropdown { background-color: #ffffff; border: 2px solid #E2E8F0; border-radius: 8px; color: #0F172A; font-size: 14px; font-weight: 700; height: 42px; padding: 0 35px 0 15px; width: 220px; outline: none; cursor: pointer; transition: all 0.25s ease; background-image: url("data:image/svg+xml,%3csvg xmlns='http://w3.org' fill='none' viewBox='0 0 24 24' stroke='%23475569' stroke-width='2.5'%3e%3cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 12px center; background-size: 14px; -webkit-appearance: none; -moz-appearance: none; appearance: none; }
-    .smart-year-dropdown:focus { border-color: #0284C7; box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.1); }
-    
-    /* 👑 🔒 আপনার ওয়ান-লাইন লকড নো-স্ক্রল ফিক্স: ভেতরের হাইট বা ওভারফ্লো আজীবনের জন্য উইথআউট-স্ক্রল মোডে ফোর্সড লক ভাই */
-    .spreadsheet-display-panel { background: #ffffff; border-radius: 16px; border: 1px solid #E2E8F0; box-shadow: 0 10px 30px -5px rgba(148, 163, 184, 0.06); overflow: visible !important; height: auto !important; max-height: none !important; width: 100%; box-sizing: border-box; }
-    
-    /* ⚡ জাদুকরী নো-স্ক্রল কন্টেইনার নোড: ডানে-বামে টাচ স্ক্রল অন থাকবে কিন্তু নিচে-ওপরে স্ক্রল আজীবনের জন্য ভ্যানিশ ভাই */
-    .excel-scroll-frame { overflow-x: auto !important; overflow-y: visible !important; height: auto !important; max-height: none !important; width: 100%; -webkit-overflow-scrolling: touch; }
-    .frontend-excel-table { font-size: 13px; min-width: 1200px; margin: 0; border-collapse: separate; border-spacing: 0; width: 100%; text-align: center; }
-    
-    /* মেইন ওয়েবসাইট স্ক্রল করার সময় কলাম হেডার এবং হাসপাতালের নাম স্ক্রিনের সাথে পিক্সেল-পারফেক্ট স্টিকি লক থাকবে */
-    .frontend-excel-table thead th { position: sticky; top: 0; background: #0F172A !important; color: #ffffff !important; font-weight: 700; padding: 14px 10px; z-index: 10; border: 1px solid #1E293B !important; vertical-align: middle; text-transform: uppercase; font-size: 11.5px; letter-spacing: 0.5px; }
-    .frontend-excel-table thead th.freeze-corner { left: 0; z-index: 12; background: #0F172A !important; border-right: 3px solid #0284C7 !important; }
-    .frontend-excel-table thead th.total-header-col { right: 0; position: sticky; z-index: 11; background: #1E3A8A !important; border-left: 3px solid #1E3A8A !important; }
-    
-    .frontend-excel-table tbody tr td.freeze-col { position: sticky; left: 0; background: #ffffff !important; font-weight: 700; color: #0F172A; text-align: left; padding: 12px 16px; z-index: 5; border-right: 3px solid #0284C7 !important; border-bottom: 1px solid #E2E8F0 !important; width: 260px; max-width: 260px; box-shadow: 4px 0 8px -3px rgba(0,0,0,0.03); }
-    .frontend-excel-table tbody tr:hover td.freeze-col { background: #F8FAFC !important; color: #0284C7; }
-    
-    .frontend-excel-table tbody tr td.row-total-col { position: sticky; right: 0; background: #EFF6FF !important; font-weight: 800; color: #1E40AF; text-align: center; z-index: 4; border-left: 3px solid #3B82F6 !important; border-bottom: 1px solid #E2E8F0 !important; font-size: 13.5px; }
-    .frontend-excel-table tfoot tr td.grand-total-row { background: #1E293B !important; color: #ffffff !important; font-weight: 800; padding: 14px 10px; border-top: 2px solid #0F172A !important; font-size: 13.5px; }
-    .frontend-excel-table tfoot tr td.grand-total-row.freeze-col { position: sticky; left: 0; background: #0F172A !important; color: #ffffff !important; z-index: 6; }
-    .frontend-excel-table tfoot tr td.grand-total-row.row-total-col { position: sticky; right: 0; background: #1E3A8A !important; color: #ffffff !important; z-index: 6; border-left: 3px solid #38BDF8 !important; }
-    
-    .frontend-excel-table tbody tr td { padding: 10px 6px; vertical-align: middle; border: 1px solid #E2E8F0 !important; font-weight: 600; color: #334155; }
-    .frontend-excel-table tbody tr:hover td:not(.freeze-col):not(.row-total-col) { background: #EFF6FF; color: #1E40AF; }
 
-    /* 📱 মিডিয়া কুয়েরি: মোবাইল ও ট্যাবলেটে কলাপ্স ব্রেকিং ওভাররাইড রুল ভাই */
+<style>
+    /* Table sticky behaviour */
+    .stats-table { font-size: 13px; min-width: 1100px; width: 100%; border-collapse: separate; border-spacing: 0; text-align: center; }
+
+    .stats-table thead th {
+        position: sticky; top: 0; z-index: 10;
+        background: #1A4B84 !important; color: #fff !important;
+        font-weight: 500; font-size: 11px; text-transform: uppercase;
+        letter-spacing: 0.5px; padding: 12px 10px;
+        border: 1px solid #2563a8 !important;
+    }
+    .stats-table thead th.col-freeze {
+        left: 0; z-index: 12; background: #0F3460 !important;
+        border-right: 2px solid #00ADB5 !important;
+    }
+    .stats-table thead th.col-total {
+        right: 0; z-index: 11; background: #0F3460 !important;
+        border-left: 2px solid #00ADB5 !important;
+    }
+
+    .stats-table tbody td {
+        padding: 10px 8px; border: 1px solid #E0F2FE !important;
+        color: #334155; font-size: 13px;
+    }
+    .stats-table tbody tr:hover td:not(.col-freeze):not(.col-total) {
+        background: #EFF6FF; color: #1A4B84;
+    }
+    .stats-table tbody td.col-freeze {
+        position: sticky; left: 0; z-index: 5;
+        background: #fff !important; font-weight: 500;
+        color: #0F172A; text-align: left;
+        padding: 10px 14px; width: 240px; max-width: 240px;
+        border-right: 2px solid #00ADB5 !important;
+        border-bottom: 1px solid #E0F2FE !important;
+    }
+    .stats-table tbody tr:hover td.col-freeze { background: #F0FDFF !important; color: #0284C7; }
+    .stats-table tbody td.col-total {
+        position: sticky; right: 0; z-index: 4;
+        background: #F0FDFF !important; font-weight: 600;
+        color: #0284C7; border-left: 2px solid #00ADB5 !important;
+        border-bottom: 1px solid #E0F2FE !important;
+    }
+    .stats-table tfoot td {
+        background: #1A4B84 !important; color: #fff !important;
+        font-weight: 600; font-size: 13px; padding: 12px 10px;
+        border-top: 2px solid #0F3460 !important;
+    }
+    .stats-table tfoot td.col-freeze {
+        position: sticky; left: 0; z-index: 6;
+        background: #0F3460 !important; text-align: left; padding-left: 16px;
+    }
+    .stats-table tfoot td.col-total {
+        position: sticky; right: 0; z-index: 6;
+        background: #0F3460 !important; border-left: 2px solid #00ADB5 !important;
+    }
+
     @media (max-width: 768px) {
-        .stats-container { padding: 0 12px; }
-        .premium-filter-bar { flex-direction: column; align-items: flex-start; padding: 14px 18px; gap: 12px; }
-        .filter-dropdown-wrapper { width: 100%; justify-content: space-between; }
-        .smart-year-dropdown { width: 100%; max-width: 100%; }
-        .filter-label-text { font-size: 12px; }
+        .filter-bar { flex-direction: column; align-items: flex-start !important; gap: 10px; }
+        .year-select { width: 100% !important; }
     }
 </style>
 
-<header class="bg-[#0F172A] relative overflow-hidden py-12 border-b border-slate-800 w-full text-left">
-    <div class="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center lg:text-left flex flex-col lg:flex-row justify-between items-center gap-4">
-        <div>
-            <span class="text-xs font-bold tracking-[0.2em] text-[#38BDF8] uppercase block mb-2">Research & Publications</span>
-            <h1 class="text-2xl lg:text-3xl font-black tracking-tight text-white">Cardiac Surgery Statistics in Bangladesh</h1>
-        </div>
-    </div>
-</header>
-<div class="stats-body-wrapper">
-    <div class="stats-container">
-        
-        <!-- ==========================================
-             👑 🔒 আপনার মেগা রিকোয়ারমেন্ট: ওরিজিনাল মডিউলেও আল্ট্রা-স্মার্ট গ্লসি ড্রপডাউন হাব ভাই
-             ========================================== -->
-        <div class="premium-filter-bar">
-            <h4 class="filter-label-text">
-                <i class="fa-solid fa-chart-line text-[#38BDF8]" style="font-size: 13px;"></i> 
-                National Overall Cardiac Surgical Data Dashboard
-            </h4>
-            
-            <div class="filter-dropdown-wrapper">
-                <label for="frontendYearSelectDropdown" class="mb-0 text-slate-500 font-bold text-xs uppercase tracking-wider hidden sm:inline-block">Select Year:</label>
-                <select id="frontendYearSelectDropdown" class="smart-year-dropdown">
-                    @forelse($years as $index => $year)
-                        <option value="{{ $year }}" @if($index === 0) selected @endif>
-                            Statistics Year {{ $year }}
-                        </option>
-                    @empty
-                        <option value="">No Data Records</option>
-                    @endforelse
-                </select>
+    {{-- HEADER --}}
+    <header class="relative overflow-hidden py-14 border-b border-[#CFEAF5]" style="background: linear-gradient(135deg, #EBF8FF 0%, #F0FDFF 50%, #E0F2FE 100%);">
+        <div class="absolute inset-0 opacity-[0.04] bg-[linear-gradient(to_right,#0284C7_1px,transparent_1px),linear-gradient(to_bottom,#0284C7_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col lg:flex-row justify-between items-center gap-4 text-center lg:text-left">
+            <div>
+                <span class="text-xs font-medium tracking-[0.18em] text-[#0284C7] uppercase block mb-2">Research & Publications</span>
+                <h1 class="text-2xl lg:text-3xl font-semibold tracking-tight text-[#0F172A]">Cardiac Surgery Statistics in Bangladesh</h1>
+            </div>
+            <div class="flex items-center space-x-2 text-xs text-slate-400">
+                <a href="{{ route('home') }}" class="hover:text-[#0284C7] transition-colors">Home</a>
+                <svg class="w-3 h-3 text-slate-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                <span class="text-[#0F172A]">Cardiac Surgery Statistics</span>
             </div>
         </div>
+    </header>
 
-        <!-- ==========================================
-             🚀 মেইন ডাটা শীট পোর্টাল (ফোনে এবং ট্যাবে অত্যন্ত মসৃণ সোয়াইপ স্ক্রল হবে ভাই)
-             ========================================== -->
-        <div class="spreadsheet-display-panel">
-            <div class="card-header bg-white py-3 flex justify-between items-center" style="border-bottom: 1px solid #F1F5F9;">
-                <h3 class="card-title" style="font-size: 14.5px; font-weight: 800; color: #0F172A; margin: 0; padding-top: 4px;">
-                    <i class="fa-solid fa-circle-nodes text-[#38BDF8] mr-1"></i> Hospital Registries Data Sheet: <span id="dynamicYearTitleHeading">---</span>
-                </h3>
+    {{-- CONTENT --}}
+    <section class="py-12" style="background: linear-gradient(135deg, #EBF8FF 0%, #F0FDFF 60%, #E0F2FE 100%);">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            {{-- Filter bar --}}
+            <div class="filter-bar bg-white rounded-2xl border border-[#CFEAF5] shadow-sm px-5 py-4 mb-5 flex flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-sky-50 flex items-center justify-center">
+                        <i class="fa-solid fa-chart-line text-[#0284C7] text-xs"></i>
+                    </div>
+                    <span class="text-sm font-medium text-slate-700">National Overall Cardiac Surgical Data Dashboard</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <label for="frontendYearSelectDropdown" class="text-xs font-medium text-slate-400 uppercase tracking-wider hidden sm:block">Year:</label>
+                    <select id="frontendYearSelectDropdown" class="year-select text-sm font-medium text-slate-700 bg-[#F0FDFF] border border-[#CFEAF5] rounded-xl px-4 py-2 pr-8 outline-none focus:border-[#0284C7] focus:ring-2 focus:ring-sky-100 transition-all cursor-pointer" style="appearance:none; background-image:url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230284C7' stroke-width='2'%3e%3cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3e%3c/svg%3e\"); background-repeat:no-repeat; background-position:right 10px center; background-size:14px;">
+                        @forelse($years as $index => $year)
+                            <option value="{{ $year }}" @if($index === 0) selected @endif>{{ $year }}</option>
+                        @empty
+                            <option value="">No Data</option>
+                        @endforelse
+                    </select>
+                </div>
             </div>
-            
-            <div class="card-body p-0">
-                <div class="excel-scroll-frame">
-                    <table class="table frontend-excel-table">
+
+            {{-- Table panel --}}
+            <div class="bg-white rounded-2xl border border-[#CFEAF5] shadow-sm overflow-hidden">
+
+                {{-- Panel header --}}
+                <div class="flex items-center justify-between px-5 py-3.5 border-b border-[#CFEAF5]">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-table text-[#0284C7] text-sm"></i>
+                        <span class="text-sm font-medium text-slate-700">
+                            Hospital Registries — <span id="dynamicYearTitleHeading" class="text-[#0284C7]">---</span>
+                        </span>
+                    </div>
+                    <span class="text-xs text-slate-400 hidden sm:block">Scroll horizontally to see all columns →</span>
+                </div>
+
+                {{-- Scrollable table --}}
+                <div style="overflow-x:auto; overflow-y:visible; -webkit-overflow-scrolling:touch;">
+                    <table class="stats-table">
                         <thead>
                             <tr>
-                                <th class="freeze-corner">Hospital Institute Registry Name</th>
+                                <th class="col-freeze">Hospital / Institute</th>
                                 @foreach($surgeryTypes as $type)
-                                    <th class="frontend-type-col" data-type-id="{{ $type->id }}">{{ $type->name }}</th>
+                                    <th data-type-id="{{ $type->id }}">{{ $type->name }}</th>
                                 @endforeach
-                                <th class="total-header-col">TOTAL</th>
+                                <th class="col-total">Total</th>
                             </tr>
                         </thead>
                         <tbody id="frontendSurgeryTableBody">
                             @foreach($hospitals as $hospital)
-                                <tr class="frontend-surgery-row" id="row_hospital_{{ $hospital->id }}" data-hospital-id="{{ $hospital->id }}">
-                                    <td class="freeze-col">
-                                        <i class="fa-solid fa-circle-h text-primary mr-1.5" style="font-size: 11px; opacity:0.6;"></i>
+                                <tr id="row_hospital_{{ $hospital->id }}" data-hospital-id="{{ $hospital->id }}">
+                                    <td class="col-freeze">
+                                        <i class="fa-solid fa-hospital-user text-[#0284C7] mr-1.5 opacity-60" style="font-size:10px;"></i>
                                         {{ $hospital->name }}
                                     </td>
-                                    
                                     @foreach($surgeryTypes as $type)
                                         <td id="cell_{{ $hospital->id }}_{{ $type->id }}">0</td>
                                     @endforeach
-                                    
-                                    <td class="row-total-col" id="frontend_hospital_total_{{ $hospital->id }}">0</td>
+                                    <td class="col-total" id="frontend_hospital_total_{{ $hospital->id }}">0</td>
                                 </tr>
                             @endforeach
-                            
-                            <tr id="allZeroPlaceholderRow" style="display: none;">
-                                <td colspan="{{ count($surgeryTypes) + 2 }}" class="text-center py-5 text-muted font-weight-bold" style="background-color: #F8FAFC;">
-                                    <i class="fa-solid fa-chart-bar-slash mr-1 text-danger"></i> No surgery data records found for this year.
+
+                            <tr id="allZeroPlaceholderRow" style="display:none;">
+                                <td colspan="{{ count($surgeryTypes) + 2 }}" class="text-center py-10 text-slate-400 text-sm">
+                                    <i class="fa-solid fa-chart-bar mr-1 text-slate-300"></i> No surgery data found for this year.
                                 </td>
                             </tr>
                         </tbody>
-                        
                         <tfoot>
                             <tr>
-                                <td class="grand-total-row freeze-col text-left" style="padding-left: 18px;">
-                                    <i class="fa-solid fa-calculator mr-1.5" style="font-size: 11px; color:#38BDF8;"></i> TOTAL
+                                <td class="col-freeze">
+                                    <i class="fa-solid fa-calculator mr-1.5 opacity-70" style="font-size:10px;"></i> Total
                                 </td>
                                 @foreach($surgeryTypes as $type)
-                                    <td class="grand-total-row frontend-type-total" id="frontend_type_total_{{ $type->id }}">0</td>
+                                    <td id="frontend_type_total_{{ $type->id }}">0</td>
                                 @endforeach
-                                <td class="grand-total-row row-total-col" id="frontend_ultimate_grand_total">0</td>
+                                <td class="col-total" id="frontend_ultimate_grand_total">0</td>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
             </div>
-        </div>
 
-    </div> {{-- .stats-container-end ভাই --}}
-</div> {{-- .stats-body-wrapper-end ভাই --}}
-<!-- ==========================================
-     👑 ৩. ওয়ান-ক্লিক ড্রপডাউন এবং ফিক্সড ৩-লেয়ার জেসন ইনডেক্স ড্রাইভার ইঞ্জিন ভাই (ডেটা ১০০% লাইভ হবে)
-     ========================================== -->
+        </div>
+    </section>
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // ক) ল্যারাভেলের সেন্ট্রাল মেমোরি ডাটাপ্যাক সরাসরি জাভাস্ক্রিপ্ট জেসন নোডে লক ভাই
         const centralSurgeryMatrixDb = @json($allRecords);
         const hospitalsDataList = @json($hospitals);
         const surgeryTypesDataList = @json($surgeryTypes);
-        
-        const yearDropdownSelect = document.getElementById('frontendYearSelectDropdown');
-        const dynamicTitleHeading = document.getElementById('dynamicYearTitleHeading');
 
-        // 🎯 ওয়ান-ট্যাপ ফাস্ট রেন্ডারিং মেথড ভাই
-        function renderSelectedYearStatistics(year) {
+        const yearDropdown = document.getElementById('frontendYearSelectDropdown');
+        const yearTitle    = document.getElementById('dynamicYearTitleHeading');
+
+        function render(year) {
             if (!year) return;
+            yearTitle.textContent = year;
 
-            // ওয়ান-ট্যাপ স্ক্রিন আপডেট: হেডিংয়ে সিলেক্ট করা বছর অটো সিঙ্ক ভাই
-            dynamicTitleHeading.textContent = year;
-
-            let ultimateGrandTotal = 0;
-            let totalVisibleRowsCount = 0;
-            
-            // কলামের ভার্টিকাল যোগফল অবজেক্ট ইনিশিয়েট ভাই
+            let grandTotal = 0, visibleRows = 0;
             let typeTotals = {};
-            surgeryTypesDataList.forEach(function(type) {
-                typeTotals[type.id] = 0;
-            });
+            surgeryTypesDataList.forEach(t => typeTotals[t.id] = 0);
 
             hospitalsDataList.forEach(function(hospital) {
-                let hospitalId = hospital.id;
-                let hospitalRowTotal = 0;
-
-                // প্রতিটি কলামের ভ্যালু রিড করার ভেতরের লুপ ভাই
+                let rowTotal = 0;
                 surgeryTypesDataList.forEach(function(type) {
-                    let typeId = type.id;
-                    let exactCount = 0;
-
-                    // 🔍 👑 জাদুকরী ৩-লেয়ার ফিক্স: ল্যারাভেল groupBy [year][hospital][type] এর প্রথম উপাদান সরাসরি রিড লজিক ভাই
-                    if (centralSurgeryMatrixDb[year] && 
-                        centralSurgeryMatrixDb[year][hospitalId] && 
-                        centralSurgeryMatrixDb[year][hospitalId][typeId]) {
-                        
-                        let recordObj = centralSurgeryMatrixDb[year][hospitalId][typeId];
-                        exactCount = parseInt(Array.isArray(recordObj) ? recordObj[0].data_count : recordObj.data_count) || 0;
+                    let count = 0;
+                    if (centralSurgeryMatrixDb[year]?.[hospital.id]?.[type.id]) {
+                        let rec = centralSurgeryMatrixDb[year][hospital.id][type.id];
+                        count = parseInt(Array.isArray(rec) ? rec[0].data_count : rec.data_count) || 0;
                     }
-
-                    // বক্সে বক্সে লাইভ সংখ্যা পুশ ভাই
-                    let cellNode = document.getElementById(`cell_${hospitalId}_${typeId}`);
-                    if (cellNode) {
-                        cellNode.textContent = exactCount;
-                    }
-
-                    hospitalRowTotal += exactCount;
-                    typeTotals[typeId] += exactCount;
+                    let cell = document.getElementById(`cell_${hospital.id}_${type.id}`);
+                    if (cell) cell.textContent = count;
+                    rowTotal += count;
+                    typeTotals[type.id] += count;
                 });
 
-                let rowElement = document.getElementById(`row_hospital_${hospitalId}`);
-
-                // 👑 🔒 আপনার সেই গ্লসি কন্ডিশন: মোট যোগফল ০ হলে হাসপাতালটি স্ক্রিন থেকে হাইড হয়ে যাবে ভাই!
-                if (hospitalRowTotal === 0) {
-                    if (rowElement) rowElement.style.display = 'none';
+                let row = document.getElementById(`row_hospital_${hospital.id}`);
+                if (rowTotal === 0) {
+                    if (row) row.style.display = 'none';
                 } else {
-                    if (rowElement) rowElement.style.display = '';
-                    totalVisibleRowsCount++; // একটিভ রো কাউন্টার ভাই
-
-                    // ডানপাশের লাইভ হরাইজন্টাল টোটাল শো ভাই
-                    let rowTotalNode = document.getElementById(`frontend_hospital_total_${hospitalId}`);
-                    if (rowTotalNode) {
-                        rowTotalNode.textContent = hospitalRowTotal;
-                    }
-                    ultimateGrandTotal += hospitalRowTotal;
+                    if (row) row.style.display = '';
+                    visibleRows++;
+                    let total = document.getElementById(`frontend_hospital_total_${hospital.id}`);
+                    if (total) total.textContent = rowTotal;
+                    grandTotal += rowTotal;
                 }
             });
 
-            // যদি কোনো নির্দিষ্ট বছরে সব হাসপাতালের ডাটা ০ থাকে তবে নোটিশ শো হবে ভাই
-            const placeholderRow = document.getElementById('allZeroPlaceholderRow');
-            if (placeholderRow) {
-                placeholderRow.style.display = (totalVisibleRowsCount === 0) ? '' : 'none';
-            }
+            let placeholder = document.getElementById('allZeroPlaceholderRow');
+            if (placeholder) placeholder.style.display = visibleRows === 0 ? '' : 'none';
 
-            // ওয়ান-ট্যাপ স্ক্রিন আপডেট: টেবিলের একদম নিচে প্রতিটি কলামের ভার্টিকাল ফুটার টোটাল শো ভাই
-            surgeryTypesDataList.forEach(function(type) {
-                let typeTotalNode = document.getElementById(`frontend_type_total_${type.id}`);
-                if (typeTotalNode) {
-                    typeTotalNode.textContent = typeTotals[type.id];
-                }
+            surgeryTypesDataList.forEach(t => {
+                let node = document.getElementById(`frontend_type_total_${t.id}`);
+                if (node) node.textContent = typeTotals[t.id];
             });
-
-            // মেগা গ্র্যান্ড টোটাল শো ভাই
-            let grandTotalNode = document.getElementById('frontend_ultimate_grand_total');
-            if (grandTotalNode) {
-                grandTotalNode.textContent = ultimateGrandTotal;
-            }
+            let gt = document.getElementById('frontend_ultimate_grand_total');
+            if (gt) gt.textContent = grandTotal;
         }
 
-        // 🎯 খ) ওয়ান-ক্লিক আল্ট্রা-স্মার্ট ড্রপডাউন লিসেনার ড্রাইভার ভাই
-        if (yearDropdownSelect) {
-            yearDropdownSelect.addEventListener('change', function() {
-                let targetYear = this.value;
-                renderSelectedYearStatistics(targetYear);
-            });
-        }
-
-        // 🎯 👑 গ) ডিফল্ট লেটেস্ট ইয়ার বুট নোড ভাই (ডাটাবেজের সর্বশেষ বছরটি প্রথমবার অটো লোড হবে)
-        if (yearDropdownSelect) {
-            let defaultYear = yearDropdownSelect.value;
-            renderSelectedYearStatistics(defaultYear);
+        if (yearDropdown) {
+            yearDropdown.addEventListener('change', function() { render(this.value); });
+            render(yearDropdown.value);
         }
     });
 </script>

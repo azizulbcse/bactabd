@@ -145,4 +145,9 @@ class FrontendController extends Controller
     {
         return view('frontend.history_bacta');
     }
+    public function cardiology()
+{
+    return view('frontend.cardiology');
+}
+
 }
