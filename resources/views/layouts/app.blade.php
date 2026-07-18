@@ -168,11 +168,13 @@
                 <a href="{{ route('members.lifetime') }}" class="block px-5 py-2.5 text-sm font-bold text-white hover:text-black transition-colors duration-150 no-underline">Life Members</a>
                 <a href="{{ route('members.active') }}" class="block px-5 py-2.5 text-sm font-bold text-white hover:text-black transition-colors duration-150 no-underline">General Members</a>
                 <div class="relative group/sub">
-                    <a href="#" class="flex items-center justify-between px-5 py-2.5 text-sm font-bold text-white group-hover/sub:text-black hover:text-black transition-colors duration-150 no-underline cursor-pointer">
+                    <a href="#" class="flex items-center justify-between px-5 py-2.5 text-sm font-bold text-white hover:text-black transition-colors duration-150 no-underline cursor-pointer">
                         <span>Associate Members</span>
                         <svg class="w-3 h-3 text-white/80 group-hover/sub:text-black transition-colors duration-150" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                     </a>
-                    <div class="absolute top-0 left-[262px] w-56 bg-[#00ADB5] border border-cyan-600 rounded-xl shadow-2xl py-2 hidden group-hover/sub:block z-50 text-left">
+                    {{-- invisible bridge to prevent hover gap --}}
+                    <div class="absolute top-0 right-0 w-4 h-full hidden group-hover/sub:block z-40"></div>
+                    <div class="absolute top-0 left-full w-48 bg-[#00ADB5] border border-cyan-600 rounded-xl shadow-2xl py-2 hidden group-hover/sub:block z-50 text-left">
                         <a href="{{ route('members.active', ['category' => 'paramedics']) }}" class="block px-5 py-2.5 text-xs font-bold text-white hover:text-black transition-colors duration-150 no-underline">Paramedics</a>
                         <a href="{{ route('members.active', ['category' => 'technicians']) }}" class="block px-5 py-2.5 text-xs font-bold text-white hover:text-black transition-colors duration-150 no-underline">Technicians</a>
                         <a href="{{ route('members.active', ['category' => 'perfusionist']) }}" class="block px-5 py-2.5 text-xs font-bold text-white hover:text-black transition-colors duration-150 no-underline">Perfusionist</a>
@@ -225,7 +227,7 @@
             Journals & Publication
         </a>
 
-        <a href="#" class="text-white hover:text-cyan-200 h-10 flex items-center justify-center transition-all no-underline">
+        <a href="{{ route('frontend.education.research') }}" class="{{ Route::is('frontend.education.research') ? 'text-white border-b-2 border-white font-bold' : 'text-white hover:text-cyan-200' }} h-10 flex items-center justify-center transition-all no-underline">
             Education & Research
         </a>
 
@@ -344,11 +346,12 @@
         </a>
     </div>
     
-    <div class="border-t border-white/10 pt-1">
-        <a href="#" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-white/85 hover:bg-white/10 transition-colors no-underline">
-            Education & Research
-        </a>
-    </div>
+<div class="border-t border-slate-100 pt-1">
+    <a href="{{ route('frontend.education.research') }}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl {{ Route::is('frontend.education.research') ? 'text-[#0284C7] bg-sky-50 font-bold' : 'text-slate-700 hover:bg-slate-50' }} transition-colors no-underline">
+        Education & Research
+    </a>
+</div>
+
     
     <div class="border-t border-white/10 pt-1">
         <a href="{{ route('admin.gallery.index') }}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl {{ Route::is('admin.gallery.index') ? 'text-white border-b-2 border-white font-semibold' : 'text-white/85 hover:bg-white/10' }} transition-colors no-underline">
@@ -511,8 +514,8 @@
             <span>Crafted with</span>
             <span class="text-red-500 mx-1 text-[11px] animate-pulse">❤️</span>
             <span class="mr-1">by</span>
-            <a href="https://it.matrik.com.bd" target="_blank" rel="noopener noreferrer" class="font-bold text-[#0F172A] hover:text-[#0284C7] transition-colors tracking-wide">
-                Matrik
+            <a href="https://www.facebook.com/fringebytetech" target="_blank" rel="noopener noreferrer" class="font-bold text-[#0F172A] hover:text-[#0284C7] transition-colors tracking-wide">
+                FringeByte Technologies
             </a>
         </div>
 

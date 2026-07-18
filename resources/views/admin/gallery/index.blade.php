@@ -149,7 +149,7 @@
 
                     <div style="margin-bottom: 18px;">
                         <label class="metric-label"><i class="fas fa-pen-nib text-slate-400 mr-1"></i> Asset Title / Subject</label>
-                        <input type="text" name="title" id="galleryTitle" class="metric-control" placeholder="e.g., Annual Cardiovascular Conference 2026">
+                        <input type="text" name="title" id="galleryTitle" class="metric-control" placeholder="Asset Title / Subject">
                         <div id="titleErrorNode" style="display: none; color: #EF4444; font-size: 11.5px; font-weight: 600; margin-top: 6px; align-items: center; gap: 4px;">
                             <i class="fas fa-exclamation-triangle"></i> Title field is required! Please entry a formal asset header.
                         </div>
@@ -157,7 +157,7 @@
 
                     <div id="conditionalVenueBlock" style="margin-bottom: 18px;">
                         <label class="metric-label"><i class="fas fa-map-marker-alt text-slate-400 mr-1"></i> Seminar Venue / Location</label>
-                        <input type="text" name="venue" id="galleryVenue" class="metric-control" placeholder="e.g., National Heart Foundation Hospital">
+                        <input type="text" name="venue" id="galleryVenue" class="metric-control" placeholder="Seminar Venue / Location">
                     </div>
 
                     <div id="conditionalDateBlock" style="margin-bottom: 18px;">
@@ -232,15 +232,16 @@
                                         <div style="font-size: 10.5px; color: #64748B; font-weight: 500; margin-top: 3px;"><i class="fas fa-map-marker-alt text-slate-400 mr-1"></i> {{ $row->venue }}</div>
                                     @endif
                                 </td>
-                                <td style="padding: 14px 20px; text-align: center; vertical-align: middle;">
-                                    @if($row->type == 1)
-                                        <span style="background: #EFF6FF; color: #1E40AF; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase;">Event</span>
-                                    @elif($row->type == 2)
-                                        <span style="background: #ECFDF5; color: #065F46; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase;">Photo</span>
-                                    @else
-                                        <span style="background: #FFF7ED; color: #9A3412; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase;">Video</span>
-                                    @endif
-                                </td>
+<td style="padding: 14px 20px; text-align: center; vertical-align: middle;">
+    @if($row->type == 1)
+        <span style="background: #EFF6FF; color: #1E40AF; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase;">Event</span>
+    @elseif($row->type == 2)
+        <span style="background: #ECFDF5; color: #065F46; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase;">Photo</span>
+    @else
+        <span style="background: #FFF7ED; color: #9A3412; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase;">Video</span>
+    @endif
+</td>
+
                                 <td style="padding: 14px 20px; text-align: center; vertical-align: middle;">
                                     @if($row->status == 2)
                                         <span style="background: rgba(16, 185, 129, 0.1); color: #10B981; padding: 3px 9px; border-radius: 12px; font-size: 10px; font-weight: 700; text-transform: uppercase;">Live</span>

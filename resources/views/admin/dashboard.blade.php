@@ -1,5 +1,6 @@
 @extends('adminlte::page')
-
+<link rel="icon" type="image/x-icon" href="{{ asset('images/logo.png') }}" /> 
+    
 @section('title', 'Admin Dashboard | BACTA')
 
 @section('content_header')

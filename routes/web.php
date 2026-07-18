@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\MemberController;
@@ -28,6 +29,8 @@ Route::get('/president-message', [FrontendController::class, 'presidentMessage']
 Route::get('/announcements', [FrontendController::class, 'noticeArchive'])->name('notice.archive');
 Route::get('/executive-minutes', [FrontendController::class, 'minutesArchive'])->middleware(['auth'])->name('minutes.list');
 Route::get('/events-gallery', [FrontendController::class, 'eventsGalleryPage'])->name('admin.gallery.index');
+Route::get('/gallery-stream', [EventGalleryController::class, 'galleryStream'])->name('gallery.stream');
+Route::get('/education-research', [FrontendController::class, 'educationResearch'])->name('frontend.education.research');
 Route::get('/bacta-journals', [FrontendController::class, 'journalsPage'])->name('journals.archive');
 Route::get('/contact-us', [FrontendController::class, 'contactPage'])->name('contact.archive');
 Route::post('/contact/store', [FrontendController::class, 'contactStore'])->name('contact.store');
@@ -48,6 +51,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {  
+    
+    // ১. জেনুইন অ্যাডমিন মূল ড্যাশবোর্ড কাউন্টার নোড
     Route::get('/dashboard', function () {
         $counts = [
             'pending_apps'  => \App\Models\CommitteeMember::where('status', 0)->count(),
@@ -62,12 +67,13 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         return view('admin.dashboard', compact('counts'));
     })->name('admin.dashboard');
 
+    Route::get('/staff-directory', [MemberController::class, 'adminList'])->name('admin.staff.list');
     Route::get('/members/pending', [MemberController::class, 'pendingList'])->name('admin.members.pending');
     Route::post('/members/approve/{id}', [MemberController::class, 'approve'])->name('admin.members.approve');
-    Route::delete('/members/delete/{id}', [MemberController::class, 'destroy'])->name('admin.members.delete');
-    Route::get('/staff-directory', [MemberController::class, 'adminList'])->name('admin.staff.list');
-    Route::post('/members/ajax-store', [MemberController::class, 'ajaxStore'])->name('admin.members.ajax.store');
-    Route::post('/members/ajax-update/{id}', [MemberController::class, 'ajaxUpdate'])->name('admin.members.ajax.update');
+    Route::post('/members/store', [MemberController::class, 'ajaxStore'])->name('admin.members.store');
+    Route::post('/members/update-ajax/{id}', [MemberController::class, 'ajaxUpdate'])->name('admin.members.update-ajax');
+    Route::post('/members/destroy/{id}', [MemberController::class, 'destroy'])->name('admin.members.destroy');
+
     Route::get('/hospitals', [HospitalController::class, 'index'])->name('admin.hospitals.index');
     Route::post('/hospitals/store', [HospitalController::class, 'store'])->name('admin.hospitals.store');
     Route::post('/hospitals/{id}/update', [HospitalController::class, 'update'])->name('admin.hospitals.update');
@@ -89,7 +95,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::delete('/committee-members/{id}/destroy', [CommitteeMemberController::class, 'destroy'])->name('admin.committee.delete');
 
     Route::get('/members-hub', [MemberHubController::class, 'index'])->name('admin.members.index');
-    Route::post('/members-hub/store', [MemberHubController::class, 'store'])->name('admin.members.store');
+    Route::post('/members-hub/store', [MemberHubController::class, 'store'])->name('admin.members_hub.store');
     Route::post('/members-hub/{id}/update', [MemberHubController::class, 'update'])->name('admin.members.update');
     Route::delete('/members-hub/{id}/destroy', [MemberHubController::class, 'destroy'])->name('admin.members.delete');
     
@@ -147,29 +153,15 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/contacts', [ContactMessageController::class, 'index'])->name('admin.contacts.index');
     Route::delete('/contacts/delete/{id}', [ContactMessageController::class, 'destroy'])->name('admin.contacts.delete');
 
-    // =========================================================================
-    // 👑 🔒 ৩-মেগা ডাইনামিক সার্জারি ডাটা এন্ট্রি রাউট হাব (নিখুঁত ব্র্যাকেট ও পাথ ফিক্সড ভাই)
-    // =========================================================================
-    
-    // মডিউল ১: ওরিজিনাল সামগ্রিক কার্ডিয়াক সার্জারি মেমোফাইল রাউট নোড
-    Route::get('/cardiac-surgeries', [HospitalSurgeryController::class, 'index'])->name('admin.surgeries.index');
-    Route::get('/cardiac-surgeries/fetch-matrix', [HospitalSurgeryController::class, 'fetchMatrix'])->name('admin.surgeries.fetch');
-    Route::post('/cardiac-surgeries/bulk-store', [HospitalSurgeryController::class, 'storeOrUpdate'])->name('admin.surgeries.store');
+    // NOTE(fix): এখানে আগে cardiac/congenital/valvular surgery-র পুরো রাউট গ্রুপ
+    // (উপরে line 115-133 এ যা আছে) হুবহু আবার ডুপ্লিকেট করা ছিল - একই route name
+    // (admin.surgeries.*, admin.congenital.*, admin.valvular.*) কিন্তু cardiac-surgeries
+    // অংশে ভিন্ন URL ছিল ('/fetch-matrix', '/bulk-store')। এতে route() helper সবসময়
+    // পরের (দ্বিতীয়) সংজ্ঞাটাই ব্যবহার করত, অথচ আসল HTTP request প্রথম গ্রুপের URL দিয়েই
+    // ম্যাচ হতো - silent URL mismatch তৈরি করছিল। তাই পুরো ডুপ্লিকেট ব্লকটা বাদ দেওয়া হলো।
+    // যদি কোনো blade/JS ফাইলে সরাসরি '/admin/cardiac-surgeries/fetch-matrix' বা
+    // '/admin/cardiac-surgeries/bulk-store' hardcode করা থাকে, জানাবেন।
 
-    // মডিউল ২: কাস্টম জন্মগত হৃদরোগ (Congenital) ফিক্সড রাউট গ্রুপ ভাই
-    Route::prefix('/congenital-surgeries')->name('admin.congenital.')->group(function () {
-        Route::get('/', [CongenitalSurgeryController::class, 'index'])->name('index');
-        Route::get('/fetch', [CongenitalSurgeryController::class, 'fetchMatrix'])->name('fetch');
-        Route::post('/store', [CongenitalSurgeryController::class, 'storeOrUpdate'])->name('store');
-    }); // 🎯 সেফ ক্লোজিং লকিং নোড
-
-    // Mডিউল ৩: সমাপনী ভাল্বুলার শল্যচিকিৎসা (Valvular) মেগা রাউট গ্রুপ ভাই
-    Route::prefix('/valvular-surgeries')->name('admin.valvular.')->group(function () {
-        Route::get('/', [ValvularSurgeryController::class, 'index'])->name('index');
-        Route::get('/fetch', [ValvularSurgeryController::class, 'fetchMatrix'])->name('fetch');
-        Route::post('/store', [ValvularSurgeryController::class, 'storeOrUpdate'])->name('store');
-    }); // 🎯 সেফ ক্লোজিং লকিং নোড
-    
     // মাস্টার সেটিংস কনফিগারেশন রুট গেটওয়ে ভাই
     Route::get('/surgery-types-config', [SurgeryTypeController::class, 'index'])->name('admin.surgery_types.index');
     Route::post('/surgery-types-config/store', [SurgeryTypeController::class, 'store'])->name('admin.surgery_types.store');

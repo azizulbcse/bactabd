@@ -149,5 +149,8 @@ class FrontendController extends Controller
 {
     return view('frontend.cardiology');
 }
-
+public function educationResearch()
+{
+    return view('frontend.education_research');
+}
 }

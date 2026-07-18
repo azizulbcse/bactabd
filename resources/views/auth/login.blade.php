@@ -265,7 +265,7 @@
                     </p>
                     <p class="small text-muted mb-0">
                         Crafted with <i class="fas fa-heart heartbeat"></i> by 
-                        <a href="https://it.matrik.com.bd" target="_blank" class="smart-link text-dark font-weight-bold">Matrik</a>
+                        <a href="https://www.facebook.com/fringebytetech" target="_blank" class="smart-link text-dark font-weight-bold">FringeByte Technologies</a>
                     </p>
                 </div>
             </div>

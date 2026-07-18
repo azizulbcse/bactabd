@@ -1,394 +1,249 @@
 @extends('layouts.app')
 
-@section('title', 'Scientific Events & Media Gallery | BACTA Bangladesh')
-
 @section('content')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
-<header class="bg-[#0F172A] relative overflow-hidden py-12 border-b border-slate-800 w-full text-left">
-    <div class="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(2,132,199,0.3),transparent_70%)]"></div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center lg:text-left flex flex-col lg:flex-row justify-between items-center gap-4">
-        <div>
-            <span class="text-xs font-bold tracking-[0.2em] text-[#0284C7] uppercase block mb-1">Media & Scientific Archive</span>
-            <h1 class="text-2xl lg:text-3xl font-black tracking-tight text-white">Events & Media Gallery</h1>
+<!-- =========================================================================
+     👑 🔒 বিএসিটিএ অল-ডিভাইস স্মার্ট গ্যালারি হাব: লেজি লোডিং এবং স্ট্যাটাস ২ (LIVE) ফিল্টার নোড ভাই (১/৩)
+     ========================================================================= -->
+<div class="py-8 md:py-12 bg-[#F8FAFC] min-h-screen border-t border-slate-100 bacta-custom-nav-font">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- 🎯 ক) মেগা আল্ট্রা-স্মার্ট হেডার ব্যানার জোন ভাই (রয়্যাল ব্লু ও সায়েন অ্যাকসেন্ট ব্লেন্ড) -->
+        <div class="bg-[#1A4B84] text-white rounded-2xl p-6 md:p-10 shadow-xl relative overflow-hidden mb-8 border border-white/10">
+            <div class="relative z-10 max-w-3xl">
+                <span class="bg-[#00ADB5] text-white text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full">Media Center</span>
+                <h1 class="text-3xl md:text-5xl font-black tracking-wide mt-3 mb-4 text-[#93C5FD]">Events & Media Gallery</h1>
+                <p class="text-sm md:text-base text-slate-200 font-bold leading-relaxed">
+                    বাংলাদেশ অ্যাসোসিয়েশন অব কার্ডিওভাসকুলার অ্যান্ড থোরাসিক অ্যানেশেসিওলজিস্টস (BACTA) এর অধীনে আয়োজিত বিভিন্ন বৈজ্ঞানিক সেমিনার, সম্মেলন এবং অফিসিয়াল ইভেন্টের প্রামাণ্য চিত্র ও ভিডিও গ্যালারি আর্কাইভ ভাই।
+                </p>
+            </div>
+            <!-- ব্যাকগ্রাউন্ড হার্ট-পালস কিউট আভা ভাই -->
+            <div class="absolute -right-10 -bottom-10 opacity-10 text-white">
+                <svg class="w-44 h-44 md:w-64 md:h-64" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+            </div>
         </div>
-        <div class="flex items-center space-x-2 text-xs font-medium text-slate-400">
-            <a href="{{ route('home') }}" class="hover:text-white transition-colors">Home</a>
-            <svg class="w-3 h-3 text-slate-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            <span class="text-slate-200">Events & Gallery</span>
-        </div>
-    </div>
-</header>
 
-<style>
-    .hub-body-wrapper { background-color: #F8FAFC; font-family: 'Poppins', sans-serif; width: 100%; padding: 50px 0; box-sizing: border-box; }
-    .hub-container { width: 100%; max-width: 1140px; margin: 0 auto; padding: 0 20px; box-sizing: border-box; }
-    
-    .hub-central-tabs-nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; border-bottom: 2px solid #E2E8F0; padding-bottom: 15px; }
-    .hub-main-tab-btn { background: #ffffff; color: #64748B; border: 1px solid #CBD5E1; padding: 10px 24px; border-radius: 30px; font-size: 13.5px; font-weight: 700; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
-    .hub-main-tab-btn:hover { border-color: #0284C7; color: #0284C7; }
-    .hub-main-tab-btn.active-main-tab { background: linear-gradient(135deg, #0284C7 0%, #1E40AF 100%); color: #ffffff; border-color: transparent; box-shadow: 0 10px 20px -5px rgba(2, 132, 199, 0.25); }
-    
-    .hub-sub-filter-bar { display: flex; justify-content: center; gap: 10px; margin-bottom: 35px; }
-    .hub-sub-filter-btn { background: #F1F5F9; color: #475569; border: none; padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 6px; }
-    .hub-sub-filter-btn:hover { background: #E2E8F0; color: #0F172A; }
-    .hub-sub-filter-btn.active-sub-filter { background: #0F172A; color: #ffffff; }
-
-    .events-layout-grid, .gallery-layout-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; width: 100%; box-sizing: border-box; }
-    .event-premium-card { background: #ffffff; border-radius: 14px; border: 1px solid #E2E8F0; overflow: hidden; box-shadow: 0 4px 15px rgba(148, 163, 184, 0.03); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; height: 100%; position: relative; }
-    .event-premium-card:hover { transform: translateY(-4px); box-shadow: 0 15px 30px -8px rgba(2, 132, 199, 0.1); border-color: #0284C7; }
-    
-    /* 🎯 গ্যালারি মিডিয়া থাম্বনেইল ফ্রেম (১০০% পিক্সেল পারফেক্ট সমান্তরাল উচ্চতা ভাই) */
-    .gallery-media-frame { width: 100%; height: 195px; background: #0F172A; overflow: hidden; position: relative; cursor: pointer; }
-    .gallery-media-frame img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
-    .gallery-media-frame:hover img { transform: scale(1.05); }
-    
-    /* 🎥 ভিডিও ওভারলে প্লে বাটন উইজেট */
-    .video-play-overlay-icon { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.4); display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 42px; opacity: 0.85; transition: all 0.3s ease; }
-    .gallery-media-frame:hover .video-play-overlay-icon { opacity: 1; color: #EF4444; font-size: 46px; background: rgba(15, 23, 42, 0.5); }
-
-    /* 👑 আন্তর্জাতিক থিয়েটার মোড লাইটবক্স কন্টেন্ট স্লাইডার সিএসএস */
-    .bacta-lightbox-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.98); z-index: 99999; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
-    .lightbox-nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.1); color: #ffffff; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; transition: all 0.2s ease; z-index: 100000; outline: none; }
-    .lightbox-nav-btn:hover { background: #0284C7; border-color: #0284C7; box-shadow: 0 0 15px rgba(2, 132, 199, 0.4); }
-    .lightbox-prev-trigger { left: 30px; }
-    .lightbox-next-trigger { right: 30px; }
-    .lightbox-close-trigger { position: absolute; top: 25px; right: 30px; background: rgba(255, 255, 255, 0.08); border: none; color: #ffffff; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; transition: all 0.2s ease; z-index: 100000; }
-    .lightbox-close-trigger:hover { background: #EF4444; color: #ffffff; transform: rotate(90deg); }
-
-    @media (max-width: 768px) {
-        .hub-central-tabs-nav { flex-direction: column; gap: 10px; }
-        .hub-main-tab-btn { width: 100%; justify-content: center; }
-        .lightbox-nav-btn { width: 40px; height: 40px; font-size: 14px; }
-        .lightbox-prev-trigger { left: 10px; }
-        .lightbox-next-trigger { right: 10px; }
-    }
-</style>
-<div class="hub-body-wrapper">
-    <div class="hub-container">
-
-        <!-- 🌐 ১. ২-লেয়ার আল্ট্রা-মডার্ন ফ্লুইড ক্যাটাগরি ট্যাব -->
-        <div class="hub-central-tabs-nav">
-            <button class="hub-main-tab-btn active-main-tab" onclick="switchCentralHubTab('events-zone', this)">
-                <i class="fa-solid fa-calendar-check text-xs"></i> Scientific Events
+        <!-- 🎯 খ) ওয়ান-ক্লিক জিরো-রিলোড ফিল্টার ট্যাব প্যানেল ভাই (রয়্যাল ব্লু ও সায়েন থিম ম্যাচড) -->
+        <div class="flex items-center justify-center gap-2 md:gap-4 mb-10 overflow-x-auto pb-2 whitespace-nowrap">
+            <button onclick="switchGalleryMediaTypeFilter('all', this)" class="px-5 py-2 rounded-xl text-xs md:text-sm font-black uppercase tracking-wider transition-all duration-300 shadow-sm border border-[#1A4B84] bg-[#1A4B84] text-white focus:outline-none">
+                <i class="fas fa-th-large mr-1.5"></i> All Assets
             </button>
-            <button class="hub-main-tab-btn" onclick="switchCentralHubTab('gallery-zone', this)">
-                <i class="fa-solid fa-photo-film text-xs"></i> Central Media Gallery
+            <button onclick="switchGalleryMediaTypeFilter('photos', this)" class="px-5 py-2 rounded-xl text-xs md:text-sm font-black uppercase tracking-wider transition-all duration-300 shadow-sm border border-slate-200 bg-white text-slate-700 hover:border-[#1A4B84] hover:text-[#1A4B84] focus:outline-none">
+                <i class="fas fa-camera mr-1.5"></i> Photos
+            </button>
+            <button onclick="switchGalleryMediaTypeFilter('videos', this)" class="px-5 py-2 rounded-xl text-xs md:text-sm font-black uppercase tracking-wider transition-all duration-300 shadow-sm border border-slate-200 bg-white text-slate-700 hover:border-[#1A4B84] hover:text-[#1A4B84] focus:outline-none">
+                <i class="fas fa-video mr-1.5"></i> Videos
             </button>
         </div>
-
-        <!-- ==========================================
-             🔒 ট্যাব ১: সায়েন্টিফিক ইভেন্টস পোর্টাল জোন
-             ========================================== -->
-        <div id="events-zone" class="hub-central-tab-content">
-            <div class="events-layout-grid">
-                @forelse($records->where('type', 1) as $row)
-                    <div class="event-premium-card">
-                        <div class="event-image-frame" style="width: 100%; height: 180px; background: #0F172A; overflow: hidden; position: relative;">
-                            {{-- 🎯 ল্যাজি লোডিং ট্র্যাকিং: src এর বদলে data-src দিয়ে ইমেজ লক করা হলো ভাই --}}
-                            <img class="bacta-lazy-asset" src="data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 16 9' fill='%230f172a'/>" data-src="{{ asset('storage/' . $row->media_file) }}" alt="Event Banner" style="width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s ease;">
-                            @if($row->event_date)
-                                <div style="position: absolute; top: 12px; left: 12px; background: #0284C7; color: #ffffff; padding: 4px 10px; border-radius: 6px; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 6px rgba(0,0,0,0.15); z-index: 5;">
-                                    <i class="far fa-calendar-alt mr-1"></i> {{ \Carbon\Carbon::parse($row->event_date)->format('d M, Y') }}
-                                </div>
-                            @endif
-                        </div>
-                        <div style="padding: 18px; display: flex; flex-direction: column; flex-grow: 1; box-sizing: border-box;">
-                            <h3 style="font-size: 14.5px; font-weight: 700; color: #0F172A; margin: 0 0 10px 0; line-height: 1.4; flex-grow: 1;">{{ $row->title }}</h3>
-                            @if($row->venue)
-                                <div style="display: flex; align-items: flex-start; gap: 6px; font-size: 12px; color: #475569; font-weight: 500; border-top: 1px solid #F1F5F9; padding-top: 10px; margin-top: auto;">
-                                    <i class="fa-solid fa-location-dot text-[#0284C7]" style="margin-top: 2px;"></i>
-                                    <span>{{ $row->venue }}</span>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                @empty
-                    <div style="grid-column: 1 / -1; background: #ffffff; border-radius: 14px; border: 1px solid #E2E8F0; padding: 45px 25px; text-align: center; max-w: 450px; margin: 0 auto; box-shadow: 0 4px 15px rgba(148, 163, 184, 0.02); box-sizing: border-box; width: 100%;">
-                        <div style="width: 54px; height: 54px; border-radius: 50%; background: #F1F5F9; display: flex; align-items: center; justify-content: center; color: #94A3B8; font-size: 22px; margin: 0 auto 12px; border: 1px dashed #CBD5E1;"><i class="fa-solid fa-calendar-xmark"></i></div>
-                        <h3 style="color: #0F172A; font-size: 14px; font-weight: 700; margin: 0 0 5px 0;">No Active Events Found</h3>
-                        <p style="color: #64748B; font-size: 12.5px; margin: 0; font-weight: 500; line-height: 1.5;">There are currently no active registered scientific seminars scheduled on the timeline registry.</p>
-                    </div>
-                @endforelse
-            </div>
-        </div>
-        <!-- ==========================================
-             🔒 ট্যাব ২: সেন্ট্রাল মিডিয়া গ্যালারি জোন
-             ========================================== -->
-        <div id="gallery-zone" class="hub-central-tab-content" style="display: none;">
-            
-            {{-- 📸 গ্যালারির ভেতরের সুনির্দিষ্ট সাব-ট্যাব ফিল্টার --}}
-            <div class="hub-sub-filter-bar">
-                <button class="hub-sub-filter-btn active-sub-filter" onclick="filterGalleryTypeNodes('all-node', this)"><i class="fa-solid fa-list"></i> All Media</button>
-                <button class="hub-sub-filter-btn" onclick="filterGalleryTypeNodes('photo-node', this)"><i class="fa-solid fa-image"></i> Photos Only</button>
-                <button class="hub-sub-filter-btn" onclick="filterGalleryTypeNodes('video-node', this)"><i class="fa-solid fa-circle-play"></i> Video Clips Only</button>
-            </div>
-
-            <div class="gallery-layout-grid">
-                @php $galleryRecords = $records->whereIn('type', [2, 3]); @endphp
-                @forelse($galleryRecords as $row)
-                    <div class="gallery-item-card-wrapper {{ $row->type == 2 ? 'photo-node' : 'video-node' }} all-node" style="background: #ffffff; border-radius: 12px; border: 1px solid #E2E8F0; overflow: hidden; box-shadow: 0 4px 15px rgba(148, 163, 184, 0.02); box-sizing: border-box; transition: all 0.3s ease;">
-                        
-                        {{-- 🎯 ল্যাজি লোডিং থাম্বনেইল কন্টেইনার জোন --}}
-                        <div class="gallery-media-frame">
-                            @if($row->type == 2)
-                                {{-- 📸 ছবির জন্য স্লাইডার ট্রিগার ভাই --}}
-                                <img class="bacta-lazy-asset global-bacta-slide-node" 
-                                     src="data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 16 9' fill='%230f172a'/>" 
-                                     data-src="{{ asset('storage/' . $row->media_file) }}" 
-                                     data-type="image" 
-                                     data-title="{{ $row->title }}" 
-                                     onclick="launchBactaTheaterLightboxEngine(this)" 
-                                     style="opacity: 0; transition: opacity 0.4s ease;">
-                            @else
-                                {{-- 🎥 ভিডিওর জন্য স্লাইডার ও মাল্টি-সোর্স ইউআরএল ডিটেকশন ভাই --}}
-                                @php 
-                                    $videoSourceUrl = asset('storage/' . $row->media_file);
-                                    if ($row->video_url) {
-                                        if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^\"&?\/ ]{11})/', $row->video_url, $match)) {
-                                            $videoSourceUrl = "https://youtube.com" . $match[1];
-                                        } else {
-                                            $videoSourceUrl = $row->video_url;
-                                        }
-                                    }
-                                @endphp
-                                <img class="bacta-lazy-asset global-bacta-slide-node" 
-                                     src="data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 16 9' fill='%230f172a'/>" 
-                                     data-src="data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 16 9' fill='%231e293b'/>" 
-                                     data-type="video" 
-                                     data-video-src="{{ $videoSourceUrl }}" 
-                                     data-title="{{ $row->title }}" 
-                                     onclick="launchBactaTheaterLightboxEngine(this)" 
-                                     style="opacity: 0; transition: opacity 0.4s ease;">
-                                <div class="video-play-overlay-icon" onclick="this.previousElementSibling.click()"><i class="fa-solid fa-circle-play"></i></div>
-                            @endif
-                        </div>
-
-                        <div style="padding: 16px; box-sizing: border-box; background: #ffffff;">
-                            <h4 style="font-size: 13px; font-weight: 700; color: #0F172A; margin: 0; line-height: 1.4;">{{ $row->title }}</h4>
-                        </div>
-                    </div>
-                @empty
-                    <div style="grid-column: 1 / -1; background: #ffffff; border-radius: 16px; border: 1px solid #E2E8F0; padding: 50px 30px; text-align: center; max-width: 500px; margin: 0 auto; box-shadow: 0 10px 25px -5px rgba(148, 163, 184, 0.02); box-sizing: border-box; width: 100%;">
-                        <div style="width: 60px; height: 60px; border-radius: 50%; background: #F1F5F9; display: flex; align-items: center; justify-content: center; color: #94A3B8; font-size: 24px; margin: 0 auto 15px; border: 1px dashed #CBD5E1;"><i class="fa-solid fa-folder-open"></i></div>
-                        <h3 style="color: #0F172A; font-size: 15px; font-weight: 700; margin: 0 0 6px 0;">No Media Assets Found</h3>
-                        <p style="color: #64748B; font-size: 13px; margin: 0; font-weight: 500; line-height: 1.5;">The digital media repository containing photos and official recording sessions is currently empty.</p>
-                    </div>
-                @endforelse
-            </div>
+        <!-- 🎯 গ) মেইন ৩-কলাম আল্ট্রা-স্মার্ট মিডিয়া গ্রিড কন্টেইনার জেনারেটর ভাই -->
+        <div id="bactaLiveMediaGridHub" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            <!-- ⚡ জাভাস্ক্রিপ্ট এপিআই থেকে শুধুমাত্র STATUS 2 ওয়ালা ডেটা কার্ড আকারে এখানে অটো-রেন্ডার হবে ভাই -->
         </div>
 
-    </div> {{-- .hub-container ক্লোজিং ভাই --}}
-</div> {{-- .hub-body-wrapper ক্লোজিং ভাই --}}
-
-<!-- ==========================================
-     👑 আন্তর্জাতিক থিয়েটার মোড স্লাইডার লাইটবক্স উইন্ডো (X বাটন ও নেক্সট/প্রিভিয়াস ট্র্যাকার)
-     ========================================== -->
-<div id="bactaGlobalSliderTheater" class="bacta-lightbox-overlay">
-    
-    {{-- ❌ ওয়ান-ক্লিক ক্লোজ বাটন --}}
-    <button class="lightbox-close-trigger" onclick="shutdownBactaTheaterEngine()"><i class="fa-solid fa-xmark"></i></button>
-    
-    {{-- ⬅️ প্রিভিয়াস স্লাইড বাটন --}}
-    <button class="lightbox-nav-btn lightbox-prev-trigger" onclick="navigateBactaTheaterSlides(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-    
-    {{-- ➡️ নেক্সট স্লাইড বাটন --}}
-    <button class="lightbox-nav-btn lightbox-next-trigger" onclick="navigateBactaTheaterSlides(1)"><i class="fa-solid fa-chevron-right"></i></button>
-    
-    {{-- 🖥️ ডাইনামিক সেন্ট্রাল মিডিয়া কন্টেন্ট ভিউয়ার এরিয়া --}}
-    <div style="max-width: 900px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 15px; position: relative;">
-        <div id="theaterCentralMediaContainer" style="width: 100%; height: 75vh; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 12px; background: #000000; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7);">
-            <!-- JavaScript Will Live Inject Content Here -->
+        <!-- 🎯 ঘ) ডাটাবেজ খালি থাকলে কিউট ফালব্যাক এম্পটি বক্স উইন্ডো ভাই -->
+        <div id="bactaEmptyGalleryFallback" style="display: none;" class="text-center py-16 bg-white rounded-2xl border border-slate-100 shadow-sm mt-4">
+            <svg class="mx-auto h-16 w-16 text-slate-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2V-5a2 2 0 00-2-2H9l-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            <h3 class="text-lg font-black text-slate-700">No Approved Assets Found</h3>
+            <p class="text-sm font-bold text-slate-400 mt-1">We are currently updating our repository. Please check back later ভাই!</p>
         </div>
-        <div id="theaterAssetTitleCaption" style="color: #ffffff; font-family: 'Poppins'; font-size: 14.5px; font-weight: 600; text-align: center; width: 100%; background: rgba(15,23,42,0.6); padding: 10px; border-radius: 8px; box-sizing: border-box; letter-spacing: 0.3px;"></div>
+
+        <!-- 🎯 ঙ) মাউস স্ক্রল করলে লাইভ ডেটা ফেচিং স্পিনার লোডার নোড ভাই -->
+        <div id="bactaInfiniteScrollSpinnerLoader" class="flex items-center justify-center py-10 opacity-0 transition-opacity duration-300">
+            <div class="animate-spin rounded-full h-8 w-8 border-4 border-[#00ADB5]/20 border-t-[#00ADB5]"></div>
+        </div>
+
     </div>
 </div>
+
+<!-- =========================================================================
+     👑 🔒 চ) ইউনিভার্সাল লাক্সারি লাইটবক্স ওভারলে উইন্ডো: ছবি ও কাস্টম প্লেয়ার ২-ইন-১ হাব ভাই
+     ========================================================================= -->
+<div id="bactaUnifiedLightboxOverlay" style="display: none; background: rgba(15, 23, 42, 0.95);" class="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-md opacity-0 transition-opacity duration-300">
+    
+    <!-- ওয়ান-ক্লিক ক্লোজ ব্যারিকেড বাটন ভাই (সায়েন হোভার ইফেক্ট) -->
+    <button onclick="closeBactaUnifiedLightboxWindow()" class="absolute top-4 right-4 text-white/70 hover:text-[#00ADB5] text-2xl md:text-3xl transition-colors focus:outline-none p-2">
+        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l18 18"/></svg>
+    </button>
+
+    <!-- মেইন কন্টেন্ট উইন্ডো জোন ভাই (ম্যাক্স সাইজ লকড) -->
+    <div class="max-w-5xl w-full max-h-[85vh] flex flex-col items-center justify-center relative">
+        
+        <!-- ১. ছবি রেন্ডারিং ইমেজ নোড ভাই -->
+        <img id="lightboxTargetImageFrame" style="display: none;" class="max-w-full max-h-[80vh] object-contain rounded-xl shadow-2xl border border-white/10" src="" alt="BACTA Live Premium Asset">
+        
+        <!-- ২. Video রেন্ডারিং আইফ্রেম/ভিডিও কন্টেইনার ভাই -->
+        <div id="lightboxTargetVideoWrapper" style="display: none;" class="w-full aspect-video rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-black">
+            <!-- জাভাস্ক্রিপ্ট এখানে লাইভ ভিডিও প্লেয়ার ইনজেক্ট করবে ভাই -->
+        </div>
+
+        <!-- ৩. মিডিয়া ডাইনামিক ক্যাপশন বা টাইটেল নোড ভাই -->
+        <div id="lightboxMediaCaptionNode" class="text-white text-center text-sm md:text-base font-black tracking-wide mt-4 px-4 drop-shadow-md max-w-3xl"></div>
+    </div>
+</div>
+<!-- =========================================================================
+     👑 🔒 ছ-১) বিএসিটিএ গ্যালারি ড্রাইভার: ডাটা লোডার এবং জিরো-রিলোড ফিল্টার (১/২)
+     ========================================================================= -->
 <script>
-    let activeSlideIndex = 0;
-    let visibleSlideNodesArray = [];
+    let currentGalleryPage = 1;
+    let totalGalleryPages = 1;
+    let isGalleryStreamLoading = false;
+    let activeMediaTypeFilter = 'all';
+    let galleryIntersectionObserver = null;
 
-    // ১. আপনার লজিক: মেইন ট্যাব (Events / Gallery) পেজ রিলোড ছাড়া সুইচ করার ইঞ্জিন ভাই
-    function switchCentralHubTab(targetZoneId, buttonElement) {
-        let contents = document.querySelectorAll('.hub-central-tab-content');
-        contents.forEach(node => node.style.display = 'none');
-        document.getElementById(targetZoneId).style.display = 'block';
-        
-        let buttons = document.querySelectorAll('.hub-main-tab-btn');
-        buttons.forEach(btn => btn.classList.remove('active-main-tab'));
-        buttonElement.classList.add('active-main-tab');
-        
-        // ট্যাব বদলালে ইনডেক্স ও স্লাইডার মেমোরি রি-ক্যালকুলেট হবে ভাই
-        rebuildActiveSlideRegistry();
-    }
-
-    // ২. আপনার লজিক: গ্যালারির ভেতর সাব-ট্যাব (Photos / Videos) নিখুঁত আলাদা ফিল্টারিং লুপ ভাই
-    function filterGalleryTypeNodes(targetClassName, buttonElement) {
-        let items = document.querySelectorAll('.gallery-item-card-wrapper');
-        items.forEach(card => {
-            if (card.classList.contains(targetClassName)) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-
-        let buttons = document.querySelectorAll('.hub-sub-filter-btn');
-        buttons.forEach(btn => btn.classList.remove('active-sub-filter'));
-        buttonElement.classList.add('active-sub-filter');
-        
-        // ফিল্টার বদলালে ইনডেক্স ও স্লাইডার মেমোরি রি-ক্যালকুলেট হবে ভাই
-        rebuildActiveSlideRegistry();
-    }
-
-    // ৩. আপনার লজিক: স্ক্রিনে বর্তমান দৃশ্যমান কার্ডগুলোর স্লাইড ইনডেক্সিং রেজিস্ট্রি উইজেট ভাই
-    function rebuildActiveSlideRegistry() {
-        visibleSlideNodesArray = [];
-        let activeTabZone = document.querySelector('.hub-central-tab-content[style*="display: block"]') || document.querySelector('.hub-central-tab-content:not([style*="display: none"])');
-        
-        if (activeTabZone) {
-            let allSlidesInTab = activeTabZone.querySelectorAll('.global-bacta-slide-node');
-            allSlidesInTab.forEach(slide => {
-                let cardWrapper = slide.closest('.gallery-item-card-wrapper') || slide.closest('.event-premium-card');
-                if (!cardWrapper || cardWrapper.style.display !== 'none') {
-                    visibleSlideNodesArray.push(slide);
-                }
-            });
-        }
-    }
-
-    // ৪. আপনার লজিক: রাজকীয় থিয়েটার মোড লাইটবক্স স্লাইডার মডাল উইন্ডো ইঞ্জিন ভাই
-    function launchBactaTheaterLightboxEngine(clickedSlideNode) {
-        rebuildActiveSlideRegistry();
-        activeSlideIndex = visibleSlideNodesArray.indexOf(clickedSlideNode);
-        if (activeSlideIndex === -1) activeSlideIndex = 0;
-        
-        renderTheaterTargetSlide();
-        document.getElementById('bactaGlobalSliderTheater').style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // ব্যাকগ্রাউন্ড স্ক্রলিং লক ভাই
-    }
-
-    function renderTheaterTargetSlide() {
-        if (visibleSlideNodesArray.length === 0) return;
-        let slide = visibleSlideNodesArray[activeSlideIndex];
-        let mediaContainer = document.getElementById('theaterCentralMediaContainer');
-        let captionContainer = document.getElementById('theaterAssetTitleCaption');
-        
-        let type = slide.getAttribute('data-type');
-        let title = slide.getAttribute('data-title');
-        
-        captionContainer.textContent = title;
-        mediaContainer.innerHTML = '';
-
-        if (type === 'image') {
-            let src = slide.getAttribute('data-src') || slide.src;
-            let img = document.createElement('img');
-            img.src = src;
-            img.style.maxWidth = '100%';
-            img.style.maxHeight = '100%';
-            img.style.objectFit = 'contain';
-            img.style.borderRadius = '6px';
-            mediaContainer.appendChild(img);
-        } else if (type === 'video') {
-            let videoSrc = slide.getAttribute('data-video-src');
-            if (videoSrc.includes('youtube.com') || videoSrc.includes('embed')) {
-                let iframe = document.createElement('iframe');
-                iframe.src = videoSrc + (videoSrc.includes('?') ? '&' : '?') + 'autoplay=1';
-                iframe.style.width = '100%';
-                iframe.style.height = '100%';
-                iframe.style.border = 'none';
-                iframe.setAttribute('allow', 'autoplay; fullscreen');
-                iframe.setAttribute('allowfullscreen', '');
-                mediaContainer.appendChild(iframe);
-            } else {
-                let video = document.createElement('video');
-                video.src = videoSrc;
-                video.controls = true;
-                video.autoplay = true;
-                video.style.maxWidth = '100%';
-                video.style.maxHeight = '100%';
-                video.style.objectFit = 'contain';
-                mediaContainer.appendChild(video);
-            }
-        }
-    }
-
-    function navigateBactaTheaterSlides(directionSteps) {
-        if (visibleSlideNodesArray.length === 0) return;
-        activeSlideIndex += directionSteps;
-        
-        if (activeSlideIndex >= visibleSlideNodesArray.length) {
-            activeSlideIndex = 0;
-        } else if (activeSlideIndex < 0) {
-            activeSlideIndex = visibleSlideNodesArray.length - 1;
-        }
-        
-        renderTheaterTargetSlide();
-    }
-
-    function shutdownBactaTheaterEngine() {
-        let mediaContainer = document.getElementById('theaterCentralMediaContainer');
-        mediaContainer.innerHTML = ''; // আইফ্রেম বা ভিডিও প্লেয়ার স্টপ হবে ভাই
-        document.getElementById('bactaGlobalSliderTheater').style.display = 'none';
-        document.body.style.overflow = ''; // ব্যাকগ্রাউন্ড স্ক্রলিং রিলিজ ভাই
-    }
-
-    // ৫. আপনার লজিক: মাউস স্ক্রলের সাথে সাথে ছবি ও ভিডিও ব্যাকগ্রাউন্ডে অটো-লোড করার ল্যাজি অবজারভার ইঞ্জিন ভাই
     document.addEventListener("DOMContentLoaded", function() {
-        rebuildActiveSlideRegistry();
-
-        let lazyAssetsArray = [].slice.call(document.querySelectorAll(".bacta-lazy-asset"));
-        
-        if ("IntersectionObserver" in window) {
-            let assetObserver = new IntersectionObserver(function(entries, observer) {
-                entries.forEach(function(entry) {
-                    if (entry.isIntersecting) {
-                        let targetAsset = entry.target;
-                        if (targetAsset.getAttribute('data-src')) {
-                            targetAsset.src = targetAsset.getAttribute('data-src');
-                        }
-                        targetAsset.style.opacity = '1';
-                        assetObserver.unobserve(targetAsset);
-                    }
-                });
-            }, { rootMargin: "0px 0px 200px 0px" }); // স্ক্রিন স্ক্রল করার ২০০ পিক্সেল আগেই রিকোয়েস্ট লোড লকড ভাই
-
-            lazyAssetsArray.forEach(function(lazyAsset) {
-                assetObserver.observe(lazyAsset);
-            });
-        } else {
-            // ওল্ড ব্রাউজার ফলব্যাক মেকানিজম ভাই
-            lazyAssetsArray.forEach(function(asset) {
-                if (asset.getAttribute('data-src')) {
-                    asset.src = asset.getAttribute('data-src');
-                }
-                asset.style.opacity = '1';
-            });
-        }
-
-        // 🔒 কিবোর্ড ট্র্যাকিং: ডানে-বামে কি চাপলে স্লাইড চেঞ্জ হবে এবং Esc চাপলে ক্লোজ হবে ভাই ভাই
-        document.addEventListener('keydown', function(event) {
-            let theaterModal = document.getElementById('bactaGlobalSliderTheater');
-            if (theaterModal && theaterModal.style.display === 'flex') {
-                if (event.key === 'ArrowRight') {
-                    navigateBactaTheaterSlides(1);
-                } else if (event.key === 'ArrowLeft') {
-                    navigateBactaTheaterSlides(-1);
-                } else if (event.key === 'Escape') {
-                    shutdownBactaTheaterEngine();
-                }
-            }
-        });
-
-        // লাইটবক্সের ছবির বাইরে ফাঁকা কালো জায়গায় ক্লিক করলে মডাল বন্ধ হবে ভাই
-        let theaterOverlay = document.getElementById('bactaGlobalSliderTheater');
-        if (theaterOverlay) {
-            theaterOverlay.addEventListener('click', function(e) {
-                if (e.target === theaterOverlay) {
-                    shutdownBactaTheaterEngine();
-                }
-            });
-        }
+        fetchLiveGalleryAssetsFromServer();
+        initiateBactaGalleryInfiniteScroll();
     });
+
+    function switchGalleryMediaTypeFilter(filterType, buttonElement) {
+        if (activeMediaTypeFilter === filterType || isGalleryStreamLoading) return;
+        activeMediaTypeFilter = filterType;
+        currentGalleryPage = 1;
+        
+        let buttons = buttonElement.parentElement.querySelectorAll('button');
+        buttons.forEach(function(btn) {
+            btn.className = "px-5 py-2 rounded-xl text-xs md:text-sm font-black uppercase tracking-wider transition-all duration-300 shadow-sm border border-slate-200 bg-white text-slate-700 hover:border-[#1A4B84] hover:text-[#1A4B84] focus:outline-none";
+        });
+        buttonElement.className = "px-5 py-2 rounded-xl text-xs md:text-sm font-black uppercase tracking-wider transition-all duration-300 shadow-sm border border-[#1A4B84] bg-[#1A4B84] text-white focus:outline-none";
+
+        document.getElementById('bactaLiveMediaGridHub').innerHTML = '';
+        fetchLiveGalleryAssetsFromServer();
+    }
+
+    function fetchLiveGalleryAssetsFromServer() {
+        if (isGalleryStreamLoading) return;
+        isGalleryStreamLoading = true;
+
+        let spinner = document.getElementById('bactaInfiniteScrollSpinnerLoader');
+        if (spinner) spinner.style.opacity = '1';
+let targetUrl = "/gallery-stream?page=" + currentGalleryPage + "&type=" + activeMediaTypeFilter;
+        
+        fetch(targetUrl)
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                totalGalleryPages = data.last_page;
+                let assetsList = data.data;
+                let gridHub = document.getElementById('bactaLiveMediaGridHub');
+                let fallbackBox = document.getElementById('bactaEmptyGalleryFallback');
+
+                if (currentGalleryPage === 1 && assetsList.length === 0) {
+                    fallbackBox.style.display = 'block';
+                } else {
+                    fallbackBox.style.display = 'none';
+                    
+                    assetsList.forEach(function(asset) {
+                        let cardElement = document.createElement('div');
+                        cardElement.className = "group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-100 transition-all duration-300 flex flex-col relative cursor-pointer";
+                        
+                        let categoryBadge = '';
+                        if (asset.type == 1) categoryBadge = '<span class="bg-[#EFF6FF] text-[#1E40AF]">Seminar</span>';
+                        else if (asset.type == 2) categoryBadge = '<span class="bg-[#ECFDF5] text-[#065F46]">Photo</span>';
+                        else categoryBadge = '<span class="bg-[#FFF7ED] text-[#9A3412]">Video</span>';
+
+                        let mediaCoverHtml = '';
+                        if (asset.type == 3) {
+                            let videoThumb = asset.media_file ? "/storage/" + asset.media_file : 'https://unsplash.com';
+                            mediaCoverHtml = '<div class="relative aspect-video w-full overflow-hidden bg-slate-900"><img src="' + videoThumb + '" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80" alt="' + asset.title + '"><div class="absolute inset-0 flex items-center justify-center"><div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white border border-white/40 group-hover:scale-110 group-hover:bg-[#00ADB5] transition-all duration-300 shadow-lg"><svg class="w-5 h-5 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>';
+                        } else {
+                            let imagePath = asset.media_file ? "/storage/" + asset.media_file : 'https://unsplash.com';
+                            mediaCoverHtml = '<div class="relative aspect-video w-full overflow-hidden bg-slate-100"><img src="' + imagePath + '" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="' + asset.title + '"></div>';
+                        }
+
+                        let venueHtml = asset.venue ? '<p class="text-[11px] font-bold text-slate-400 flex items-center gap-1 mt-auto m-0"><svg class="w-3 h-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span class="truncate">' + asset.venue + '</span></p>' : '';
+                        let assetDate = asset.event_date ? new Date(asset.event_date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Recent';
+
+                        cardElement.innerHTML = mediaCoverHtml + '<div class="p-5 flex flex-col flex-grow text-left"><div class="flex items-center justify-between gap-2 mb-2 text-[10px] font-black uppercase tracking-wider"><div class="flex items-center gap-1.5 text-slate-400"><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>' + assetDate + '</span></div><div class="px-2 py-0.5 rounded font-bold">' + categoryBadge + '</div></div><h3 class="text-sm md:text-base font-black text-slate-800 line-clamp-2 group-hover:text-[#1A4B84] transition-colors leading-snug flex-grow mb-2">' + asset.title + '</h3>' + venueHtml + '</div>';
+
+                        cardElement.addEventListener('click', function() { openBactaUnifiedLightboxWindow(asset); });
+                        gridHub.appendChild(cardElement);
+                    });
+                }
+                isGalleryStreamLoading = false;
+                if (spinner) spinner.style.opacity = '0';
+            })
+            .catch(function(err) {
+                isGalleryStreamLoading = false;
+                if (spinner) spinner.style.opacity = '0';
+            });
+    }
+</script>
+<script>
+    // 🚀 ২. মডার্ন ইন্টারসেকশন Observer ইনফিনিটি স্ক্রল ট্র্যাকার ইঞ্জিন ভাই
+    function initiateBactaGalleryInfiniteScroll() {
+        let spinnerNode = document.getElementById('bactaInfiniteScrollSpinnerLoader');
+        if (!spinnerNode) return;
+
+        galleryIntersectionObserver = new IntersectionObserver(function(entries) {
+            if (entries.isIntersecting && !isGalleryStreamLoading && currentGalleryPage < totalGalleryPages) {
+                currentGalleryPage++;
+                fetchLiveGalleryAssetsFromServer();
+            }
+        }, { rootMargin: '150px' });
+
+        galleryIntersectionObserver.observe(spinnerNode);
+    }
+
+    // 🚀 ৩. ইউনিভার্সাল লাইটবক্স পপ-আপ ওপেনার উইন্ডো মেথড ভাই
+    function openBactaUnifiedLightboxWindow(asset) {
+        let lightbox = document.getElementById('bactaUnifiedLightboxOverlay');
+        let imgFrame = document.getElementById('lightboxTargetImageFrame');
+        let videoWrapper = document.getElementById('lightboxTargetVideoWrapper');
+        let captionNode = document.getElementById('lightboxMediaCaptionNode');
+
+        imgFrame.style.display = 'none';
+        videoWrapper.style.display = 'none';
+        videoWrapper.innerHTML = '';
+        captionNode.textContent = asset.title;
+
+        if (asset.type == 3) {
+            videoWrapper.style.display = 'block';
+            if (asset.video_url) {
+                let videoId = '';
+                // 🎯 🔒 ওয়ান-ক্লিক পিওর ইউটিউব আইডি এক্সট্রাকশন ফিক্স (অ্যারে ইনডেক্সিং ১০০% সিকিউর নোড ভাই)
+                if (asset.video_url.indexOf('youtu.be/') !== -1) {
+                    let urlParts = asset.video_url.split('youtu.be/');
+                    if (urlParts && urlParts[1]) {
+                        let queryParts = urlParts[1].split(/[?#]/);
+                        videoId = queryParts[0] || '';
+                    }
+                } else if (asset.video_url.indexOf('v=') !== -1) {
+                    let urlParts = asset.video_url.split('v=');
+                    if (urlParts && urlParts[1]) {
+                        let queryParts = urlParts[1].split('&');
+                        videoId = queryParts[0] || '';
+                    }
+                }
+                videoWrapper.innerHTML = '<iframe class="w-full h-full border-0" src="https://www.youtube.com/embed/' + videoId + '?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+                } else {
+                let localVideoPath = asset.media_file ? "/storage/" + asset.media_file : '';
+                videoWrapper.innerHTML = '<video controls autoplay class="w-full h-full object-contain focus:outline-none"><source src="' + localVideoPath + '" type="video/mp4">Your browser does not support the video tag.</video>';
+            }
+        } else {
+            imgFrame.style.display = 'block';
+            imgFrame.src = asset.media_file ? "/storage/" + asset.media_file : 'https://unsplash.com';
+        }
+
+        lightbox.style.display = 'flex';
+        setTimeout(function() { lightbox.classList.remove('opacity-0'); lightbox.classList.add('opacity-100'); }, 50);
+        document.body.style.overflow = 'hidden';
+    }
+
+    // 🚀 ৪. ওয়ান-ক্লিক লাইটবক্স উইন্ডো ক্লোজার এবং মেমোরি রিলিজ নোড ভাই
+    function closeBactaUnifiedLightboxWindow() {
+        let lightbox = document.getElementById('bactaUnifiedLightboxOverlay');
+        let videoWrapper = document.getElementById('lightboxTargetVideoWrapper');
+        
+        lightbox.classList.remove('opacity-100');
+        lightbox.classList.add('opacity-0');
+        
+        setTimeout(function() { 
+            lightbox.style.display = 'none'; 
+            videoWrapper.innerHTML = ''; // ভিডিও প্লে স্টপ ও মেমোরি রিলিজ ভাই
+        }, 300);
+        document.body.style.overflow = '';
+    }
 </script>
 @endsection

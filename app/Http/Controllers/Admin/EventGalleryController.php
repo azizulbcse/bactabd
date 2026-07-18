@@ -71,8 +71,10 @@ class EventGalleryController extends Controller
 
     public function update(Request $request, $id)
     {
+        // 🎯 🔒 আপনার মেগা ফিক্স ১: এডিট ফর্মে টাইপ চেঞ্জ ইনপুট সাবমিটের জন্য 'type' ভ্যালিডেশন নোড অ্যাড করা হলো ভাই
         $request->validate([
             'title'      => 'required|string|max:255',
+            'type'       => 'required|integer|in:1,2,3',
             'media_file' => 'nullable|file|mimes:pdf,jpg,jpeg,png,mp4,mov,avi,wmv|max:51200',
             'video_url'  => 'nullable|url',
             'venue'      => 'nullable|string|max:255',
@@ -81,6 +83,10 @@ class EventGalleryController extends Controller
 
         $hub = EventGallery::findOrFail($id);
         $hub->title = $request->title;
+        
+        // 🎯 🔒 আপনার মেগা ফিক্স ২: এডিট মোডে 'type' চেঞ্জ করলে ডাটাবেজেও যেন ওটি পারফেক্টলি আপডেট হয় ভাই
+        $hub->type = $request->type;
+        
         $hub->venue = $request->venue;
         $hub->event_date = $request->event_date;
         $hub->video_url = $request->video_url;
@@ -91,7 +97,8 @@ class EventGalleryController extends Controller
             }
             $file = $request->file('media_file');
             $filename = time() . '_' . $file->getClientOriginalName();
-            if ($hub->type == 3) {
+            
+            if ($request->type == 3) {
                 $path = $file->storeAs('gallery_videos', $filename, 'public');
             } else {
                 $path = $file->storeAs('gallery_photos', $filename, 'public');
@@ -117,4 +124,18 @@ class EventGalleryController extends Controller
 
         return redirect()->back()->with('success', 'Asset log and its respective physical files permanently purged!');
     }
+    public function galleryStream(Request $request)
+{
+    $query = EventGallery::where('status', 2);
+
+    if ($request->type === 'photos') {
+        $query->where('type', 2);
+    } elseif ($request->type === 'videos') {
+        $query->where('type', 3);
+    }
+
+    return response()->json(
+        $query->orderBy('id', 'desc')->paginate(9)
+    );
+}
 }
