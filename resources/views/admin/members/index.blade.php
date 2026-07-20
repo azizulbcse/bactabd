@@ -61,7 +61,7 @@
                 <table id="bactaAdminTable" class="table table-bordered table-striped table-hover w-full text-sm">
                     <thead class="bg-light" style="color: #00496A;">
                         <tr>
-                            <th style="width: 50px;">ID</th>
+                            <th style="width: 50px;">SL</th>
                             <th style="width: 70px;" class="text-center">Photo</th>
                             <th>Full Name</th>
                             <th>Email Address</th>
@@ -74,7 +74,7 @@
                         {{-- কন্ট্রোলারের ওরিজিনাল $records এবং ডাটাবেজ পাথ অনুযায়ী নিখুঁত সিঙ্কড লুপ --}}
                         @foreach($records as $admin)
                             <tr id="row-user-{{ $admin->id }}">
-                                <td class="font-weight-bold align-middle">#{{ $admin->id }}</td>
+                                <td class="font-weight-bold align-middle">{{ $loop->iteration }}</td>
                                 <td class="text-center align-middle">
                                     {{-- কোনো সিমলিংক ছাড়া সরাসরি কন্ট্রোলারের ডাটাবেজ পাথ থেকে ছবি ভাসিয়ে দেওয়ার ম্যাজিক নোড --}}
                                     @if(!empty($admin->profile_pic) && file_exists(public_path($admin->profile_pic)))
@@ -396,13 +396,29 @@
 @section('js')
 <script>
     $(document).ready(function() {
-        if ($.fn.DataTable.isDataTable('#bactaAdminTable')) {
+        // 🔧 fix: আগে এই শর্তটা উল্টো ছিল (isDataTable() টেবিল আগে থেকেই DataTable হলে true দেয়,
+        // কিন্তু প্রথম পেজ লোডে টেবিলটা তখনো DataTable হয়ইনি, তাই এটা সবসময় false হতো এবং
+        // ভেতরের পুরো ব্লক - showBactaToast ফাংশন ডিফাইনেশন + ছবি প্রিভিউ হ্যান্ডলার - কখনোই
+        // রান হতো না। এখন "!" যোগ করে শর্তটা ঠিক করা হলো: DataTable এখনো initialize না
+        // হয়ে থাকলেই (স্বাভাবিক প্রথম লোড) ভেতরের কোড রান হবে।
+        if (!$.fn.DataTable.isDataTable('#bactaAdminTable')) {
         // ১. থিমের বিল্ট-ইন জেনুইন ডাটাটেবিল সার্চ বক্স ও পেজ নম্বর ফেরত আনার গ্যারান্টেড মেকানিজম
         $('#bactaAdminTable').DataTable({
             "responsive": true,
             "autoWidth": false,
             "ordering": true,
-            "order": [[0, "desc"]],
+            "order": [],
+            // 🔧 SL কলামটা এখন আর DB আইডি দেখাচ্ছে না, শুধু ক্রমিক নম্বর। তাই এই কলামে
+            // sorting বন্ধ রাখা হলো, আর প্রতিটা row-এর নম্বর এখন তার বর্তমান পেজ/পজিশন
+            // অনুযায়ী নিজে থেকে recalculate হবে - sort/search/pagination করলেও ঠিক ১, ২, ৩...
+            // ক্রমেই দেখাবে।
+            "columnDefs": [{
+                "targets": 0,
+                "orderable": false,
+                "render": function (data, type, row, meta) {
+                    return meta.settings._iDisplayStart + meta.row + 1;
+                }
+            }],
             "language": {
                 "search": "Quick Find:",
                 "paginate": {
@@ -437,7 +453,7 @@
 
         // ৩. আপনার ওরিজিনাল গোল সার্কেল উইন্ডো ইমেজ প্রিভিউ ইঞ্জিন (Add Form)
         $('#add_profile_pic').on('change', function(e) {
-            let fileName = e.target.files.length ? e.target.files.name : "Choose pic...";
+            let fileName = e.target.files.length ? e.target.files[0].name : "Choose pic...";
             $(this).next('.custom-file-label').html(fileName);
             
             if(e.target.files.length) {
@@ -445,13 +461,13 @@
                 reader.onload = function(event) {
                     $('#add_preview_window').attr('src', event.target.result);
                 }
-                reader.readAsDataURL(e.target.files);
+                reader.readAsDataURL(e.target.files[0]);
             }
         });
 
         // ৪. আপনার ওরিজিনাল গোল সার্কেল উইন্ডো ইমেজ প্রিভিউ ইঞ্জিন (Edit Form)
         $('#edit_profile_pic').on('change', function(e) {
-            let fileName = e.target.files.length ? e.target.files.name : "Change picture...";
+            let fileName = e.target.files.length ? e.target.files[0].name : "Change picture...";
             $(this).next('.custom-file-label').html(fileName);
             
             if(e.target.files.length) {
@@ -459,7 +475,7 @@
                 reader.onload = function(event) {
                     $('#edit_preview_window').attr('src', event.target.result);
                 }
-                reader.readAsDataURL(e.target.files);
+                reader.readAsDataURL(e.target.files[0]);
             }
         });
     }

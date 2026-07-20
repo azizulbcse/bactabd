@@ -223,7 +223,7 @@
                 <a href="#" class="block px-5 py-2.5 text-sm font-bold text-white hover:text-black transition-colors duration-150 no-underline">TOE</a>
             </div>
         </div>
-        <a href="{{ route('journals.archive') }}" class="{{ Route::is('journals.archive') ? 'text-white border-b-2 border-white' : 'text-white hover:text-cyan-200' }} h-10 flex items-center justify-center transition-all no-underline">
+        <a href="{{ route('frontend.journals.index') }}" class="{{ Route::is('frontend.journals.index') ? 'text-white border-b-2 border-white' : 'text-white hover:text-cyan-200' }} h-10 flex items-center justify-center transition-all no-underline">
             Journals & Publication
         </a>
 
@@ -341,7 +341,7 @@
     </div>
     
     <div class="border-t border-white/10 pt-1">
-        <a href="{{ route('journals.archive') }}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl {{ Route::is('journals.archive') ? 'text-white border-b-2 border-white font-semibold' : 'text-white/85 hover:bg-white/10' }} transition-colors no-underline">
+        <a href="{{ route('frontend.journals.index') }}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl {{ Route::is('frontend.journals.index') ? 'text-white border-b-2 border-white font-semibold' : 'text-white/85 hover:bg-white/10' }} transition-colors no-underline">
             Journals & Publication
         </a>
     </div>

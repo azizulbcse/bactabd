@@ -15,19 +15,20 @@ class BactaJournal extends Model
         'title',
         'author_name',
         'volume_issue',
+        'publishing_date',
         'journal_file',
+        'cover_image',
         'status',
-        'created_by',
-        'updated_by'
+        'created_by'
     ];
+
+    public function articles()
+    {
+        return $this->hasMany(JournalArticle::class, 'bacta_journal_id', 'id');
+    }
 
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function updater()
-    {
-        return $this->belongsTo(User::class, 'updated_by');
     }
 }

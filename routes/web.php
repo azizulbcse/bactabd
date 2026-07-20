@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\HospitalSurgeryController;
 use App\Http\Controllers\Admin\SurgeryTypeController;
 use App\Http\Controllers\Admin\CongenitalSurgeryController;
 use App\Http\Controllers\Admin\ValvularSurgeryController;
+use App\Http\Controllers\BactaJournalFrontController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,7 +32,8 @@ Route::get('/executive-minutes', [FrontendController::class, 'minutesArchive'])-
 Route::get('/events-gallery', [FrontendController::class, 'eventsGalleryPage'])->name('admin.gallery.index');
 Route::get('/gallery-stream', [EventGalleryController::class, 'galleryStream'])->name('gallery.stream');
 Route::get('/education-research', [FrontendController::class, 'educationResearch'])->name('frontend.education.research');
-Route::get('/bacta-journals', [FrontendController::class, 'journalsPage'])->name('journals.archive');
+//Route::get('/bacta-journals', [FrontendController::class, 'journalsPage'])->name('journals.archive');
+Route::get('/bacta-journals', [BactaJournalFrontController::class, 'index'])->name('frontend.journals.index');
 Route::get('/contact-us', [FrontendController::class, 'contactPage'])->name('contact.archive');
 Route::post('/contact/store', [FrontendController::class, 'contactStore'])->name('contact.store');
 Route::get('/cardiac-surgery-statistics', [FrontendController::class, 'cardiacSurgeryStats'])->name('frontend.surgeries.stats');
@@ -42,17 +44,33 @@ Route::get('/cardiology', [FrontendController::class, 'cardiology'])->name('fron
 
 Route::get('/dashboard', function () {
     if (Auth::user()->status !== 2) {
-        $status = Auth::user()->status; Auth::logout();
-        if ($status == 1) { return redirect()->route('login')->withErrors(['email' => 'Your account is currently pending approval. Please wait for BACTA Admin team to approve.']); } 
-        else { return redirect()->route('login')->withErrors(['email' => 'Your account has been suspended or deleted. Please contact support.']); }
+        $status = Auth::user()->status; 
+        Auth::logout();
+        
+        if ($status == 1) { 
+            return redirect()->route('login')->withErrors(['email' => 'Your account is currently pending approval. Please wait for BACTA Admin team to approve.']); 
+        } else { 
+            return redirect()->route('login')->withErrors(['email' => 'Your account has been suspended or deleted. Please contact support.']); 
+        }
     }
-    if (Auth::user()->email === 'azizulbcse@gmail.com' || Auth::id() === 1) { return redirect()->route('admin.dashboard'); }
-    return view('dashboard'); 
+
+    $counts = [
+        'pending_apps'  => \App\Models\CommitteeMember::where('status', 0)->count(),
+        'lifetime_fel'  => \App\Models\CommitteeMember::where('member_category', 'Lifetime')->count(),
+        'active_mems'   => \App\Models\CommitteeMember::where('member_category', 'Active')->count(),
+        'hospitals'     => \App\Models\Hospital::count(),
+        'designations'  => \App\Models\MedicalDesignation::count() + \App\Models\BactaDesignation::count(),
+        'notices'       => \App\Models\Notice::where('status', 2)->count(),
+        'minutes'       => \App\Models\ExecutiveMinute::count(),
+        'journals_mail' => \App\Models\BactaJournal::count() + \App\Models\ContactMessage::count(),
+    ];
+    
+    return view('admin.dashboard', compact('counts')); 
+    
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware(['auth'])->prefix('admin')->group(function () {  
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {  
     
-    // ১. জেনুইন অ্যাডমিন মূল ড্যাশবোর্ড কাউন্টার নোড
     Route::get('/dashboard', function () {
         $counts = [
             'pending_apps'  => \App\Models\CommitteeMember::where('status', 0)->count(),
@@ -111,33 +129,24 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::delete('/minutes/delete/{id}', [ExecutiveMinuteController::class, 'destroy'])->name('admin.minutes.delete');
     Route::post('/minutes/publish-direct/{id}', [ExecutiveMinuteController::class, 'publishDirect'])->name('admin.minutes.publish_direct');
 
-    // =========================================================================
-    // 👑 🔒 বিএসিটিএ স্পেশাল কোড গেটওয়ে: ৩-মেগা ডাইনামিক সার্জারি ডাটা এন্ট্রি রাউট হাব ভাই
-    // =========================================================================
-    
-    // মডিউল ১: ওরিজিনাল সামগ্রিক কার্ডিয়াক সার্জারি মেমোফাইল রাউট
     Route::prefix('cardiac-surgeries')->name('admin.surgeries.')->group(function () {
         Route::get('/', [HospitalSurgeryController::class, 'index'])->name('index');
         Route::get('/fetch', [HospitalSurgeryController::class, 'fetchMatrix'])->name('fetch');
         Route::post('/store', [HospitalSurgeryController::class, 'storeOrUpdate'])->name('store');
     });
 
-    // মডিউল ২: কাস্টম জন্মগত হৃদরোগ (Congenital - ASD, VSD, TOF, PDA) রাউট হাব ভাই
     Route::prefix('congenital-surgeries')->name('admin.congenital.')->group(function () {
         Route::get('/', [CongenitalSurgeryController::class, 'index'])->name('index');
         Route::get('/fetch', [CongenitalSurgeryController::class, 'fetchMatrix'])->name('fetch');
         Route::post('/store', [CongenitalSurgeryController::class, 'storeOrUpdate'])->name('store');
     });
 
-    // মডিউল ৩: সমাপনী ভাল্বুলার শল্যচিকিৎসা (Valvular - MVR, AVR, DVR) মেগা রাউট হাব ভাই
     Route::prefix('valvular-surgeries')->name('admin.valvular.')->group(function () {
         Route::get('/', [ValvularSurgeryController::class, 'index'])->name('index');
         Route::get('/fetch', [ValvularSurgeryController::class, 'fetchMatrix'])->name('fetch');
         Route::post('/store', [ValvularSurgeryController::class, 'storeOrUpdate'])->name('store');
     });
-    // =========================================================================
-    // 📸 বিএসিটিএ অফিসিয়াল: গ্যালারি হাব, জার্নালস এবং কন্টাক্ট ইনবক্স ডিরেক্টরি ভাই
-    // =========================================================================
+    
     Route::get('/gallery-hub', [EventGalleryController::class, 'index'])->name('admin.gallery.hub_index');
     Route::post('/gallery-hub/store', [EventGalleryController::class, 'store'])->name('admin.gallery.store');
     Route::post('/gallery-hub/update/{id}', [EventGalleryController::class, 'update'])->name('admin.gallery.update');
@@ -149,30 +158,17 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::post('/journals/update/{id}', [BactaJournalController::class, 'update'])->name('admin.journals.update');
     Route::delete('/journals/delete/{id}', [BactaJournalController::class, 'destroy'])->name('admin.journals.delete');
     Route::post('/journals/publish-direct/{id}', [BactaJournalController::class, 'publishDirect'])->name('admin.journals.publish_direct');
-
+    Route::post('/journals/articles/store', [BactaJournalController::class, 'storeArticle'])->name('admin.journals.articles.store');
+    
     Route::get('/contacts', [ContactMessageController::class, 'index'])->name('admin.contacts.index');
     Route::delete('/contacts/delete/{id}', [ContactMessageController::class, 'destroy'])->name('admin.contacts.delete');
 
-    // NOTE(fix): এখানে আগে cardiac/congenital/valvular surgery-র পুরো রাউট গ্রুপ
-    // (উপরে line 115-133 এ যা আছে) হুবহু আবার ডুপ্লিকেট করা ছিল - একই route name
-    // (admin.surgeries.*, admin.congenital.*, admin.valvular.*) কিন্তু cardiac-surgeries
-    // অংশে ভিন্ন URL ছিল ('/fetch-matrix', '/bulk-store')। এতে route() helper সবসময়
-    // পরের (দ্বিতীয়) সংজ্ঞাটাই ব্যবহার করত, অথচ আসল HTTP request প্রথম গ্রুপের URL দিয়েই
-    // ম্যাচ হতো - silent URL mismatch তৈরি করছিল। তাই পুরো ডুপ্লিকেট ব্লকটা বাদ দেওয়া হলো।
-    // যদি কোনো blade/JS ফাইলে সরাসরি '/admin/cardiac-surgeries/fetch-matrix' বা
-    // '/admin/cardiac-surgeries/bulk-store' hardcode করা থাকে, জানাবেন।
-
-    // মাস্টার সেটিংস কনফিগারেশন রুট গেটওয়ে ভাই
     Route::get('/surgery-types-config', [SurgeryTypeController::class, 'index'])->name('admin.surgery_types.index');
     Route::post('/surgery-types-config/store', [SurgeryTypeController::class, 'store'])->name('admin.surgery_types.store');
     Route::post('/surgery-types-config/update/{id}', [SurgeryTypeController::class, 'update'])->name('admin.surgery_types.update');
     Route::delete('/surgery-types-config/delete/{id}', [SurgeryTypeController::class, 'destroy'])->name('admin.surgery_types.delete');
-}); // 🎯 🔒 মেগা মেইন অ্যাডমিন প্রিফিক্স গ্রুপের ওরিজিনাল শেষ ব্র্যাকেট ক্লোজিং এখানে লকড ভাই!
-
-// =========================================================================
-// 🔒 লেয়ার ৪: গ্লোবাল মেম্বার প্রোফাইল এডিট এবং সিকিউরড লগ-আউট ড্রাইভার ভাই
-// =========================================================================
-Route::middleware('auth')->group(function () {
+}); 
+    Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

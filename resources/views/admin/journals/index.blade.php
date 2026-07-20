@@ -1,442 +1,457 @@
-<link rel="icon" type="image/x-icon" href="{{ asset('images/logo.png') }}" /> 
-
 @extends('adminlte::page')
 
-@section('title', 'Medical Journals Registry | BACTA Admin')
-
-@section('content')
+{{-- ১. আপনার ওরিজিনাল প্রিমিয়াম ঝাঁকুনি অ্যানিমেশন এবং ছিমছাম ইনপুট ট্রানজিশন সিএসএস পুশ --}}
+@push('css')
 <style>
-    .bacta-admin-wrapper {
-        font-family: 'Poppins', sans-serif;
-        padding: 10px 5px;
-        background-color: #F8FAFC;
-        width: 100%;
-        box-sizing: border-box;
+    .shake-effect {
+        animation: bctShake 0.5s ease-in-out;
+        border: 1px solid #dc3545 !important;
+        box-shadow: 0 0 10px rgba(220, 53, 69, 0.2) !important;
     }
-    .registry-split-layout {
-        display: flex;
-        gap: 25px;
-        align-items: flex-start;
-        width: 100%;
-    }
-    .registry-column-left {
-        width: 33%;
-        flex-shrink: 0;
-    }
-    .registry-column-right {
-        width: 67%;
-        flex-grow: 1;
-    }
-    .metric-card {
-        background: #ffffff;
-        border-radius: 12px;
-        border: 1px solid #E2E8F0;
-        box-shadow: 0 4px 12px rgba(148, 163, 184, 0.03);
-        padding: 24px;
-        position: relative;
-        box-sizing: border-box;
-    }
-    .metric-card-header {
-        font-size: 15px;
-        font-weight: 700;
-        color: #0F172A;
-        border-bottom: 1px solid #E2E8F0;
-        padding-bottom: 12px;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        text-transform: uppercase;
-        letter-spacing: 0.25px;
-    }
-    .metric-label {
-        display: block;
-        font-size: 12.5px;
-        font-weight: 600;
-        color: #475569;
-        margin-bottom: 6px;
-    }
-    .metric-control {
-        width: 100%;
-        height: 40px;
-        background: #ffffff;
-        border: 1px solid #CBD5E1;
-        border-radius: 8px;
-        padding: 0 12px;
-        font-size: 13px;
-        color: #0F172A;
-        outline: none;
-        transition: all 0.3s ease;
-        box-sizing: border-box;
-    }
-    .metric-control:focus {
-        border-color: #0284C7;
-        box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
-    }
-    @keyframes metricShake {
+    @keyframes bctShake {
         0%, 100% { transform: translateX(0); }
-        20%, 60% { transform: translateX(-5px); }
-        40%, 80% { transform: translateX(5px); }
+        20%, 60% { transform: translateX(-6px); }
+        40%, 80% { transform: translateX(6px); }
     }
-    .input-error-shake {
-        animation: metricShake 0.4s ease-in-out;
-        border-color: #EF4444 !important;
-        background-color: #FEF2F2;
+    .bct-input-wrapper, .bct-edit-input-wrapper, .bct-art-wrapper {
+        transition: all 0.3s ease;
     }
-    .btn-metric-save {
-        background: #475569; color: #ffffff; font-weight: 600; padding: 10px 16px;
-        border-radius: 8px; font-size: 12.5px; border: none; cursor: pointer; transition: all 0.3s ease;
+    .image-preview-circle {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #00ADEF;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        display: inline-block;
+        vertical-align: middle;
     }
-    .btn-metric-save:hover { background: #334155; }
-    .btn-metric-publish {
-        background: linear-gradient(135deg, #0284C7 0%, #1E40AF 100%); color: #ffffff;
-        font-weight: 600; padding: 10px 20px; border-radius: 8px; font-size: 12.5px;
-        border: none; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
-    }
-    .btn-metric-publish:hover { opacity: 0.95; transform: translateY(-1px); }
-    
-    .datatable-search-wrapper { position: relative; max-width: 250px; width: 100%; }
-    .datatable-search-input { width: 100%; height: 34px; background: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 6px; padding: 0 10px 0 32px; font-size: 12.5px; color: #0F172A; outline: none; transition: all 0.3s ease; }
-    .datatable-search-input:focus { border-color: #0284C7; background: #ffffff; box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1); }
-    
-    .btn-metric-action { width: 32px; height: 32px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; border: 1px solid transparent; cursor: pointer; transition: all 0.2s ease; text-decoration: none; }
-    .btn-metric-edit { background: #EFF6FF; color: #1D4ED8; border-color: #BFDBFE; }
-    .btn-metric-edit:hover { background: #1D4ED8; color: #ffffff; }
-    .btn-metric-delete { background: #FEF2F2; color: #EF4444; border-color: #FEE2E2; }
-    .btn-metric-delete:hover { background: #EF4444; color: #ffffff; }
-    
-    .metric-pagination-bar { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background: #F8FAFC; border-top: 1px solid #E2E8F0; font-size: 12.5px; color: #64748B; }
-    .pagination-btn-group { display: flex; gap: 6px; }
-    .pagination-number-node { padding: 5px 11px; border: 1px solid #CBD5E1; background: #ffffff; border-radius: 4px; color: #334155; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
-    .pagination-number-node.active-node { background: #0284C7; color: #ffffff; border-color: #0284C7; }
-
-    @media (max-width: 1024px) {
-        .registry-split-layout { flex-direction: column; }
-        .registry-column-left, .registry-column-right { width: 100%; }
+    /* ডাটাটেবিল গ্রিড ভেঙে যাওয়া রোধ করার কোর ফিক্স */
+    #bctJournalTable {
+        width: 100% !important;
     }
 </style>
-<div class="bacta-admin-wrapper">
+@endpush
+
+@section('title', 'Scientific Journals | BACTA')
+
+@section('content_header')
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <h1 class="m-0 text-dark font-weight-bold text-uppercase" style="color: #00496A !important; font-family: 'Poppins', sans-serif;">
+                    <i class="fas fa-book mr-2" style="color: #00ADEF;"></i> Scientific Journal Repository
+                </h1>
+            </div>
+        </div>
+    </div>
+@stop
+@section('content')
+<div class="container-fluid animate__animated animate__fadeInUp" style="font-family: 'Poppins', sans-serif;">
+    
+    {{-- গ্লোবাল ওয়ান-টাচ কাস্টম অ্যালার্ট টোস্ট ব্যানার কন্টেইনার --}}
+    <div id="ajax-toast-box" style="position: fixed; top: 25px; right: 25px; z-index: 9999; min-width: 320px; display: none;"></div>
+
+    {{-- ওরিজিনাল গ্লোবাল সাকসেস ফ্ল্যাশ মেমোরি অ্যালার্ট --}}
     @if(session('success'))
-        <div id="journalSuccessBanner" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: #ffffff; padding: 14px 18px; border-radius: 8px; margin-bottom: 25px; font-weight: 600; font-size: 13.5px; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2); transition: all 0.5s ease;">
-            <i class="fas fa-check-circle" style="font-size: 16px;"></i>
-            <span>{{ session('success') }}</span>
+        <div class="alert alert-success alert-dismissible shadow-sm border-0 animate__animated animate__fadeIn" id="bct-global-success-alert">
+            <button type="button" class="close text-white" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fas fa-check-circle mr-2"></i> Success!</h5>
+            {{ session('success') }}
         </div>
     @endif
 
-    <div class="registry-split-layout">
-        <!-- ==========================================
-             🔒 বাম কলাম: ওয়ান-ক্লিক জার্নাল আপলোড ফর্ম কন্টেইনার
-             ========================================== -->
-        <div class="registry-column-left">
-            <div class="metric-card">
-                <div class="metric-card-header" style="margin-bottom: 25px;">
-                    <span id="formTitleTextHub"><i class="fas fa-book-medical text-[#0284C7] mr-1"></i> Add Journal</span>
-                    <span id="formModeBadgeHub" style="font-size: 10px; background: #EFF6FF; color: #1E40AF; padding: 3px 8px; border-radius: 4px; font-weight: 700;">CREATE MODE</span>
+    {{-- ওরিজিনাল গ্লোবাল ব্যাকএন্ড ভ্যালিডেশন এরর টোস্ট --}}
+    @if($errors->any())
+        <div class="alert alert-danger alert-dismissible shadow-sm border-0 animate__animated animate__shakeX" id="bct-global-error-alert">
+            <button type="button" class="close text-white" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fas fa-exclamation-triangle mr-2"></i> Validation Alert!</h5>
+            <ul class="mb-0 pl-3">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    {{-- পাশাপাশি ২-কলাম মাস্টার গ্রিড লেআউট শুরু --}}
+    <div class="row">
+        
+        {{-- 📁 কলাম ১: বাম পাশের সায়েন্টিফিক জার্নাল আপলোডার ফর্ম প্যানেল --}}
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px; border-top: 4px solid #00496A !important;">
+                <div class="card-header bg-white pb-0 border-0">
+                    <h5 class="font-weight-bold text-dark m-0">
+                        <i class="fas fa-file-archive text-warning mr-1"></i> Unpack Journal ZIP
+                    </h5>
+                    <p class="text-muted small mt-1 mb-0">Upload 1 compressed ZIP and its grand luxury cover page image.</p>
                 </div>
                 
-                <form id="journalUploadForm" action="{{ route('admin.journals.store') }}" method="POST" enctype="multipart/form-data" novalidate>
-                    @csrf
-                    <input type="hidden" name="_method" id="formMethodSpoofHub" value="POST">
-                    <input type="hidden" name="action_type" id="journalActionType" value="save">
-                    
-                    <div style="margin-bottom: 18px;">
-                        <label class="metric-label"><i class="fas fa-heading text-slate-400 mr-1"></i> Article / Journal Title</label>
-                        <input type="text" name="title" id="journalTitle" class="metric-control" placeholder="e.g., Clinical Trials in Cardiac Arrhythmia">
-                        <div id="titleErrorNode" style="display: none; color: #EF4444; font-size: 11.5px; font-weight: 600; margin-top: 6px; align-items: center; gap: 4px;">
-                            <i class="fas fa-exclamation-triangle"></i> Title field cannot be empty!
+                <div class="card-body">
+                    <form action="{{ route('admin.journals.store') }}" method="POST" id="addJournalForm" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="action_type" id="journal_action_type" value="publish">
+                    <!-- ইনপুট ১: জার্নাল টাইটেল -->
+                    <div class="form-group mb-3">
+                        <label class="text-secondary small font-weight-bold">Scientific Journal Title <span class="text-danger">*</span></label>
+                        <div class="input-group bct-input-wrapper">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white border-right-0"><i class="fas fa-book-open text-muted"></i></span>
+                            </div>
+                            <input type="text" name="title" id="add_title_field" class="form-control border-left-0" placeholder="e.g., Bangladesh Journal of..." required>
                         </div>
                     </div>
 
-                    <div style="margin-bottom: 18px;">
-                        <label class="metric-label"><i class="fas fa-user-graduate text-slate-400 mr-1"></i> Principal Author Name</label>
-                        <input type="text" name="author_name" id="journalAuthor" class="metric-control" placeholder="e.g., Prof. Dr. M. A. Baqui">
-                        <div id="authorErrorNode" style="display: none; color: #EF4444; font-size: 11.5px; font-weight: 600; margin-top: 6px; align-items: center; gap: 4px;">
-                            <i class="fas fa-exclamation-triangle"></i> Author name is required!
+                    <!-- ইনপুট ২: রাইটার বা প্রিন্সিপাল অথর নেম -->
+                    <div class="form-group mb-3">
+                        <label class="text-secondary small font-weight-bold">Principal Author Name <span class="text-danger">*</span></label>
+                        <div class="input-group bct-input-wrapper">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white border-right-0"><i class="fas fa-user-edit text-muted"></i></span>
+                            </div>
+                            <input type="text" name="author_name" id="add_author_field" class="form-control border-left-0" placeholder="e.g., Prof. ATM. Khalilur Rahman" required>
                         </div>
                     </div>
 
-                    <div style="margin-bottom: 18px;">
-                        <label class="metric-label"><i class="fas fa-layer-group text-slate-400 mr-1"></i> Volume & Issue Catalog</label>
-                        <input type="text" name="volume_issue" id="journalVolume" class="metric-control" placeholder="e.g., Vol 14, Issue 2 (2026)">
-                        <div id="volumeErrorNode" style="display: none; color: #EF4444; font-size: 11.5px; font-weight: 600; margin-top: 6px; align-items: center; gap: 4px;">
-                            <i class="fas fa-exclamation-triangle"></i> Volume / Issue is required!
+                    <!-- 👑 ইনপুট ৩: আপনার ফ্রন্ট কাভার ছবি আপলোডার উইন্ডো ও গোল প্রিভিউ সার্কেল নোড ভাই -->
+                    <div class="form-group mb-3">
+                        <label class="text-secondary small font-weight-bold">Journal Front Cover Page (JPG/PNG)</label>
+                        <div class="row align-items-center">
+                            <div class="col-9">
+                                <div class="custom-file bct-input-wrapper">
+                                    <input type="file" name="cover_image" id="add_cover_image" class="custom-file-input" accept="image/*">
+                                    <label class="custom-file-label border-light text-muted text-truncate" for="add_cover_image">Select cover photo...</label>
+                                </div>
+                            </div>
+                            <div class="col-3 text-center">
+                                {{-- ছবি সিলেক্ট করামাত্রই এই গোল গোল উইন্ডোর ভেতর ওটা লাইভ ভেসে উঠবে ভাই --}}
+                                <img id="add_cover_preview" src="{{ asset('vendor/adminlte/dist/img/avatar5.png') }}" class="image-preview-circle" alt="Cover Preview" style="border: 2px solid #ffc107; width: 45px; height: 45px;">
+                            </div>
                         </div>
                     </div>
-                    
-                    <div style="margin-bottom: 25px;">
-                        <label class="metric-label"><i class="far fa-file-pdf text-slate-400 mr-1"></i> Upload Scientific Document (PDF Only)</label>
-                        <input type="file" name="journal_file" id="journalFile" class="metric-control" style="padding-top: 8px;" accept=".pdf">
-                        <div id="fileErrorNode" style="display: none; color: #EF4444; font-size: 11.5px; font-weight: 600; margin-top: 6px; align-items: center; gap: 4px;">
-                            <i class="fas fa-cloud-upload-alt"></i> Journal document copy is required! Max size: 10MB.
+                    <!-- ইনপুট ৪: ভলিউম এবং ISSUE ক্যাটালগ কোড -->
+                    <div class="form-group mb-3">
+                        <label class="text-secondary small font-weight-bold">Volume & Issue Catalog <span class="text-danger">*</span></label>
+                        <div class="input-group bct-input-wrapper">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white border-right-0"><i class="fas fa-layer-group text-muted"></i></span>
+                            </div>
+                            <input type="text" name="volume_issue" id="add_volume_field" class="form-control border-left-0" placeholder="e.g., Vol. 13, No. 01" required>
                         </div>
                     </div>
-                    
-                    <div id="formControlButtonsGroupHub" style="display: flex; flex-direction: column; gap: 12px;">
-                        <button type="button" onclick="validateAndSubmitJournal('publish')" class="btn-metric-publish" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; height: 42px;">
-                            <i class="fas fa-globe"></i> Publish Live Immediately
+
+                    <!-- ইনপুট ৫: জার্নাল জিপ ফাইল ফিল্টার -->
+                    <div class="form-group mb-4">
+                        <label class="text-secondary small font-weight-bold">Journal Compressed Archive (ZIP Only) <span class="text-danger">*</span></label>
+                        <div class="custom-file bct-input-wrapper">
+                            <input type="file" name="journal_file" id="add_journal_file" class="custom-file-input" accept=".zip" required>
+                            <label class="custom-file-label border-light text-muted text-truncate" for="add_journal_file">Select journal_asset.zip...</label>
+                        </div>
+                    </div>
+
+                    <!-- বাটন নোড: ১০০% টাইপ-লক মুক্ত ডাইরেক্ট সাবমিট ইঞ্জিন ভাই -->
+                    <div class="form-group mb-0">
+                        <button type="submit" id="bctRealSubmitBtn" onclick="document.getElementById('journal_action_type').value='publish';" class="btn btn-primary font-weight-bold btn-block py-2 shadow-sm mb-2" style="background-color: #00496A; border: none; border-radius: 8px;">
+                            <i class="fas fa-unlock-alt mr-1"></i> Extract & Publish Live
                         </button>
-                        <button type="button" onclick="validateAndSubmitJournal('save')" class="btn-metric-save" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; height: 42px; background: #F1F5F9; color: #475569; border: 1px solid #CBD5E1;">
-                            <i class="fas fa-folder-plus"></i> Save as Draft (Pending)
+                        <button type="submit" id="bctRealDraftBtn" onclick="document.getElementById('journal_action_type').value='draft';" class="btn btn-outline-secondary font-weight-bold btn-block py-2" style="border-radius: 8px;">
+                            <i class="fas fa-file-archive mr-1"></i> Unpack as Draft
                         </button>
                     </div>
                 </form>
             </div>
         </div>
-        <!-- ==========================================
-             🚀 ডান কলাম: সেন্ট্রাল ডাটাবেজ আর্কাইভ টেবিল
-             ========================================== -->
-        <div class="registry-column-right">
-            <div class="metric-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
-                
-                <div class="metric-card-header" style="padding: 20px 24px; margin-bottom: 0; border-bottom: 1px solid #E2E8F0; width: 100%;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <i class="fas fa-database text-[#1E40AF]"></i> <span>Journals Registry Catalog</span>
-                    </div>
-                    <div class="datatable-search-wrapper">
-                        <i class="fas fa-search" style="position: absolute; left: 11px; top: 10px; color: #94A3B8; font-size: 13px;"></i>
-                        <input type="text" id="dtJournalSearchInput" class="datatable-search-input" placeholder="Quick Filter Records...">
-                    </div>
+    </div>
+        {{-- 📊 কলাম ২: ডান পাশের আল্ট্রা-মডার্ন জার্নাল রেজিস্ট্রি ডাটাটেবিল রোল --}}
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm" style="border-radius: 16px; border-top: 4px solid #00496A !important;">
+                <div class="card-header bg-white border-0 pb-0">
+                    <h5 class="font-weight-bold text-dark m-0"><i class="fas fa-list-alt text-muted mr-1"></i> Registered Journals Roll</h5>
+                    <p class="text-muted small mt-1 mb-0">Live catalog tracking with zero-symlink direct document viewer window.</p>
                 </div>
-
-                <div style="overflow-x: auto; width: 100%;">
-                    <table id="metricJournalTableHub" style="width: 100%; min-width: 750px; border-collapse: collapse; text-align: left; font-size: 12.5px;">
-                        <thead>
-                            <tr style="background: #F8FAFC; border-bottom: 2px solid #E2E8F0; color: #1E40AF; font-weight: 700; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px;">
-                                <th style="padding: 14px 20px; width: 50px; text-align: center;">SL</th>
-                                <th style="padding: 14px 20px;">Article & Author Details</th>
-                                <th style="padding: 14px 20px; width: 140px;">Volume / Issue</th>
-                                <th style="padding: 14px 20px; width: 100px; text-align: center;">Status Gate</th>
-                                <th style="padding: 14px 20px; width: 140px;">Created By Audit</th>
-                                <th style="padding: 14px 20px; width: 130px; text-align: center;">Action Hub</th>
-                            </tr>
-                        </thead>
-                        <tbody style="color: #334155; font-weight: 500;">
-                            @forelse($journals as $key => $row)
-                            <tr class="dt-journal-row-item" style="border-bottom: 1px solid #E2E8F0; transition: all 0.2s ease;">
-                                <td class="dt-sl-node" style="padding: 14px 20px; text-align: center; color: #94A3B8; font-weight: 700;">{{ $key + 1 }}</td>
-                                <td class="dt-title-node" style="padding: 14px 20px;">
-                                    <div style="font-weight: 700; color: #0F172A; font-size: 13px;"><i class="far fa-file-pdf text-[#EF4444] mr-1" style="font-size: 13.5px;"></i> <span>{{ $row->title }}</span></div>
-                                    <div style="font-size: 11px; color: #64748B; margin-top: 3px;"><i class="fas fa-user-edit mr-1 text-slate-400"></i> {{ $row->author_name }}</div>
-                                </td>
-                                <td class="dt-volume-node" style="padding: 14px 20px; font-weight: 600; color: #1E40AF; vertical-align: middle;">
-                                    {{ $row->volume_issue }}
-                                </td>
-                                <td style="padding: 14px 20px; text-align: center; vertical-align: middle;">
-                                    @if($row->status == 2)
-                                        <span style="background: rgba(16, 185, 129, 0.1); color: #10B981; padding: 3px 9px; border-radius: 12px; font-size: 10px; font-weight: 700; text-transform: uppercase;">Live</span>
-                                    @else
-                                        {{-- 🚀 ওয়ান-ক্লিক ডাইনামিক লাইভ পাবলিশ বাটন ফর্ম মেকানিজম ভাই --}}
-                                        <form action="{{ route('admin.journals.publish_direct', $row->id) }}" method="POST" onsubmit="return confirm('🚀 Do you want to publish this medical journal live immediately?');" style="display: inline-block; margin: 0;">
-                                            @csrf
-                                            <button type="submit" style="background: rgba(148, 163, 184, 0.1); color: #64748B; padding: 4px 10px; border-radius: 12px; font-size: 10px; font-weight: 700; text-transform: uppercase; border: 1px solid #CBD5E1; cursor: pointer; transition: all 0.2s ease;" onmouseenter="this.style.background='#10B981'; this.style.color='#ffffff'; this.style.borderColor='#10B981';" onmouseleave="this.style.background='rgba(148, 163, 184, 0.1)'; this.style.color='#64748B'; this.style.borderColor='#CBD5E1';">
-                                                <i class="fas fa-paper-plane mr-1" style="font-size: 9px;"></i> Draft
-                                            </button>
-                                        </form>
-                                    @endif
-                                </td>
-                                <td style="padding: 14px 20px; font-size: 11.5px; color: #475569; vertical-align: middle;">
-                                    <span style="font-weight: 600; color: #0F172A;">{{ $row->creator->name ?? 'Admin' }}</span>
-                                    <div style="font-size: 10px; color: #94A3B8; margin-top: 2px;">{{ $row->created_at->format('d M, h:i A') }}</div>
-                                </td>
-                                <td style="padding: 14px 20px; text-align: center; vertical-align: middle;">
-                                    <div style="display: flex; gap: 6px; justify-content: center; align-items: center;">
-                                        <a href="{{ asset('storage/' . $row->journal_file) }}" target="_blank" class="btn-metric-action" style="background: #F1F5F9; color: #475569; border-color: #CBD5E1;"><i class="fas fa-eye"></i></a>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        {{-- আপনার ওরিজিনাল মেমোরি ট্র্যাক করা ক্যাশ-ফ্রি ডাটাটেবিল আইডি --}}
+                        <table id="bctJournalTable" class="table table-bordered table-striped table-hover w-full text-sm">
+                            <thead class="bg-light" style="color: #00496A;">
+                                <tr>
+                                    <th style="width: 50px; vertical-align: middle;">ID</th>
+                                    <th style="width: 70px; vertical-align: middle;" class="text-center">Cover</th>
+                                    <th style="vertical-align: middle;">Journal Info</th>
+                                    <th style="width: 130px; vertical-align: middle;" class="text-center">Volume & Issue</th>
+                                    <th style="vertical-align: middle;" class="text-center">Digital Document</th>
+                                    <th style="width: 90px; vertical-align: middle;" class="text-center">Status</th>
+                                    <th style="width: 150px; vertical-align: middle;" class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($journals as $journal)
+                                    <tr id="row-journal-{{ $journal->id }}">
+                                        {{-- ১. আইডি নোড --}}
+                                        <td class="font-weight-bold align-middle">#{{ $journal->id }}</td>
                                         
-                                        {{-- 🔒 আপনার ওফিসিয়াল ইন-লাইন এডিট ট্রিগার কন্ডিশন ভাই --}}
-                                        @if($row->status == 1)
-                                            <button type="button" onclick="switchToInlineEditMode({{ $row->id }}, '{{ addslashes($row->title) }}', '{{ addslashes($row->author_name) }}', '{{ addslashes($row->volume_issue) }}')" class="btn-metric-action btn-metric-edit"><i class="fas fa-edit"></i></button>
-                                        @else
-                                            <span class="btn-metric-action" style="background: #F0FDF4; color: #16A34A; border-color: #DCFCE7; cursor: not-allowed;"><i class="fas fa-shield-alt"></i></span>
-                                        @endif
+                                        {{-- ২. কাভার পেজ থাম্বনেইল কলাম --}}
+                                        <td class="text-center align-middle" style="width: 70px;">
+                                            @if(!empty($journal->cover_image) && file_exists(public_path($journal->cover_image)))
+                                                <img src="{{ asset($journal->cover_image) }}" 
+                                                     class="elevation-1 border shadow-xs" 
+                                                     style="width: 50px; height: 65px; object-fit: cover; border-radius: 4px;" 
+                                                     alt="Cover">
+                                            @else
+                                                <div class="bg-light text-muted d-flex align-items-center justify-content-center mx-auto shadow-xs border" style="width: 50px; height: 65px; border-radius: 4px;"><i class="fas fa-book" style="font-size: 20px; color: #00ADEF;"></i></div>
+                                            @endif
+                                        </td>
 
-                                        <form action="{{ route('admin.journals.delete', $row->id) }}" method="POST" onsubmit="return confirm('🚨 Wipe official journal copy file from storage permanently?');" style="display: inline-block; margin: 0;">
-                                            @csrf @method('DELETE')
-                                            <button type="submit" class="btn-metric-action btn-metric-delete"><i class="fas fa-trash-alt"></i></button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr id="dtEmptyJournalFallbackRow">
-                                <td colspan="6" style="padding: 40px; text-align: center; color: #94A3B8; font-weight: 600; font-size: 14px;">
-                                    <i class="fas fa-folder-open" style="font-size: 26px; display: block; margin-bottom: 8px;"></i> Central journal registry database is empty.
-                                </td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-                <div class="metric-pagination-bar">
-                    <div id="dtPaginationInfoNode">Showing 0 to 0 of 0 logs</div>
-                    <div class="pagination-btn-group" id="dtPaginationNavGroup"></div>
-                </div>
+                                        {{-- ৩. জিপ থেকে আনপ্যাক হওয়া সব আর্টিকেলের রিয়েল-টাইম লাইভ ট্র্যাকিং লিস্ট গ্রিড --}}
+                                        <td class="align-middle">
+                                            <span class="font-weight-bold text-dark d-block mb-1" style="font-size: 14px;">
+                                                {{ $journal->title }}
+                                            </span>
+                                            <small class="text-muted font-weight-bold d-block mb-2"><i class="fas fa-user-edit mr-1"></i> Principal Author: {{ $journal->author_name }}</small>
+
+                                            {{-- আনজিপ ড্রাইভ লুপ: জিপ থেকে বের হওয়া প্রতিটি পিডিএফ এখানে অটোমেটিক রেন্ডার হবে ভাই --}}
+                                            @if($journal->articles->count() > 0)
+                                                <div class="mt-2 pl-2" style="border-left: 2px solid #00ADEF !important;">
+                                                    @foreach($journal->articles as $article)
+                                                        <div class="d-flex align-items-center justify-content-between bg-light rounded px-2 py-1 mb-1 border shadow-xs animate__animated animate__fadeIn" style="font-size: 12px;">
+                                                            <div class="text-truncate mr-2" style="max-width: 80%;">
+                                                                <span class="font-weight-bold text-dark d-block text-truncate">{{ $article->article_title }}</span>
+                                                            </div>
+                                                            <a href="{{ asset($article->pdf_file) }}" target="_blank" class="btn btn-xs btn-outline-danger font-weight-bold px-2 py-0" style="font-size: 10px; border-radius: 4px;"><i class="fas fa-file-pdf"></i> View</a>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @endif
+                                        </td>
+                                        
+                                        {{-- ৪. ভলিউম ক্যাটালগ কোড কলাম --}}
+                                        <td class="align-middle">
+                                            <span class="badge bg-light text-dark font-weight-bold border d-block py-1 text-center shadow-xs">
+                                                <i class="fas fa-layer-group text-muted mr-1"></i> {{ $journal->volume_issue }}
+                                            </span>
+                                        </td>
+                                        
+                                        {{-- ৫. মেমোরি ট্র্যাক নোড --}}
+                                        <td class="align-middle text-center">
+                                            <span class="badge bg-light text-secondary border px-2 py-1 shadow-xs font-weight-bold">
+                                                <i class="fas fa-file-archive text-warning mr-1"></i> ZIP Archive
+                                            </span>
+                                        </td>
+                                        
+                                        {{-- ৬. পাবলিশ/ড্রাফট স্ট্যাটাস ব্যানার --}}
+                                        <td class="text-center align-middle">
+                                            @if($journal->status == 2)
+                                                <span class="badge bg-success font-weight-bold px-2 py-1"><i class="fas fa-globe mr-1"></i> Live</span>
+                                            @else
+                                                <span class="badge bg-warning text-dark font-weight-bold px-2 py-1"><i class="fas fa-file-signature mr-1"></i> Draft</span>
+                                            @endif
+                                        </td>
+                                        
+                                        {{-- ৭. Actions বাটন গ্রিড --}}
+                                        <td class="text-center align-middle">
+                                            <button type="button" onclick="openAddArticleModal({{ $journal->id }}, '{{ addslashes($journal->title) }}')" class="btn btn-primary btn-xs font-weight-bold w-full mb-2 shadow-xs py-1" style="background-color: #00496A; border: none; border-radius: 6px;">
+                                                <i class="fas fa-plus-circle mr-1"></i> + Add Article
+                                            </button>
+                                            
+                                            <div class="btn-group btn-group-xs w-full">
+                                                <button type="button" class="btn btn-warning font-weight-bold edit-journal-btn" data-id="{{ $journal->id }}" style="border-radius: 4px 0 0 4px; font-size: 11px;">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </button>
+                                                <button type="button" class="btn btn-danger font-weight-bold delete-journal-btn" data-id="{{ $journal->id }}" style="border-radius: 0 4px 4px 0; font-size: 11px;">
+                                                    <i class="fas fa-trash-alt"></i> Del
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center py-5 bg-white">
+                                            <h5 class="text-secondary font-weight-bold">No Journals ZIP Archives Extracted Yet!</h5>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div> {{-- card-body end --}}
+            </div> {{-- card end --}}
+        </div> {{-- col-md-8 end --}}
+    </div> {{-- 👑 AdminLTE অরিজিনাল গ্রিড রো ক্লোজার নোড যা মেনু ভাঙা চিরতরে ফিক্স করল ভাই --}}
+</div> {{-- মেইন container fluid ক্লোজার নোড ভাই --}}
+<!-- ==========================================
+     MODALS SECTION (GENUINE ADMINLTE COMPATIBLE)
+     ========================================== -->
+<div class="modal fade" id="addArticleModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content shadow border-0" style="border-radius: 12px; overflow: hidden;">
+            <div class="modal-header text-white" style="background-color: #00496A;">
+                <h5 class="modal-title font-weight-bold"><i class="fas fa-plus-circle mr-2"></i> Attach Paper / Article</h5>
+                <button type="button" class="close text-white" onclick="$('#addArticleModal').modal('hide');"><span>&times;</span></button>
             </div>
+            <form action="{{ route('admin.journals.articles.store') }}" method="POST" id="addArticleForm" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="bacta_journal_id" id="art_journal_id">
+                <div class="modal-body bg-light py-4">
+                    <div class="alert alert-info border-0 mb-3 py-2" style="background-color: #e0f2fe; border-left: 4px solid #00ADEF !important;">
+                        <span id="art_journal_title_banner" class="font-weight-bold text-dark" style="font-size: 14px;"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="text-secondary small font-weight-bold">Article / Paper Title <span class="text-danger">*</span></label>
+                        <input type="text" name="article_title" id="art_title_field" class="form-control" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="text-secondary small font-weight-bold">Contributor Name <span class="text-danger">*</span></label>
+                        <input type="text" name="author_name" id="art_author_field" class="form-control" required>
+                    </div>
+                    <div class="form-group mb-0">
+                        <label class="text-secondary small font-weight-bold">Upload PDF Document <span class="text-danger">*</span></label>
+                        <div class="custom-file">
+                            <input type="file" name="pdf_file" id="art_pdf_file" class="custom-file-input" accept="application/pdf" required>
+                            <label class="custom-file-label" for="art_pdf_file">Choose article PDF...</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-white justify-content-between">
+                    <button type="button" class="btn btn-default font-weight-bold" onclick="$('#addArticleModal').modal('hide');">Cancel</button>
+                    <button type="submit" id="artSaveBtn" class="btn btn-success font-weight-bold px-4">Attach Paper Live</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="editJournalModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content shadow border-0" style="border-radius: 12px; overflow: hidden;">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title font-weight-bold"><i class="fas fa-edit mr-2"></i> Update Journal Registry</h5>
+                <button type="button" class="close text-white" onclick="$('#editJournalModal').modal('hide');"><span>&times;</span></button>
+            </div>
+            <form id="editJournalForm" method="POST" enctype="multipart/form-data" novalidate>
+                @csrf
+                <input type="hidden" name="id" id="edit_id">
+                <div class="modal-body bg-light py-4">
+                    <div class="form-group mb-3">
+                        <label class="text-secondary small font-weight-bold">Journal Title</label>
+                        <input type="text" name="title" id="edit_title" class="form-control" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="text-secondary small font-weight-bold">Author Name</label>
+                        <input type="text" name="author_name" id="edit_author" class="form-control" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="text-secondary small font-weight-bold">Volume & Issue</label>
+                        <input type="text" name="volume_issue" id="edit_volume" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer bg-white"><button type="submit" id="editSaveBtn" class="btn btn-info font-weight-bold px-4"><i class="fas fa-upload mr-1"></i> Update Changes</button></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 👑 ওরিজিনাল ফিক্সড ডিলিট মোডাল: যা Route::delete জ্যাম চিরতরে খতম করবে ভাই -->
+<div class="modal fade" id="destroyJournalModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content shadow border-0" style="border-radius: 12px; overflow: hidden;">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title font-weight-bold"><i class="fas fa-exclamation-triangle mr-2"></i> Wipe Assets</h5>
+                <button type="button" class="close text-white" onclick="$('#destroyJournalModal').modal('hide');"><span>&times;</span></button>
+            </div>
+            
+            <form id="destroyJournalForm" method="POST" action="">
+                @csrf
+                {{-- 👑 ম্যাজিক নোড: আপনার রাউট ফাইলের Route::delete এর সাথে ম্যাচ করানোর জন্য ওরিজিনাল ডিলিট স্পুফিং ট্যাগ ভাই --}}
+                @method('DELETE') 
+                
+                <input type="hidden" name="id" id="destroy_id">
+                <div class="modal-body text-center bg-light py-4">
+                    <i class="fas fa-trash-alt text-danger mb-3" style="font-size: 40px;"></i>
+                    <p class="text-dark font-weight-bold mb-1">Permanently Delete?</p>
+                    <p class="text-muted small px-2">This will erase this volume and auto-purge its PDF assets from storage.</p>
+                </div>
+                <div class="modal-footer bg-white justify-content-between">
+                    <button type="button" class="btn btn-default btn-sm font-weight-bold" onclick="$('#destroyJournalModal').modal('hide');">Cancel</button>
+                    <button type="submit" id="destroySubmitBtn" class="btn btn-danger btn-sm font-weight-bold px-3">Yes, Wipe Out</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@stop
+@section('js')
 <script>
-    function switchToInlineEditMode(id, currentTitle, authorName, volumeIssue) {
-        let form = document.getElementById('journalUploadForm');
-        let titleInput = document.getElementById('journalTitle');
-        let authorInput = document.getElementById('journalAuthor');
-        let volumeInput = document.getElementById('journalVolume');
-        let methodSpoof = document.getElementById('formMethodSpoofHub');
-        let formTitleText = document.getElementById('formTitleTextHub');
-        let formModeBadge = document.getElementById('formModeBadgeHub');
-        let buttonsGroup = document.getElementById('formControlButtonsGroupHub');
-
-        document.getElementById('titleErrorNode').style.display = 'none';
-        document.getElementById('authorErrorNode').style.display = 'none';
-        document.getElementById('volumeErrorNode').style.display = 'none';
-        document.getElementById('fileErrorNode').style.display = 'none';
-
-        titleInput.value = currentTitle;
-        authorInput.value = authorName;
-        volumeInput.value = volumeIssue;
-        titleInput.focus();
-        
-        form.action = "{{ url('admin/journals/update') }}/" + id;
-        methodSpoof.value = "POST";
-
-        formTitleText.innerHTML = '<i class="fas fa-edit text-[#1D4ED8] mr-1"></i> Update Journal Entry';
-        formModeBadge.innerHTML = 'EDIT MODE';
-        formModeBadge.style.background = '#EFF6FF';
-        formModeBadge.style.color = '#1D4ED8';
-
-        buttonsGroup.innerHTML = `
-            <button type="button" onclick="validateAndSubmitJournal('update_action')" class="btn-metric-publish" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; height: 42px; background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%); box-shadow: 0 4px 12px rgba(29, 78, 216, 0.2);">
-                <i class="fas fa-save"></i> Save Changes Now
-            </button>
-            <button type="button" onclick="cancelInlineEditMode()" class="btn-metric-save" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; height: 42px; background: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1;">
-                <i class="fas fa-times"></i> Cancel & Create New
-            </button>
-        `;
-    }
-
-    function cancelInlineEditMode() {
-        let form = document.getElementById('journalUploadForm');
-        let titleInput = document.getElementById('journalTitle');
-        let methodSpoof = document.getElementById('formMethodSpoofHub');
-        let formTitleText = document.getElementById('formTitleTextHub');
-        let formModeBadge = document.getElementById('formModeBadgeHub');
-        let buttonsGroup = document.getElementById('formControlButtonsGroupHub');
-
-        form.reset();
-        form.action = "{{ route('admin.journals.store') }}";
-        methodSpoof.value = "POST";
-
-        formTitleText.innerHTML = '<i class="fas fa-book-medical text-[#0284C7] mr-1"></i> Add Journal';
-        formModeBadge.innerHTML = 'CREATE MODE';
-        formModeBadge.style.background = '#EFF6FF';
-        formModeBadge.style.color = '#1E40AF';
-
-        buttonsGroup.innerHTML = `
-            <button type="button" onclick="validateAndSubmitJournal('publish')" class="btn-metric-publish" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; height: 42px;">
-                <i class="fas fa-globe"></i> Publish Live Immediately
-            </button>
-            <button type="button" onclick="validateAndSubmitJournal('save')" class="btn-metric-save" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; height: 42px; background: #F1F5F9; color: #475569; border: 1px solid #CBD5E1;">
-                <i class="fas fa-folder-plus"></i> Save as Draft (Pending)
-            </button>
-        `;
-    }
-
-    function validateAndSubmitJournal(actionType) {
-        let titleInput = document.getElementById('journalTitle');
-        let authorInput = document.getElementById('journalAuthor');
-        let volumeInput = document.getElementById('journalVolume');
-        let fileInput = document.getElementById('journalFile');
-        
-        let titleError = document.getElementById('titleErrorNode');
-        let authorError = document.getElementById('authorErrorNode');
-        let volumeError = document.getElementById('volumeErrorNode');
-        let fileError = document.getElementById('fileErrorNode');
-        
-        let actionField = document.getElementById('journalActionType');
-        let form = document.getElementById('journalUploadForm');
-        let formModeBadge = document.getElementById('formModeBadgeHub');
-        let isValid = true;
-
-        titleError.style.display = 'none';
-        authorError.style.display = 'none';
-        volumeError.style.display = 'none';
-        fileError.style.display = 'none';
-
-        if (!titleInput.value.trim()) {
-            titleInput.classList.add('input-error-shake'); titleError.style.display = 'flex'; isValid = false;
-            setTimeout(() => { titleInput.classList.remove('input-error-shake'); }, 420);
-        }
-        if (!authorInput.value.trim()) {
-            authorInput.classList.add('input-error-shake'); authorError.style.display = 'flex'; isValid = false;
-            setTimeout(() => { authorInput.classList.remove('input-error-shake'); }, 420);
-        }
-        if (!volumeInput.value.trim()) {
-            volumeInput.classList.add('input-error-shake'); volumeError.style.display = 'flex'; isValid = false;
-            setTimeout(() => { volumeInput.classList.remove('input-error-shake'); }, 420);
-        }
-
-        if (formModeBadge.innerHTML === 'CREATE MODE' && !fileInput.value) {
-            fileInput.classList.add('input-error-shake'); fileError.style.display = 'flex'; isValid = false;
-            setTimeout(() => { fileInput.classList.remove('input-error-shake'); }, 420);
-        }
-
-        if (isValid) {
-            if (actionType !== 'update_action') { actionField.value = actionType; }
-            form.submit();
-        }
-    }
-
-    document.addEventListener("DOMContentLoaded", function() {
-        let successBanner = document.getElementById('journalSuccessBanner');
-        if (successBanner) {
-            setTimeout(function() {
-                successBanner.style.opacity = '0'; successBanner.style.transform = 'translateY(-15px)';
-                setTimeout(function() { successBanner.remove(); }, 500);
-            }, 3000);
-        }
-
-        let searchInput = document.getElementById('dtJournalSearchInput');
-        let tableRows = document.querySelectorAll('.dt-journal-row-item');
-        let emptyRow = document.getElementById('dtEmptyJournalFallbackRow');
-        let rowsPerPage = 7; let currentPage = 1;
-
-        function renderDataTable() {
-            let query = searchInput ? searchInput.value.toLowerCase().trim() : ''; let filteredRows = [];
-            tableRows.forEach(row => {
-                let text = row.textContent.toLowerCase();
-                if (text.includes(query)) { filteredRows.push(row); row.style.display = 'none'; } 
-                else { row.style.display = 'none'; }
-            });
-
-            if (filteredRows.length === 0) {
-                if (emptyRow) emptyRow.style.display = '';
-                document.getElementById('dtPaginationInfoNode').textContent = 'Showing 0 to 0 of 0 logs';
-                document.getElementById('dtPaginationNavGroup').innerHTML = ''; return;
+    $(document).ready(function() {
+        // ১. জেনুইন মেমোরি ট্র্যাক করা ক্যাশ-ফ্রি ডাটাটেবিল সচল ইঞ্জিন
+        $('#bctJournalTable').DataTable({ 
+            "responsive": true, 
+            "ordering": true, 
+            "order": [[0, "desc"]],
+            "language": {
+                "search": "Quick Find:"
             }
+        });
 
-            if (emptyRow) emptyRow.style.display = 'none';
-            let totalRows = filteredRows.length; let totalPages = Math.ceil(totalRows / rowsPerPage);
-            if (currentPage > totalPages) currentPage = totalPages || 1;
-            let startIdx = (currentPage - 1) * rowsPerPage; let endIdx = Math.min(startIdx + rowsPerPage, totalRows);
-
-            for (let i = startIdx; i < endIdx; i++) {
-                filteredRows[i].style.display = '';
-                let slNode = filteredRows[i].querySelector('.dt-sl-node');
-                if (slNode && query === '') { slNode.textContent = i + 1; }
+        // 👑 ২. আপনার সেই কাঙ্ক্ষিত আসল সমাধান: ছবি সিলেক্ট করলে গোল উইন্ডোতে লাইভ প্রিভিউ ও বক্সে ওরিজিনাল নাম ভাসানোর ড্রাইভার ভাই
+        $('#add_cover_image').on('change', function(e) {
+            let fullPath = $(this).val();
+            let fileName = fullPath.split('\\').pop().split('/').pop();
+            $(this).next('.custom-file-label').html(fileName ? fileName : "Select cover photo...");
+            
+            if(e.target.files.length) {
+                let reader = new FileReader();
+                reader.onload = function(ev) { 
+                    $('#add_cover_preview').attr('src', ev.target.result); 
+                }
+                reader.readAsDataURL(e.target.files);
             }
+        });
 
-            document.getElementById('dtPaginationInfoNode').textContent = 'Showing ' + (startIdx + 1) + ' to ' + endIdx + ' of ' + totalRows + ' logs';
-            let navGroup = document.getElementById('dtPaginationNavGroup'); navGroup.innerHTML = '';
+        // 👑 ৩. জিপ ফাইল সিলেক্ট করার সাথে সাথে বক্সে ওরিজিনাল জিপ নাম ভাসানোর ডাইনামিক লাইভ নোড ভাই
+        $('#add_journal_file').on('change', function(e) {
+            let fullPath = $(this).val();
+            let fileName = fullPath.split('\\').pop().split('/').pop();
+            $(this).next('.custom-file-label').html(fileName ? fileName : "Select journal_asset.zip...");
+        });
 
-            for (let p = 1; p <= totalPages; p++) {
-                let btn = document.createElement('button'); btn.type = 'button';
-                btn.className = 'pagination-number-node ' + (p === currentPage ? 'active-node' : '');
-                btn.textContent = p; btn.addEventListener('click', function() { currentPage = p; renderDataTable(); });
-                navGroup.appendChild(btn);
-            }
-        }
+        // 👑 ৪. চাইল্ড পিডিএফ ফাইল সিলেক্ট করার সাথে সাথে কনেক্টর বক্সে নাম ভাসানোর লাইভ নোড ভাই
+        $(document).on('change', '#art_pdf_file', function(e) {
+            let fullPath = $(this).val();
+            let fileName = fullPath.split('\\').pop().split('/').pop();
+            $(this).next('.custom-file-label').html(fileName ? fileName : "Choose article PDF...");
+        });
 
-        if (searchInput) { searchInput.addEventListener('keyup', function() { currentPage = 1; renderDataTable(); }); }
-        renderDataTable();
+        // ৫. এডিট মোডাল পপ-আপ ডাটা গেটওয়ে লিসেনার নোড
+        $(document).on('click', '.edit-journal-btn', function() {
+            let id = $(this).data('id');
+            let row = $('#row-journal-' + id);
+            let title = row.find('td:eq(2) span').text().trim();
+            let author = row.find('td:eq(2) small').text().replace('Principal Author:', '').trim();
+            let volume = row.find('td:eq(3) span').text().trim();
+
+            $('#edit_id').val(id);
+            $('#edit_title').val(title);
+            $('#edit_author').val(author);
+            $('#edit_volume').val(volume);
+            $('#editJournalModal').modal('show');
+        });
+
+        $(document).on('click', '.delete-journal-btn', function() {
+            let id = $(this).data('id');
+            $('#destroy_id').val(id);
+            
+            $('#destroyJournalForm').attr('action', "{{ url('admin/journals/delete') }}/" + id);
+            $('#destroyJournalModal').modal('show');
+        });
+
     });
+
+    // 👑 ৭. ওয়ান-ক্লিক চাইল্ড মোডাল ফ্লাই-আউট উইন্ডো কনেক্টর নোড
+    window.openAddArticleModal = function(id, title) {
+        $('#art_journal_id').val(id);
+        $('#art_journal_title_banner').text(title);
+        $('#addArticleModal').modal('show');
+    };
 </script>
-@endsection
+@stop

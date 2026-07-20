@@ -58,6 +58,9 @@ class MemberController extends Controller
         $data = $request->only(['name', 'email', 'mobile_no', 'designation', 'member_type']);
         $data['password'] = bcrypt($request->password);
         $data['status'] = 2;
+        // এই ফর্মটা শুধু trusted admin-ই ব্যবহার করতে পারেন (route এখন 'admin' middleware দিয়ে গার্ড করা),
+        // তাই এখান থেকে যোগ করা staff-কে সরাসরি is_admin = true দেওয়া হচ্ছে — আগের আচরণের সাথে সামঞ্জস্যপূর্ণ।
+        $data['is_admin'] = true;
 
         if ($request->hasFile('profile_pic')) {
             $data['profile_pic'] = $this->storeProfilePic($request->file('profile_pic'));

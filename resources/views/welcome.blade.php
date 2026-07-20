@@ -238,7 +238,7 @@
                 <h3 class="text-base font-bold text-slate-900 group-hover:text-[#1A4B84] transition-colors">BJCTA Journals</h3>
                 <p class="text-xs text-slate-500 mt-2 leading-relaxed flex-grow">Explore groundbreaking research, academic articles, and global case studies.</p>
                 <div class="mt-4 flex items-center justify-between">
-                    <a href="{{ route('journals.archive') }}" class="inline-flex items-center text-xs font-bold text-[#1A4B84] no-underline hover:underline">Read Research &rarr;</a>
+                    <a href="{{ route('frontend.journals.index') }}" class="inline-flex items-center text-xs font-bold text-[#1A4B84] no-underline hover:underline">Read Research &rarr;</a>
                     <i class="fa-solid fa-chevron-right text-slate-300 text-xs transition-transform duration-300 group-hover:text-[#1A4B84] group-hover:translate-x-1"></i>
                 </div>
             </div>

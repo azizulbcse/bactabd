@@ -10,13 +10,13 @@ return new class extends Migration
     {
         Schema::create('bacta_journals', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('author_name'); 
+            $table->string('title'); 
             $table->string('volume_issue');
-            $table->string('journal_file');
-            $table->tinyInteger('status')->default(1);
-            $table->unsignedBigInteger('created_by')->nullable();
-            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->string('publishing_date');
+            $table->string('issn_code')->default('2312-8178');
+            $table->string('cover_image')->nullable(); 
+            $table->integer('status')->default(2);
+            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
