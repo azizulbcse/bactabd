@@ -231,7 +231,7 @@
             Education & Research
         </a>
 
-        <a href="{{ route('admin.gallery.index') }}" class="{{ Route::is('admin.gallery.index') ? 'text-white border-b-2 border-white' : 'text-white hover:text-cyan-200' }} h-10 flex items-center justify-center transition-all no-underline">
+        <a href="{{ route('frontend.gallery.index') }}" class="{{ Route::is('frontend.gallery.index') ? 'text-white border-b-2 border-white' : 'text-white hover:text-cyan-200' }} h-10 flex items-center justify-center transition-all no-underline">
             Gallery
         </a>
 
@@ -354,7 +354,7 @@
 
     
     <div class="border-t border-white/10 pt-1">
-        <a href="{{ route('admin.gallery.index') }}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl {{ Route::is('admin.gallery.index') ? 'text-white border-b-2 border-white font-semibold' : 'text-white/85 hover:bg-white/10' }} transition-colors no-underline">
+        <a href="{{ route('frontend.gallery.index') }}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl {{ Route::is('admin.gallery.index') ? 'text-white border-b-2 border-white font-semibold' : 'text-white/85 hover:bg-white/10' }} transition-colors no-underline">
             Gallery
         </a>
     </div>

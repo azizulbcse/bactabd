@@ -173,7 +173,7 @@ return [
             ],
         ],
     ],
-    [
+        [
         'text'    => 'News & Publications',
         'icon'    => 'fas fa-fw fa-newspaper',
         'submenu' => [
@@ -188,9 +188,14 @@ return [
                 'icon'  => 'fas fa-fw fa-history',
             ],
             [
-                'text'  => 'Events & Gallery',
-                'route' => 'admin.gallery.hub_index', 
-                'icon'  => 'fas fa-fw fa-camera-retro',
+                'text'  => 'Events & Seminars',
+                'route' => 'admin.events.index', 
+                'icon'  => 'fas fa-fw fa-calendar-check',
+            ],
+            [
+                'text'  => 'Media Gallery Hub',
+                'route' => 'admin.gallery.index', 
+                'icon'  => 'fas fa-fw fa-images',
             ],
             [
                 'text'  => 'Journals (BACTA)',

@@ -214,22 +214,10 @@
                                                 <div class="mt-2 pl-2" style="border-left: 2px solid #00ADEF !important;">
                                                     @foreach($journal->articles as $article)
                                                         <div class="d-flex align-items-center justify-content-between bg-light rounded px-2 py-1 mb-1 border shadow-xs animate__animated animate__fadeIn" style="font-size: 12px;">
-                                                            <div class="text-truncate mr-2" style="max-width: 55%;">
+                                                            <div class="text-truncate mr-2" style="max-width: 80%;">
                                                                 <span class="font-weight-bold text-dark d-block text-truncate">{{ $article->article_title }}</span>
                                                             </div>
-                                                            <div class="d-flex" style="gap: 3px; flex-shrink: 0;">
-                                                                <a href="{{ asset($article->pdf_file) }}" target="_blank" class="btn btn-xs btn-outline-danger font-weight-bold px-2 py-0" style="font-size: 10px; border-radius: 4px;"><i class="fas fa-file-pdf"></i></a>
-                                                                <button type="button" class="btn btn-xs btn-outline-warning font-weight-bold px-2 py-0 edit-article-btn"
-                                                                        data-id="{{ $article->id }}"
-                                                                        data-title="{{ addslashes($article->article_title) }}"
-                                                                        data-author="{{ addslashes($article->author_name) }}"
-                                                                        data-start="{{ $article->start_page }}"
-                                                                        data-end="{{ $article->end_page }}"
-                                                                        style="font-size: 10px; border-radius: 4px;"><i class="fas fa-edit"></i></button>
-                                                                <button type="button" class="btn btn-xs btn-outline-secondary font-weight-bold px-2 py-0 delete-article-btn"
-                                                                        data-id="{{ $article->id }}"
-                                                                        style="font-size: 10px; border-radius: 4px;"><i class="fas fa-trash-alt"></i></button>
-                                                            </div>
+                                                            <a href="{{ asset($article->pdf_file) }}" target="_blank" class="btn btn-xs btn-outline-danger font-weight-bold px-2 py-0" style="font-size: 10px; border-radius: 4px;"><i class="fas fa-file-pdf"></i> View</a>
                                                         </div>
                                                     @endforeach
                                                 </div>
@@ -332,70 +320,6 @@
     </div>
 </div>
 
-{{-- 🆕 একটা নির্দিষ্ট আর্টিকেল এডিট করার মোডাল --}}
-<div class="modal fade" id="editArticleModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
-        <div class="modal-content shadow border-0" style="border-radius: 12px; overflow: hidden;">
-            <div class="modal-header text-white" style="background-color: #00496A;">
-                <h5 class="modal-title font-weight-bold"><i class="fas fa-edit mr-2"></i> Edit Article</h5>
-                <button type="button" class="close text-white" onclick="$('#editArticleModal').modal('hide');"><span>&times;</span></button>
-            </div>
-            <form id="editArticleForm" method="POST" novalidate>
-                @csrf
-                <div class="modal-body bg-light py-4">
-                    <div class="form-group mb-3">
-                        <label class="text-secondary small font-weight-bold">Article / Paper Title <span class="text-danger">*</span></label>
-                        <input type="text" name="article_title" id="edit_art_title" class="form-control" required>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label class="text-secondary small font-weight-bold">Contributor Name <span class="text-danger">*</span></label>
-                        <input type="text" name="author_name" id="edit_art_author" class="form-control" required>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-6">
-                            <label class="text-secondary small font-weight-bold">Start Page</label>
-                            <input type="text" name="start_page" id="edit_art_start" class="form-control">
-                        </div>
-                        <div class="form-group col-6">
-                            <label class="text-secondary small font-weight-bold">End Page</label>
-                            <input type="text" name="end_page" id="edit_art_end" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer bg-white justify-content-between">
-                    <button type="button" class="btn btn-default font-weight-bold" onclick="$('#editArticleModal').modal('hide');">Cancel</button>
-                    <button type="submit" class="btn btn-info font-weight-bold px-4"><i class="fas fa-upload mr-1"></i> Save Changes</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-{{-- 🆕 একটা নির্দিষ্ট আর্টিকেল ডিলিট করার কনফার্মেশন মোডাল --}}
-<div class="modal fade" id="deleteArticleModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-        <div class="modal-content shadow border-0" style="border-radius: 12px; overflow: hidden;">
-            <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title font-weight-bold"><i class="fas fa-exclamation-triangle mr-2"></i> Remove Article</h5>
-                <button type="button" class="close text-white" onclick="$('#deleteArticleModal').modal('hide');"><span>&times;</span></button>
-            </div>
-            <form id="deleteArticleForm" method="POST" action="">
-                @csrf
-                @method('DELETE')
-                <div class="modal-body text-center bg-light py-4">
-                    <i class="fas fa-trash-alt text-danger mb-3" style="font-size: 40px;"></i>
-                    <p class="text-dark font-weight-bold mb-1">Remove this article?</p>
-                    <p class="text-muted small px-2">Only this paper will be removed - the rest of the journal stays untouched.</p>
-                </div>
-                <div class="modal-footer bg-white justify-content-between">
-                    <button type="button" class="btn btn-default btn-sm font-weight-bold" onclick="$('#deleteArticleModal').modal('hide');">Cancel</button>
-                    <button type="submit" class="btn btn-danger btn-sm font-weight-bold px-3">Yes, Remove</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 <div class="modal fade" id="editJournalModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-md modal-dialog-centered" role="document">
         <div class="modal-content shadow border-0" style="border-radius: 12px; overflow: hidden;">
@@ -418,13 +342,6 @@
                     <div class="form-group mb-3">
                         <label class="text-secondary small font-weight-bold">Volume & Issue</label>
                         <input type="text" name="volume_issue" id="edit_volume" class="form-control" required>
-                    </div>
-                    <div class="form-group mb-0">
-                        <label class="text-secondary small font-weight-bold">Replace Cover Photo (leave blank to keep current)</label>
-                        <div class="custom-file">
-                            <input type="file" name="cover_image" id="edit_cover_image" class="custom-file-input" accept="image/*">
-                            <label class="custom-file-label border-light text-muted text-truncate" for="edit_cover_image">Select new cover photo...</label>
-                        </div>
                     </div>
                 </div>
                 <div class="modal-footer bg-white"><button type="submit" id="editSaveBtn" class="btn btn-info font-weight-bold px-4"><i class="fas fa-upload mr-1"></i> Update Changes</button></div>
@@ -479,7 +396,7 @@
         // 👑 ২. আপনার সেই কাঙ্ক্ষিত আসল সমাধান: ছবি সিলেক্ট করলে গোল উইন্ডোতে লাইভ প্রিভিউ ও বক্সে ওরিজিনাল নাম ভাসানোর ড্রাইভার ভাই
         $('#add_cover_image').on('change', function(e) {
             let fullPath = $(this).val();
-            let fileName = fullPath.split(/[\\/]/).pop();
+            let fileName = fullPath.split('\\').pop().split('/').pop();
             $(this).next('.custom-file-label').html(fileName ? fileName : "Select cover photo...");
             
             if(e.target.files.length) {
@@ -487,28 +404,21 @@
                 reader.onload = function(ev) { 
                     $('#add_cover_preview').attr('src', ev.target.result); 
                 }
-                reader.readAsDataURL(e.target.files[0]);
+                reader.readAsDataURL(e.target.files);
             }
         });
 
         // 👑 ৩. জিপ ফাইল সিলেক্ট করার সাথে সাথে বক্সে ওরিজিনাল জিপ নাম ভাসানোর ডাইনামিক লাইভ নোড ভাই
         $('#add_journal_file').on('change', function(e) {
             let fullPath = $(this).val();
-            let fileName = fullPath.split(/[\\/]/).pop();
+            let fileName = fullPath.split('\\').pop().split('/').pop();
             $(this).next('.custom-file-label').html(fileName ? fileName : "Select journal_asset.zip...");
-        });
-
-        // 🆕 Edit মোডালে নতুন cover photo সিলেক্ট করলে ফাইলনেম লেবেল আপডেট
-        $('#edit_cover_image').on('change', function(e) {
-            let fullPath = $(this).val();
-            let fileName = fullPath.split(/[\\/]/).pop();
-            $(this).next('.custom-file-label').html(fileName ? fileName : "Select new cover photo...");
         });
 
         // 👑 ৪. চাইল্ড পিডিএফ ফাইল সিলেক্ট করার সাথে সাথে কনেক্টর বক্সে নাম ভাসানোর লাইভ নোড ভাই
         $(document).on('change', '#art_pdf_file', function(e) {
             let fullPath = $(this).val();
-            let fileName = fullPath.split(/[\\/]/).pop();
+            let fileName = fullPath.split('\\').pop().split('/').pop();
             $(this).next('.custom-file-label').html(fileName ? fileName : "Choose article PDF...");
         });
 
@@ -524,8 +434,6 @@
             $('#edit_title').val(title);
             $('#edit_author').val(author);
             $('#edit_volume').val(volume);
-            // 🔧 fix: আগে এখানে form-এর actionই সেট করা হতো না, তাই Update করলে ভুল URL-এ POST হতো।
-            $('#editJournalForm').attr('action', "{{ url('admin/journals/update') }}/" + id);
             $('#editJournalModal').modal('show');
         });
 
@@ -535,24 +443,6 @@
             
             $('#destroyJournalForm').attr('action', "{{ url('admin/journals/delete') }}/" + id);
             $('#destroyJournalModal').modal('show');
-        });
-
-        // 🆕 ৬. একটা নির্দিষ্ট আর্টিকেল Edit করার লিসেনার
-        $(document).on('click', '.edit-article-btn', function() {
-            let id = $(this).data('id');
-            $('#edit_art_title').val($(this).data('title'));
-            $('#edit_art_author').val($(this).data('author'));
-            $('#edit_art_start').val($(this).data('start'));
-            $('#edit_art_end').val($(this).data('end'));
-            $('#editArticleForm').attr('action', "{{ url('admin/journals/articles/update') }}/" + id);
-            $('#editArticleModal').modal('show');
-        });
-
-        // 🆕 ৭. একটা নির্দিষ্ট আর্টিকেল Delete করার লিসেনার
-        $(document).on('click', '.delete-article-btn', function() {
-            let id = $(this).data('id');
-            $('#deleteArticleForm').attr('action', "{{ url('admin/journals/articles/delete') }}/" + id);
-            $('#deleteArticleModal').modal('show');
         });
 
     });

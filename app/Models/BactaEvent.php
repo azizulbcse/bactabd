@@ -5,19 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EventGallery extends Model
+class BactaEvent extends Model
 {
     use HasFactory;
 
-    protected $table = 'events_galleries';
+    protected $table = 'bacta_events';
 
     protected $fillable = [
         'title',
-        'media_file',
-        'video_url',
         'venue',
         'event_date',
-        'type',
+        'event_banner',
         'status',
         'created_by',
         'updated_by'

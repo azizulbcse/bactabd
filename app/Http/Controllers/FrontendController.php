@@ -116,12 +116,25 @@ class FrontendController extends Controller
         return view('frontend.executive_minutes', compact('minutes'));
     }
         
-    public function eventsGalleryPage()
+        /**
+     * 👑 ১. সম্পূর্ণ আলাদা ডেডিকেটেড ইভেন্টস ফ্রন্টএন্ড মেথড ভাই
+     */
+    public function eventsPage()
     {
-        $records = \App\Models\EventGallery::where('status', 2)
-                                           ->orderBy('id', 'desc')
-                                           ->get();
-        return view('frontend.events_gallery', compact('records'));
+        $events = \App\Models\BactaEvent::where('status', 2)
+                                        ->orderBy('id', 'desc')
+                                        ->get();
+
+        return view('frontend.events', compact('events'));
+    }
+
+    public function galleryPage()
+    {
+        $galleries = \App\Models\BactaGallery::where('status', 2)
+                                            ->orderBy('id', 'desc')
+                                            ->get();
+
+        return view('frontend.gallery', compact('galleries'));
     }
 
     public function journalsPage()

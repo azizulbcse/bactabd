@@ -403,27 +403,24 @@
 }
 
 </style>
-
-    
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 grid grid-cols-1 lg:grid-cols-3 gap-12">
-        
         <div class="lg:col-span-2 space-y-8">
             <div class="flex justify-between items-end border-b border-slate-200 pb-4">
                 <div>
                     <h2 class="text-xl font-bold tracking-tight text-slate-900">Upcoming Scientific Sessions</h2>
                     <p class="text-xs text-slate-500 mt-1">Global and national medical knowledge sharing timelines</p>
                 </div>
-                <a href="{{ route('admin.gallery.index') }}" class="text-xs font-bold text-[#0284C7] no-underline hover:underline">View All Events</a>
+                {{-- 👑 ফিক্সড ইউআরএল: ওরিজিনাল আলাদা হওয়া ইভেন্টস ইন্ডেক্স পেজের জেনুইন রাউট কানেকশন ভাই --}}
+                <a href="{{ route('admin.events.index') }}" class="text-xs font-bold text-[#0284C7] no-underline hover:underline">View All Events</a>
             </div>
-
+            
             @php
-                // 💡 আপনার লজিক: ইভেন্ট টেবিল থেকে টাইপ ১ (Scientific Events) এবং পাবলিশড (status = 2) লেটেস্ট ২টি লাইভ ডাটা রিড ভাই
-                $liveUpcomingEvents = \DB::table('events_galleries')
-                                          ->where('type', 1)
-                                          ->where('status', 2)
-                                          ->orderBy('id', 'desc')
-                                          ->take(2)
-                                          ->get();
+                // 👑 ফিক্সড টেবিল নোড: ওল্ড গ্যালারি টেবিল বদলে সরাসরি ডেডিকেটেড 'bacta_events' টেবিল থেকে ডেটা ফেচ ভাই
+                $liveUpcomingEvents = \DB::table('bacta_events')
+                                        ->where('status', 2)
+                                        ->orderBy('id', 'desc')
+                                        ->take(2)
+                                        ->get();
             @endphp
 
             @forelse($liveUpcomingEvents as $eRow)
@@ -452,7 +449,6 @@
                     </div>
                 </div>
             @empty
-                {{-- 💡 ইভেন্ট টেবিল খালি থাকলে চিকিৎসকদের জন্য প্রফেশনাল ফলব্যাক উইজেট ভাই --}}
                 <div class="flex flex-col items-center justify-center text-center p-8 bg-slate-50 border border-dashed border-slate-200 rounded-2xl">
                     <i class="fas fa-calendar-times text-slate-300 text-2xl mb-2"></i>
                     <h4 class="text-xs font-bold text-slate-700">No Upcoming Scientific Seminars Scheduled</h4>
@@ -495,8 +491,9 @@
                         </div>
                         
                         <div class="flex gap-2 pt-3 border-t border-slate-100 mt-auto">
-                            <a href="{{ asset('storage/' . $jRow->journal_file) }}" target="_blank" class="flex-1 text-center bg-slate-50 hover:bg-sky-50 text-slate-700 hover:text-[#0284C7] border border-slate-200 py-2 rounded-xl text-xs font-bold no-underline transition-colors"><i class="fas fa-eye mr-1"></i> View</a>
-                            <a href="{{ asset('storage/' . $jRow->journal_file) }}" download class="flex-1 text-center bg-[#0F172A] hover:bg-[#DC2626] text-white py-2 rounded-xl text-xs font-bold no-underline transition-colors shadow-sm"><i class="fas fa-download mr-1"></i> Download</a>
+                            {{-- 👑 ফিক্সড লিঙ্ক নোড: 'storage/' এর অবাধ্য জ্যাম কেটে সরাসরি রিয়েল জিরো-সিমলিঙ্ক ফাইলপাথ ডিরেক্টরি ট্র্যাকিং ভাই --}}
+                            <a href="{{ asset($jRow->journal_file) }}" target="_blank" class="flex-1 text-center bg-slate-50 hover:bg-sky-50 text-slate-700 hover:text-[#0284C7] border border-slate-200 py-2 rounded-xl text-xs font-bold no-underline transition-colors"><i class="fas fa-eye mr-1"></i> View</a>
+                            <a href="{{ asset($jRow->journal_file) }}" download class="flex-1 text-center bg-[#0F172A] hover:bg-[#DC2626] text-white py-2 rounded-xl text-xs font-bold no-underline transition-colors shadow-sm"><i class="fas fa-download mr-1"></i> Download</a>
                         </div>
                     </div>
                 @empty
@@ -508,8 +505,8 @@
                 @endforelse
             </div>
         </div>
-
     </main>
+    
     <script>
         let currentBactaSlideIdx = 0;
         const imgSlides = document.querySelectorAll('.bacta-img-slide');

@@ -1,182 +1,145 @@
-{{-- 👑 ফ্রন্টএন্ড মাস্টার লেআউট এক্সটেন্ড নোড (আপনার ওরিজিনাল থিম সিঙ্কড) --}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
 @extends('layouts.app')
 
+@section('title', 'Scientific Journals & Publications | BACTA Bangladesh')
+
 @section('content')
-<!-- ১. গ্লোবাল লাক্সারি অ্যানিমেশন ও ট্রানজিশন সিএসএস ইন্জেকশন ভাই -->
-<link rel="stylesheet" href="https://cloudflare.com"/>
-<style>
-    .bct-luxury-card {
-        border: none;
-        border-radius: 16px;
-        background: #ffffff;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-        transition: all 0.4s ease;
-    }
-    .bct-luxury-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 35px rgba(0, 73, 106, 0.1);
-    }
-    .bct-cover-img {
-        width: 100%;
-        height: 380px;
-        object-fit: cover;
-        border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    }
-    .bct-archive-cover {
-        width: 100%;
-        height: 220px;
-        object-fit: cover;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .bct-btn-read {
-        background-color: #00496A;
-        color: #ffffff !important;
-        border-radius: 6px;
-        font-weight: bold;
-        transition: all 0.3s ease;
-    }
-    .bct-btn-read:hover {
-        background-color: #00ADEF;
-    }
-    .bct-btn-download {
-        background-color: #dc3545;
-        color: #ffffff !important;
-        border-radius: 6px;
-        font-weight: bold;
-        transition: all 0.3s ease;
-    }
-    .bct-btn-download:hover {
-        background-color: #bd2130;
-    }
-</style>
 
-<div class="container py-5" style="font-family: 'Poppins', sans-serif;">
-    <!-- ==========================================
-         👑 SECTION ১: CURRENT ISSUE / LATEST VOLUME (টপ উইন্ডো ভাই)
-         ========================================== -->
-    @if($latestJournal)
-        <div class="row mb-5 animate__animated animate__fadeIn">
-            <div class="col-12 mb-4">
-                <h3 class="font-weight-bold text-uppercase border-bottom pb-2" style="color: #00496A; letter-spacing: 1px;">
-                    <i class="fas fa-star text-warning mr-2"></i> Current Issue / Latest Volume
-                </h3>
+    <header class="bg-[#0F172A] relative overflow-hidden py-16 border-b border-slate-800 w-full text-left">
+        <div class="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(2,132,199,0.3),transparent_70%)]"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center lg:text-left flex flex-col lg:flex-row justify-between items-center gap-4">
+            <div>
+                <span class="text-xs font-bold tracking-[0.2em] text-[#0284C7] uppercase block mb-2">Research & Publications</span>
+                <h1 class="text-3xl lg:text-4xl font-black tracking-tight text-white">Scientific Journals</h1>
             </div>
-            
-            <div class="col-md-12">
-                <div class="card bct-luxury-card p-4" style="border-left: 5px solid #00496A !important;">
-                    <div class="row align-items-center">
-                        {{-- বাম পাশে: আপনার সেই রাজকীয় কাভার পেজ বড় থাম্বনেইল ভাই --}}
-                        <div class="col-md-4 text-center">
-                            @if(!empty($latestJournal->cover_image) && file_exists(public_path($latestJournal->cover_image)))
-                                <img src="{{ asset($latestJournal->cover_image) }}" class="bct-cover-img" alt="Journal Cover">
-                            @else
-                                <div class="bg-light d-flex align-items-center justify-content-center mx-auto rounded shadow" style="width: 100%; height: 380px; max-width: 270px;">
-                                    <i class="fas fa-book-open text-muted" style="font-size: 64px; color: #00ADEF !important;"></i>
-                                </div>
-                            @endif
-                        </div>
-                        
-                        {{-- ডান পাশে: জার্নাল মেইন ডিরেক্টরি পরিচিতি প্যানেল --}}
-                        <div class="col-md-8 mt-4 mt-md-0">
-                            <span class="badge badge-success px-3 py-2 mb-2 font-weight-bold text-uppercase"><i class="fas fa-globe mr-1"></i> Live Catalog</span>
-                            <h2 class="font-weight-bold mb-2" style="color: #00496A; font-size: 26px;">{{ $latestJournal->title }}</h2>
-                            <p class="text-muted mb-1" style="font-size: 15px;"><i class="fas fa-user-edit mr-2"></i><strong>Principal Author:</strong> {{ $latestJournal->author_name }}</p>
-                            <p class="text-secondary mb-3" style="font-size: 14px;"><i class="fas fa-layer-group mr-2"></i><strong>Master Volume:</strong> {{ $latestJournal->volume_issue }} | <i class="fas fa-calendar-alt mr-1"></i> Released: {{ $latestJournal->publishing_date }}</p>
-                            {{-- জিপ থেকে আনপ্যাক হওয়া প্রতিটা আর্টিকেলের লাইভ লিস্ট উইন্ডো নোড ভাই --}}
-                            <h5 class="font-weight-bold text-secondary mt-4 mb-2 text-uppercase" style="font-size: 12px; letter-spacing: 0.5px;">Extracted PDF Articles Inside:</h5>
-                            @if($latestJournal->articles->count() > 0)
-                                <div class="accordion shadow-xs border rounded bg-white p-2" id="latestAccordion" style="max-height: 250px; overflow-y: auto;">
-                                    @foreach($latestJournal->articles as $index => $article)
-                                        <div class="d-flex align-items-center justify-content-between border-bottom py-2 px-2 animate__animated animate__fadeIn" style="font-size: 13px;">
-                                            <div class="text-truncate mr-2" style="max-width: 60%;">
-                                                <span class="font-weight-bold text-dark d-block text-truncate"><i class="fas fa-file-pdf text-danger mr-2"></i>{{ $article->article_title }}</span>
-                                            </div>
-                                            
-                                            <div class="d-flex gap-1">
-                                                {{-- 🚀 ১. জিরো-বাফারিং গুগল ডক্স আইফ্রেম এম্বেডেড লাইভ রিডার গেটওয়ে বোতাম ভাই --}}
-                                                <a href="https://google.com{{ urlencode(asset($article->pdf_file)) }}&embedded=true" target="_blank" class="btn btn-xs bct-btn-read px-2 py-1 text-xs mr-1">
-                                                    <i class="fas fa-book-reader"></i> Read
-                                                </a>
-                                                {{-- 👑 ২. আপনার চাওয়া সেই রাজকীয় ডাইরেক্ট হাই-স্পিড সিকিউর ডাউনলোড বোতাম ভাই --}}
-                                                <a href="{{ asset($article->pdf_file) }}" download class="btn btn-xs bct-btn-download px-2 py-1 text-xs">
-                                                    <i class="fas fa-download"></i> Download
-                                                </a>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @else
-                                <div class="alert alert-light border small text-muted"><i class="fas fa-info-circle mr-1"></i> Scientific chapters are being indexed by administration.</div>
-                            @endif
-                        </div> {{-- col-md-8 end --}}
-                    </div> {{-- row align-items-center end --}}
-                </div> {{-- card end --}}
-            </div> {{-- col-md-12 end --}}
-        </div> {{-- row mb-5 end --}}
-    @endif
-    <!-- ==========================================
-         👑 SECTION ২: PAST ARCHIVES / VOLUMES LIST (৩-কলাম ক্যাটালগ গ্রিড ভাই)
-         ========================================== -->
-    <div class="row mt-5 animate__animated animate__fadeInUp">
-        <div class="col-12 mb-4">
-            <h3 class="font-weight-bold text-uppercase border-bottom pb-2" style="color: #64748b; letter-spacing: 1px;">
-                <i class="fas fa-history text-secondary mr-2"></i> Past Archives & Volumes List
-            </h3>
+            <div class="flex items-center space-x-2 text-xs font-medium text-slate-400">
+                <a href="{{ route('home') }}" class="hover:text-white transition-colors">Home</a>
+                <svg class="w-3 h-3 text-slate-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                <span class="text-slate-200">Journals</span>
+            </div>
         </div>
+    </header>
 
-        @forelse($archivedJournals as $archive)
-            {{-- ৩-কলামের পিক্সেল-পারফেক্ট রেসপন্সিভ গ্রিড কন্টেইনার ভাই --}}
-            <div class="col-md-4 col-sm-6 mb-4">
-                <div class="card bct-luxury-card h-100 p-3 d-flex flex-column justify-content-between">
-                    <div class="text-center mb-3">
-                        @if(!empty($archive->cover_image) && file_exists(public_path($archive->cover_image)))
-                            <img src="{{ asset($archive->cover_image) }}" class="bct-archive-cover" alt="Archive Cover">
-                        @else
-                            <div class="bg-light d-flex align-items-center justify-content-center mx-auto rounded shadow-xs" style="width: 100%; height: 220px;">
-                                <i class="fas fa-book text-muted" style="font-size: 48px; color: #cbd5e1 !important;"></i>
+    <style>
+        .jr-wrapper { background-color: #F8FAFC; font-family: 'Poppins', sans-serif; width: 100%; padding: 60px 0; box-sizing: border-box; }
+        .jr-container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 20px; box-sizing: border-box; }
+        .jr-section-title { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #64748B; border-bottom: 1px solid #E2E8F0; padding-bottom: 12px; margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+
+        .jr-featured-card { background: #ffffff; border: 1px solid #E2E8F0; border-radius: 18px; padding: 30px; display: flex; gap: 30px; box-shadow: 0 10px 30px -8px rgba(2, 132, 199, 0.08); margin-bottom: 60px; flex-wrap: wrap; }
+        .jr-cover-lg { width: 220px; height: 300px; object-fit: cover; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); flex-shrink: 0; }
+        .jr-cover-lg-placeholder { width: 220px; height: 300px; border-radius: 12px; background: #F1F5F9; border: 1px dashed #CBD5E1; display: flex; align-items: center; justify-content: center; color: #94A3B8; font-size: 40px; flex-shrink: 0; }
+
+        .jr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
+        .jr-card { background: #ffffff; border: 1px solid #E2E8F0; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; transition: all 0.25s ease; }
+        .jr-card:hover { border-color: #0284C7; box-shadow: 0 15px 30px -10px rgba(2, 132, 199, 0.15); transform: translateY(-3px); }
+        .jr-cover-sm { width: 100%; height: 190px; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .jr-cover-sm-placeholder { width: 100%; height: 190px; border-radius: 10px; background: #F1F5F9; border: 1px dashed #CBD5E1; display: flex; align-items: center; justify-content: center; color: #94A3B8; font-size: 30px; }
+
+        .jr-article-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 10px; border-radius: 8px; background: #F8FAFC; margin-bottom: 6px; font-size: 12.5px; }
+        .jr-article-title { color: #0F172A; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .jr-article-actions { display: flex; gap: 6px; flex-shrink: 0; }
+        .jr-btn-tiny { padding: 4px 9px; border-radius: 6px; font-size: 10.5px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+        .jr-btn-tiny-read { background: #EFF6FF; color: #0284C7; }
+        .jr-btn-tiny-read:hover { background: #DBEAFE; }
+        .jr-btn-tiny-download { background: #0284C7; color: #ffffff; }
+        .jr-btn-tiny-download:hover { background: #1E40AF; }
+
+        details.jr-accordion > summary { cursor: pointer; list-style: none; }
+        details.jr-accordion > summary::-webkit-details-marker { display: none; }
+        details.jr-accordion[open] .jr-chevron { transform: rotate(180deg); }
+    </style>
+
+    <div class="jr-wrapper">
+        <div class="jr-container">
+
+            @if($latestJournal)
+                <div class="jr-section-title"><i class="fa-solid fa-star text-amber-400"></i> Current Issue / Latest Volume</div>
+
+                <div class="jr-featured-card">
+                    @if(!empty($latestJournal->cover_image) && file_exists(public_path($latestJournal->cover_image)))
+                        <img src="{{ asset($latestJournal->cover_image) }}" class="jr-cover-lg" alt="{{ $latestJournal->title }} cover">
+                    @else
+                        <div class="jr-cover-lg-placeholder"><i class="fa-solid fa-book-open"></i></div>
+                    @endif
+
+                    <div style="flex: 1; min-width: 260px;">
+                        <span style="display:inline-block; background:#DCFCE7; color:#166534; font-size:11px; font-weight:700; padding:4px 10px; border-radius:999px; margin-bottom:10px;">
+                            <i class="fa-solid fa-globe mr-1"></i> Live Catalog
+                        </span>
+                        <h2 style="font-size: 22px; font-weight: 800; color: #0F172A; margin: 0 0 8px 0;">{{ $latestJournal->title }}</h2>
+                        <p style="color:#475569; font-size:13.5px; margin:0 0 4px 0;"><i class="fa-solid fa-user-edit mr-2 text-slate-400"></i>{{ $latestJournal->author_name }}</p>
+                        <p style="color:#64748B; font-size:13px; margin:0 0 20px 0;"><i class="fa-solid fa-layer-group mr-2 text-slate-400"></i>{{ $latestJournal->volume_issue }} &nbsp;|&nbsp; <i class="far fa-calendar-alt mr-1 text-slate-400"></i>{{ $latestJournal->publishing_date }}</p>
+
+                        <div style="font-size:11px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:#94A3B8; margin-bottom:10px;">Articles In This Issue</div>
+
+                        @if($latestJournal->articles->count() > 0)
+                            <div style="max-height: 260px; overflow-y: auto; padding-right: 4px;">
+                                @foreach($latestJournal->articles as $article)
+                                    <div class="jr-article-row">
+                                        <span class="jr-article-title"><i class="fa-solid fa-file-pdf text-red-500 mr-1"></i>{{ $article->article_title }}</span>
+                                        <div class="jr-article-actions">
+                                            <a href="{{ asset($article->pdf_file) }}" target="_blank" class="jr-btn-tiny jr-btn-tiny-read"><i class="fa-solid fa-eye"></i> Read</a>
+                                            <a href="{{ asset($article->pdf_file) }}" download class="jr-btn-tiny jr-btn-tiny-download"><i class="fa-solid fa-circle-arrow-down"></i> Download</a>
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
+                        @else
+                            <p style="color:#94A3B8; font-size:12.5px; font-style:italic;">Articles are being indexed. Please check back shortly.</p>
                         @endif
                     </div>
-                    
-                    <div>
-                        <span class="badge badge-light border text-muted px-2 py-1 mb-2 font-weight-bold" style="font-size: 11px;">{{ $archive->volume_issue }}</span>
-                        <h5 class="font-weight-bold text-dark text-truncate mb-1" style="font-size: 15px;" title="{{ $archive->title }}">{{ $archive->title }}</h5>
-                        <small class="text-muted d-block mb-3"><i class="fas fa-user mr-1"></i> {{ $archive->author_name }}</small>
-                    </div>
-
-                    {{-- ওয়ান-টাচ একর্ডিয়ন ড্রপডাউন বোতাম যা ফোল্ডার জ্যাম সাফ রাখবে ভাই --}}
-                    <div class="dropdown mt-auto">
-                        <button class="btn btn-block btn-sm btn-outline-secondary dropdown-toggle font-weight-bold" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-list-ol mr-1"></i> View Articles ({{ $archive->articles->count() }})
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right w-100 shadow border-light p-2" style="max-height: 200px; overflow-y: auto; font-size: 12px;">
-                            @forelse($archive->articles as $art)
-                                <div class="dropdown-item d-flex justify-content-between align-items-center border-bottom py-2" style="gap: 5px;">
-                                    <span class="text-truncate mr-2 font-weight-bold" style="max-width: 55%;"><i class="fas fa-file-alt text-danger mr-1"></i> {{ $art->article_title }}</span>
-                                    <div class="d-flex shrink-0">
-                                        {{-- ১. লাইভ ফাস্ট রিডার --}}
-                                        <a href="https://google.com{{ urlencode(asset($art->pdf_file)) }}&embedded=true" target="_blank" class="badge badge-info p-1 mr-1 text-uppercase" style="font-size: 9px;"><i class="fas fa-eye"></i> Read</a>
-                                        {{-- ২. হাই-স্পিড সিকিউর ডাউনলোড --}}
-                                        <a href="{{ asset($art->pdf_file) }}" download class="badge badge-danger p-1 text-uppercase" style="font-size: 9px;"><i class="fas fa-download"></i> Down</a>
-                                    </div>
-                                </div>
-                            @empty
-                                <small class="text-muted p-2 d-block text-center">No indexed papers.</small>
-                            @endforelse
-                        </div>
-                    </div>
                 </div>
-            </div>
-        @empty
-            {{-- ডাটাবেজে কোনো আর্কাইভ ডেটা না থাকলে ফলব্যাক ব্যানার নোড --}}
-            <div class="col-12 text-center py-5">
-                <i class="fas fa-folder-open text-muted mb-3" style="font-size: 48px;"></i>
-                <h5 class="text-secondary font-weight-bold">No Archived Volumes Registered Yet!</h5>
-                <p class="text-muted small">All previously unpacked compressed scientific documents will auto-catalog here.</p>
-            </div>
-        @endforelse
-    </div> {{-- row mt-5 end --}}
-</div> {{-- container py-5 end --}}
+            @endif
+
+            <div class="jr-section-title"><i class="fa-solid fa-clock-rotate-left"></i> Past Archives & Volumes</div>
+
+            @if($archivedJournals->count() > 0)
+                <div class="jr-grid">
+                    @foreach($archivedJournals as $archive)
+                        <div class="jr-card">
+                            @if(!empty($archive->cover_image) && file_exists(public_path($archive->cover_image)))
+                                <img src="{{ asset($archive->cover_image) }}" class="jr-cover-sm mb-3" alt="{{ $archive->title }} cover">
+                            @else
+                                <div class="jr-cover-sm-placeholder mb-3"><i class="fa-solid fa-book"></i></div>
+                            @endif
+
+                            <span style="display:inline-block; background:#F1F5F9; color:#475569; font-size:10.5px; font-weight:700; padding:3px 9px; border-radius:999px; margin-bottom:8px; align-self:flex-start;">{{ $archive->volume_issue }}</span>
+                            <h3 style="font-size:14.5px; font-weight:700; color:#0F172A; margin:0 0 4px 0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="{{ $archive->title }}">{{ $archive->title }}</h3>
+                            <p style="color:#94A3B8; font-size:12px; margin:0 0 14px 0;"><i class="fa-solid fa-user mr-1"></i>{{ $archive->author_name }}</p>
+
+                            <details class="jr-accordion" style="margin-top: auto;">
+                                <summary style="display:flex; align-items:center; justify-content:space-between; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:9px 12px; font-size:12px; font-weight:700; color:#0284C7;">
+                                    <span><i class="fa-solid fa-list-ol mr-1"></i> View Articles ({{ $archive->articles->count() }})</span>
+                                    <i class="fa-solid fa-chevron-down jr-chevron" style="transition: transform 0.2s ease; font-size: 10px;"></i>
+                                </summary>
+                                <div style="margin-top: 8px; max-height: 200px; overflow-y: auto;">
+                                    @forelse($archive->articles as $art)
+                                        <div class="jr-article-row">
+                                            <span class="jr-article-title"><i class="fa-solid fa-file-lines text-red-500 mr-1"></i>{{ $art->article_title }}</span>
+                                            <div class="jr-article-actions">
+                                                <a href="{{ asset($art->pdf_file) }}" target="_blank" class="jr-btn-tiny jr-btn-tiny-read"><i class="fa-solid fa-eye"></i></a>
+                                                <a href="{{ asset($art->pdf_file) }}" download class="jr-btn-tiny jr-btn-tiny-download"><i class="fa-solid fa-circle-arrow-down"></i></a>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <p style="color:#94A3B8; font-size:11.5px; font-style:italic; padding: 6px 4px;">No articles indexed yet.</p>
+                                    @endforelse
+                                </div>
+                            </details>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div style="background:#ffffff; border:1px solid #E2E8F0; border-radius:16px; padding:60px 40px; text-align:center;">
+                    <i class="fa-solid fa-folder-open text-slate-300 mb-3" style="font-size: 40px;"></i>
+                    <h3 style="color:#0F172A; font-size:15px; font-weight:700; margin:0 0 6px 0;">No Archived Volumes Yet</h3>
+                    <p style="color:#94A3B8; font-size:13px; margin:0;">Previously published journal issues will appear here.</p>
+                </div>
+            @endif
+
+        </div>
+    </div>
 @endsection

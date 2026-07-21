@@ -11,7 +11,8 @@ use App\Http\Controllers\Admin\MemberHubController;
 use App\Http\Controllers\Admin\NoticeController;
 use App\Http\Controllers\Admin\ExecutiveMinuteController;
 use App\Http\Controllers\Admin\ContactMessageController;
-use App\Http\Controllers\Admin\EventGalleryController;
+use App\Http\Controllers\Admin\BactaEventController;
+use App\Http\Controllers\Admin\BactaGalleryHubController;
 use App\Http\Controllers\Admin\BactaJournalController;
 use App\Http\Controllers\Admin\HospitalSurgeryController; 
 use App\Http\Controllers\Admin\SurgeryTypeController;
@@ -29,10 +30,9 @@ Route::get('/members/active-directory', [FrontendController::class, 'activeMembe
 Route::get('/president-message', [FrontendController::class, 'presidentMessage'])->name('president.message');
 Route::get('/announcements', [FrontendController::class, 'noticeArchive'])->name('notice.archive');
 Route::get('/executive-minutes', [FrontendController::class, 'minutesArchive'])->middleware(['auth'])->name('minutes.list');
-Route::get('/events-gallery', [FrontendController::class, 'eventsGalleryPage'])->name('admin.gallery.index');
-Route::get('/gallery-stream', [EventGalleryController::class, 'galleryStream'])->name('gallery.stream');
+Route::get('/events', [FrontendController::class, 'eventsPage'])->name('frontend.events.index');
+Route::get('/gallery', [FrontendController::class, 'galleryPage'])->name('frontend.gallery.index');
 Route::get('/education-research', [FrontendController::class, 'educationResearch'])->name('frontend.education.research');
-//Route::get('/bacta-journals', [FrontendController::class, 'journalsPage'])->name('journals.archive');
 Route::get('/bacta-journals', [BactaJournalFrontController::class, 'index'])->name('frontend.journals.index');
 Route::get('/contact-us', [FrontendController::class, 'contactPage'])->name('contact.archive');
 Route::post('/contact/store', [FrontendController::class, 'contactStore'])->name('contact.store');
@@ -147,18 +147,27 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         Route::post('/store', [ValvularSurgeryController::class, 'storeOrUpdate'])->name('store');
     });
     
-    Route::get('/gallery-hub', [EventGalleryController::class, 'index'])->name('admin.gallery.hub_index');
-    Route::post('/gallery-hub/store', [EventGalleryController::class, 'store'])->name('admin.gallery.store');
-    Route::post('/gallery-hub/update/{id}', [EventGalleryController::class, 'update'])->name('admin.gallery.update');
-    Route::delete('/gallery-hub/delete/{id}', [EventGalleryController::class, 'destroy'])->name('admin.gallery.delete');
-    Route::post('/gallery-hub/publish-direct/{id}', [EventGalleryController::class, 'publishDirect'])->name('admin.gallery.publish_direct');
+    Route::get('/events', [BactaEventController::class, 'index'])->name('admin.events.index');
+    Route::post('/events/store', [BactaEventController::class, 'store'])->name('admin.events.store');
+    Route::post('/events/update/{id}', [BactaEventController::class, 'update'])->name('admin.events.update');
+    Route::delete('/events/delete/{id}', [BactaEventController::class, 'destroy'])->name('admin.events.delete');
+    Route::post('/events/publish-direct/{id}', [BactaEventController::class, 'publishDirect'])->name('admin.events.publish_direct');
 
+    Route::get('/gallery', [BactaGalleryHubController::class, 'index'])->name('admin.gallery.index');
+    Route::post('/gallery/store', [BactaGalleryHubController::class, 'store'])->name('admin.gallery.store');
+    Route::post('/gallery/update/{id}', [BactaGalleryHubController::class, 'update'])->name('admin.gallery.update');
+    Route::delete('/gallery/delete/{id}', [BactaGalleryHubController::class, 'destroy'])->name('admin.gallery.delete');
+    Route::post('/gallery/publish-direct/{id}', [BactaGalleryHubController::class, 'publishDirect'])->name('admin.gallery.publish_direct');
+    
     Route::get('/journals', [BactaJournalController::class, 'index'])->name('admin.journals.index');
     Route::post('/journals/store', [BactaJournalController::class, 'store'])->name('admin.journals.store');
     Route::post('/journals/update/{id}', [BactaJournalController::class, 'update'])->name('admin.journals.update');
     Route::delete('/journals/delete/{id}', [BactaJournalController::class, 'destroy'])->name('admin.journals.delete');
     Route::post('/journals/publish-direct/{id}', [BactaJournalController::class, 'publishDirect'])->name('admin.journals.publish_direct');
     Route::post('/journals/articles/store', [BactaJournalController::class, 'storeArticle'])->name('admin.journals.articles.store');
+    // 🆕 individual article edit/delete
+    Route::post('/journals/articles/update/{id}', [BactaJournalController::class, 'updateArticle'])->name('admin.journals.articles.update');
+    Route::delete('/journals/articles/delete/{id}', [BactaJournalController::class, 'destroyArticle'])->name('admin.journals.articles.delete');
     
     Route::get('/contacts', [ContactMessageController::class, 'index'])->name('admin.contacts.index');
     Route::delete('/contacts/delete/{id}', [ContactMessageController::class, 'destroy'])->name('admin.contacts.delete');
