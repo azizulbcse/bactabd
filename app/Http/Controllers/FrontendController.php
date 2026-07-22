@@ -166,4 +166,28 @@ public function educationResearch()
 {
     return view('frontend.education_research');
 }
+    public function ttePage()
+    {
+        return view('frontend.tte');
+    }
+
+    public function toePage()
+    {
+        return view('frontend.toe');
+    }
+    
+    public function preAnesthesiaPage()
+    {
+        return view('frontend.pre_anesthesia');
+    }
+
+    public function anesthesiaPage()
+    {
+        return view('frontend.anesthesia');
+    }
+
+    public function icuPage()
+    {
+        return view('frontend.icu');
+    }
 }

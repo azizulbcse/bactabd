@@ -214,15 +214,17 @@
                     </div>
                     {{-- 🎯 নোটিশের ডান পাশের প্রিমিয়াম ওয়ান-ক্লিক বাটন কন্ট্রোল হাব ভাই --}}
                     <div class="notice-action-hub-links" style="display: flex; gap: 10px; justify-content: flex-end; flex-shrink: 0;">
-                        {{-- সরাসরি ব্রাউজারে অফিশিয়াল পিডিএফ দেখার ওয়ান-ট্যাপ লিঙ্ক উইজেট --}}
-                        <a href="{{ asset('storage/' . $row->notice_file) }}" target="_blank" style="background: #ffffff; color: #0284C7; border: 1px solid #CBD5E1; padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease;" onmouseenter="this.style.borderColor='#0284C7'; this.style.background='#F0FDF4';" onmouseleave="this.style.borderColor='#CBD5E1'; this.style.background='#ffffff';">
-                            <i class="fas fa-eye"></i> View PDF
-                        </a>
-                        {{-- ওয়ান-ক্লিকে অফিশিয়াল পিডিএফ ডাউনলোড করার সিকিউর উইজেট --}}
-                        <a href="{{ asset('storage/' . $row->notice_file) }}" download style="background: linear-gradient(135deg, #0284C7 0%, #1E40AF 100%); color: #ffffff; padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.1);" onmouseenter="this.style.opacity='0.95'; transform: translateY(-1px);" onmouseleave="this.style.opacity='1';">
-                            <i class="fas fa-cloud-download-alt"></i> Download
-                        </a>
-                    </div>
+    {{-- 👑 ফিক্সড পিডিএফ প্রিভিউ নোড: যা সরাসরি public/uploads ফোল্ডার থেকে ওরিজিনাল ফাইল ১ সেকেন্ডে ব্রাউজারে রিলিজ করবে ভাই --}}
+    <a href="{{ asset($row->notice_file) }}" target="_blank" style="background: #ffffff; color: #0284C7; border: 1px solid #CBD5E1; padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease;" onmouseenter="this.style.borderColor='#0284C7'; this.style.background='#F0FDF4';" onmouseleave="this.style.borderColor='#CBD5E1'; this.style.background='#ffffff';">
+        <i class="fas fa-eye"></i> View PDF
+    </a>
+    
+    {{-- 👑 ফিক্সড ওয়ান-ক্লিক ডাউনলোড নোড: আইডিএম (IDM) বা মোবাইল ডাউনলোডার সরাসরি ওরিজিনাল নোটিশ ক্যাচ করবে ভাই (৪0৪ এরর ইমিউন) --}}
+    <a href="{{ asset($row->notice_file) }}" download style="background: linear-gradient(135deg, #0284C7 0%, #1E40AF 100%); color: #ffffff; padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.1);" onmouseenter="this.style.opacity='0.95'; transform: translateY(-1px);" onmouseleave="this.style.opacity='1';">
+        <i class="fas fa-cloud-download-alt"></i> Download
+    </a>
+</div>
+
 
                 </div> {{-- .notice-node-card ক্লোজিং ভাই --}}
             @empty

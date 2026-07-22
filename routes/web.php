@@ -41,6 +41,11 @@ Route::get('/congenital-surgery-statistics', [FrontendController::class, 'congen
 Route::get('/valvular-surgery-statistics', [FrontendController::class, 'valvularSurgeryStats'])->name('frontend.valvular.stats');
 Route::get('/history-of-bacta', [FrontendController::class, 'historyOfBacta'])->name('frontend.history.bacta');
 Route::get('/cardiology', [FrontendController::class, 'cardiology'])->name('frontend.cardiology');
+Route::get('/tte-imaging', [FrontendController::class, 'ttePage'])->name('frontend.tte.index');
+Route::get('/toe-imaging', [FrontendController::class, 'toePage'])->name('frontend.toe.index');
+Route::get('/pre-anesthesia', [FrontendController::class, 'preAnesthesiaPage'])->name('frontend.pre_anesthesia.index');
+Route::get('/anesthesia', [FrontendController::class, 'anesthesiaPage'])->name('frontend.anesthesia.index');
+Route::get('/cardiothoracic-icu', [FrontendController::class, 'icuPage'])->name('frontend.icu.index');
 
 Route::get('/dashboard', function () {
     if (Auth::user()->status !== 2) {

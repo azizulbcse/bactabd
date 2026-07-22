@@ -21,7 +21,7 @@ class BactaEventController extends Controller
             'title'       => 'required|string|max:255',
             'venue'       => 'nullable|string|max:255',
             'event_date'  => 'nullable|date',
-            'media_file'  => 'nullable|file|image|mimes:jpeg,png,jpg,gif|max:10240', // ম্যাক্স ১০ এমবি ফিল্টার
+            'media_file'  => 'required|file|mimes:pdf,jpg,jpeg,png|max:10240',
             'status_gate' => 'required|string|in:live,draft'
         ]);
 

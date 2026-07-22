@@ -225,22 +225,34 @@
                                     @endif
                                 </td>
                                 <td style="padding: 14px 20px; text-align: center;">
-                                    <div style="display: flex; gap: 6px; justify-content: center; align-items: center;">
-                                        <a href="{{ asset('storage/' . $row->notice_file) }}" target="_blank" class="btn-metric-action" style="background: #F1F5F9; color: #475569; border-color: #CBD5E1;"><i class="fas fa-eye"></i></a>
-                                        
-                                        {{-- 🔒 আপনার ওফিসিয়াল ইন-লাইন এডিট ট্রিগার কন্ডিশন ভাই --}}
-                                        @if($row->status == 1)
-                                            <button type="button" onclick="switchToInlineEditMode({{ $row->id }}, '{{ addslashes($row->title) }}')" class="btn-metric-action btn-metric-edit" title="Edit Inline"><i class="fas fa-edit"></i></button>
-                                        @else
-                                            <span class="btn-metric-action" style="background: #F0FDF4; color: #16A34A; border-color: #DCFCE7; cursor: not-allowed;"><i class="fas fa-shield-alt"></i></span>
-                                        @endif
+    <div style="display: flex; gap: 6px; justify-content: center; align-items: center;">
+        {{-- 👑 ফিক্সড জিরো-সিমলিঙ্ক প্রিভিউ নোড: যা সরাসরি public/uploads ফোল্ডার থেকে ওরিজিনাল ফাইল ১ সেকেন্ডে লোড করবে ভাই --}}
+        <a href="{{ asset($row->notice_file) }}" target="_blank" class="btn-metric-action" style="background: #F1F5F9; color: #475569; border-color: #CBD5E1;" title="View Attached File">
+            <i class="fas fa-eye"></i>
+        </a>
+        
+        {{-- 🔒 আপনার অফিসিয়াল ইন-লাইন এডিট ট্রিগার কন্ডিশন ভাই --}}
+        @if($row->status == 1)
+            <button type="button" onclick="switchToInlineEditMode({{ $row->id }}, '{{ addslashes($row->title) }}')" class="btn-metric-action btn-metric-edit" title="Edit Inline">
+                <i class="fas fa-edit"></i>
+            </button>
+        @else
+            <span class="btn-metric-action" style="background: #F0FDF4; color: #16A34A; border-color: #DCFCE7; cursor: not-allowed;" title="Published Locked">
+                <i class="fas fa-shield-alt"></i>
+            </span>
+        @endif
 
-                                        <form action="{{ route('admin.notices.delete', $row->id) }}" method="POST" onsubmit="return confirm('🚨 Wipe official file from storage permanently?');" style="display: inline-block; margin: 0;">
-                                            @csrf @method('DELETE')
-                                            <button type="submit" class="btn-metric-action btn-metric-delete"><i class="fas fa-trash-alt"></i></button>
-                                        </form>
-                                    </div>
-                                </td>
+        {{-- ওরিজিনাল সিকিউর ডিলিট ফরম নোড ভাই --}}
+        <form action="{{ route('admin.notices.delete', $row->id) }}" method="POST" onsubmit="return confirm('🚨 Wipe official file from storage permanently?');" style="display: inline-block; margin: 0;">
+            @csrf 
+            @method('DELETE')
+            <button type="submit" class="btn-metric-action btn-metric-delete" title="Delete Notice">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </form>
+    </div>
+</td>
+
                             </tr>
                             @empty
                             <tr id="dtEmptyNoticeFallbackRow">

@@ -51,7 +51,7 @@
     }
     .bct-gallery-img-wrapper {
         position: relative;
-        height: 230px;
+        height: 260px;
         overflow: hidden;
         background: #0f172a;
     }
@@ -199,34 +199,61 @@
 
     /* Self-contained gallery grid — does NOT rely on Bootstrap's row/col-*
        classes (those weren't producing a real grid on the live site,
-       causing every card to stack full-width, one per row). This grid
-       works regardless of what CSS the host page loads. */
+       causing every card to stack full-width, one per row). Flexbox +
+       justify-content:center is used (instead of CSS Grid) so that when
+       there are fewer items than columns, they sit centered on the page
+       rather than left-aligned with a big empty gap on the right. */
     .bct-gallery-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
         gap: 24px;
     }
+    .bct-gallery-item {
+        box-sizing: border-box;
+        flex: 0 0 calc((100% - 3 * 24px) / 4); /* 4 per row */
+        max-width: calc((100% - 3 * 24px) / 4);
+    }
     @media (max-width: 1199.98px) {
-        .bct-gallery-grid { grid-template-columns: repeat(3, 1fr); }
+        .bct-gallery-item {
+            flex-basis: calc((100% - 2 * 24px) / 3); /* 3 per row */
+            max-width: calc((100% - 2 * 24px) / 3);
+        }
     }
     @media (max-width: 767.98px) {
-        .bct-gallery-grid { grid-template-columns: repeat(2, 1fr); }
+        .bct-gallery-item {
+            flex-basis: calc((100% - 24px) / 2); /* 2 per row */
+            max-width: calc((100% - 24px) / 2);
+        }
     }
     @media (max-width: 575.98px) {
-        .bct-gallery-grid { grid-template-columns: 1fr; }
-    }
-    .bct-gallery-item {
-        min-width: 0; /* allow grid item to shrink instead of overflowing */
+        .bct-gallery-item {
+            flex-basis: 100%; /* 1 per row */
+            max-width: 100%;
+        }
     }
     .bct-gallery-card {
         height: 100%;
     }
     .bct-gallery-empty {
-        grid-column: 1 / -1;
+        flex: 1 1 100%;
+    }
+
+    /* Self-contained page wrapper — does NOT rely on Bootstrap's .container
+       class (that class wasn't applying on the host page, so the whole
+       section — heading, tabs, cards — was touching the left browser edge
+       with no side padding). This gives consistent centering/padding
+       regardless of the host page's CSS. */
+    .bct-gallery-wrapper {
+        width: 100%;
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 48px 24px;
+        box-sizing: border-box;
     }
 </style>
 
-<div class="container py-5" style="font-family: 'Poppins', sans-serif;">
+<div class="bct-gallery-wrapper" style="font-family: 'Poppins', sans-serif;">
 
     <div class="row mb-4">
         <div class="col-12 mb-4 border-bottom pb-3">

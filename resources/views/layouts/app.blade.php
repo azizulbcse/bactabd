@@ -182,18 +182,27 @@
                 </div>        
             </div>
         </div>
-        <a href="{{ route('notice.archive') }}" class="{{ Route::is('notice.archive') ? 'text-white border-b-2 border-white' : 'text-white hover:text-cyan-200' }} h-10 flex items-center justify-center transition-all no-underline">
-            News & Events
-        </a>       
+
+        <div class="relative group h-10 flex items-center justify-center font-sans">
+            <button class="{{ Route::is('frontend.events.index') || Route::is('notice.archive') ? 'text-cyan-200' : 'text-white' }} hover:text-cyan-200 flex items-center gap-1.5 transition-colors focus:outline-none focus:ring-0 font-bold">
+            Media & Bulletins
+            <svg class="w-3 h-3 group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="absolute top-10 left-1/2 -translate-x-1/2 w-52 bg-[#00ADB5] border border-cyan-600 rounded-xl shadow-2xl py-2 hidden group-hover:block z-50 text-left">
+        <a href="{{ route('notice.archive') }}" class="block px-5 py-2.5 text-sm font-bold text-white hover:text-black transition-colors duration-150 no-underline {{ Route::is('notice.archive') ? 'bg-cyan-700/30' : '' }}">Official Notice</a>
+        <a href="{{ route('frontend.events.index') }}" class="block px-5 py-2.5 text-sm font-bold text-white hover:text-black transition-colors duration-150 no-underline {{ Route::is('frontend.events.index') ? 'bg-cyan-700/30' : '' }}">Scientific Events</a>
+        </div>
+       </div>  
+           
         <div class="relative group h-10 flex items-center justify-center">
-            <button class="text-white hover:text-cyan-200 flex items-center gap-1.5 transition-colors focus:outline-none focus:ring-0 font-bold">
+            <button class="{{ Route::is('frontend.pre_anesthesia.index') || Route::is('frontend.anesthesia.index') || Route::is('frontend.icu.index') ? 'text-cyan-200' : 'text-white' }} hover:text-cyan-200 flex items-center gap-1.5 transition-colors focus:outline-none focus:ring-0 font-bold">
                 Cardiac Anesthesia
                 <svg class="w-3 h-3 group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <div class="absolute top-10 left-1/2 -translate-x-1/2 w-64 bg-[#00ADB5] border border-cyan-600 rounded-xl shadow-2xl py-2 hidden group-hover:block z-50 text-left">
-                <a href="#" class="block px-5 py-2.5 text-sm font-bold text-white hover:text-black transition-colors duration-150 no-underline">Pre-Anesthesia checkup</a>
-                <a href="#" class="block px-5 py-2.5 text-sm font-bold text-white hover:text-black transition-colors duration-150 no-underline">Anesthesia</a>
-                <a href="#" class="block px-5 py-2.5 text-sm font-bold text-white hover:text-black transition-colors duration-150 no-underline">CardioThoracic ICU</a>
+                <a href="{{ route('frontend.pre_anesthesia.index') }}" class="block px-5 py-2.5 text-sm font-bold text-white hover:text-black transition-colors duration-150 no-underline {{ Route::is('frontend.pre_anesthesia.index') ? 'bg-cyan-700/30' : '' }}">Pre-Anesthesia checkup</a>        
+                <a href="{{ route('frontend.anesthesia.index') }}" class="block px-5 py-2.5 text-sm font-bold text-white hover:text-black transition-colors duration-150 no-underline {{ Route::is('frontend.anesthesia.index') ? 'bg-cyan-700/30' : '' }}">Anesthesia</a>
+                <a href="{{ route('frontend.icu.index') }}" class="block px-5 py-2.5 text-sm font-bold text-white hover:text-black transition-colors duration-150 no-underline {{ Route::is('frontend.icu.index') ? 'bg-cyan-700/30' : '' }}">CardioThoracic ICU</a>
             </div>
         </div>
 
@@ -214,15 +223,17 @@
         </a>
 
         <div class="relative group h-10 flex items-center justify-center font-sans">
-            <button class="text-white hover:text-cyan-200 flex items-center gap-1.5 transition-colors focus:outline-none focus:ring-0 font-bold">
+            <button class="{{ Route::is('frontend.tte.index') || Route::is('frontend.toe.index') ? 'text-cyan-200' : 'text-white' }} hover:text-cyan-200 flex items-center gap-1.5 transition-colors focus:outline-none focus:ring-0 font-bold">
                 Echocardiography
                 <svg class="w-3 h-3 group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <div class="absolute top-10 left-1/2 -translate-x-1/2 w-52 bg-[#00ADB5] border border-cyan-600 rounded-xl shadow-2xl py-2 hidden group-hover:block z-50 text-left">
-                <a href="#" class="block px-5 py-2.5 text-sm font-bold text-white hover:text-black transition-colors duration-150 no-underline">TTE</a>
-                <a href="#" class="block px-5 py-2.5 text-sm font-bold text-white hover:text-black transition-colors duration-150 no-underline">TOE</a>
+                <a href="{{ route('frontend.tte.index') }}" class="block px-5 py-2.5 text-sm font-bold text-white hover:text-black transition-colors duration-150 no-underline {{ Route::is('frontend.tte.index') ? 'bg-cyan-700/30' : '' }}">TTE</a>
+                
+                <a href="{{ route('frontend.toe.index') }}" class="block px-5 py-2.5 text-sm font-bold text-white hover:text-black transition-colors duration-150 no-underline {{ Route::is('frontend.toe.index') ? 'bg-cyan-700/30' : '' }}">TOE</a>
             </div>
         </div>
+
         <a href="{{ route('frontend.journals.index') }}" class="{{ Route::is('frontend.journals.index') ? 'text-white border-b-2 border-white' : 'text-white hover:text-cyan-200' }} h-10 flex items-center justify-center transition-all no-underline">
             Journals & Publication
         </a>
@@ -294,10 +305,17 @@
     </div>
 
     <div class="border-t border-white/10 pt-1">
-        <a href="{{ route('notice.archive') }}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl {{ Route::is('notice.archive') ? 'text-white border-b-2 border-white font-semibold' : 'text-white/85 hover:bg-white/10' }} transition-colors no-underline">
-            News & Events
-        </a>
+    <button id="mobile-bulletins-trigger" type="button" class="flex w-full items-center justify-between px-4 py-2.5 rounded-xl text-white/85 hover:bg-white/10 transition-colors focus:outline-none">
+        <span class="text-base font-semibold">Media & Bulletins</span>
+        <svg id="bulletins-arrow" class="w-4 h-4 text-white/60 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+    </button>
+    <div id="mobile-bulletins-box" class="hidden pl-4 pr-2 py-1 space-y-1 bg-[#00ADB5] rounded-xl mt-1 transition-all">
+        <a href="{{ route('notice.archive') }}" class="block px-4 py-2 rounded-lg text-sm font-bold text-white hover:text-black transition-colors no-underline {{ Route::is('notice.archive') ? 'bg-white/20' : '' }}">Official Notice</a>
+        
+        <a href="{{ route('frontend.events.index') }}" class="block px-4 py-2 rounded-lg text-sm font-bold text-white hover:text-black transition-colors no-underline {{ Route::is('frontend.events.index') ? 'bg-white/20' : '' }}">Scientific Events</a>
     </div>
+</div>
+
     
     <div class="border-t border-white/10 pt-1">
         <button id="mobile-anesthesia-trigger" type="button" class="flex w-full items-center justify-between px-4 py-2.5 rounded-xl text-white/85 hover:bg-white/10 transition-colors focus:outline-none">
@@ -305,9 +323,9 @@
             <svg id="anesthesia-arrow" class="w-4 h-4 text-white/60 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
         </button>
         <div id="mobile-anesthesia-box" class="hidden pl-4 pr-2 py-1 space-y-1 bg-[#00ADB5] rounded-xl mt-1 transition-all">
-            <a href="#" class="block px-4 py-2 rounded-lg text-sm font-bold text-white hover:text-black transition-colors no-underline">Pre-Anesthesia checkup</a>
-            <a href="#" class="block px-4 py-2 rounded-lg text-sm font-bold text-white hover:text-black transition-colors no-underline">Anesthesia</a>
-            <a href="#" class="block px-4 py-2 rounded-lg text-sm font-bold text-white hover:text-black transition-colors no-underline">CardioThoracic ICU</a>
+            <a href="{{ route('frontend.pre_anesthesia.index') }}" class="block px-4 py-2 rounded-lg text-sm font-bold text-white hover:text-black transition-colors no-underline {{ Route::is('frontend.pre_anesthesia.index') ? 'bg-white/20' : '' }}">Pre-Anesthesia checkup</a>
+            <a href="{{ route('frontend.anesthesia.index') }}" class="block px-4 py-2 rounded-lg text-sm font-bold text-white hover:text-black transition-colors no-underline {{ Route::is('frontend.anesthesia.index') ? 'bg-white/20' : '' }}">Anesthesia</a>
+            <a href="{{ route('frontend.icu.index') }}" class="block px-4 py-2 rounded-lg text-sm font-bold text-white hover:text-black transition-colors no-underline {{ Route::is('frontend.icu.index') ? 'bg-white/20' : '' }}">CardioThoracic ICU</a>
         </div>
     </div>
 
@@ -335,10 +353,12 @@
             <svg id="echo-arrow" class="w-4 h-4 text-white/60 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
         </button>
         <div id="mobile-echo-box" class="hidden pl-4 pr-2 py-1 space-y-1 bg-[#00ADB5] rounded-xl mt-1 transition-all">
-            <a href="#" class="block px-4 py-2 rounded-lg text-sm font-bold text-white hover:text-black transition-colors no-underline">TTE</a>
-            <a href="#" class="block px-4 py-2 rounded-lg text-sm font-bold text-white hover:text-black transition-colors no-underline">TOE</a>
+            <a href="{{ route('frontend.tte.index') }}" class="block px-4 py-2 rounded-lg text-sm font-bold text-white hover:text-black transition-colors no-underline {{ Route::is('frontend.tte.index') ? 'bg-white/20 text-white' : '' }}">TTE</a>
+            
+            <a href="{{ route('frontend.toe.index') }}" class="block px-4 py-2 rounded-lg text-sm font-bold text-white hover:text-black transition-colors no-underline {{ Route::is('frontend.toe.index') ? 'bg-white/20 text-white' : '' }}">TOE</a>
         </div>
     </div>
+
     
     <div class="border-t border-white/10 pt-1">
         <a href="{{ route('frontend.journals.index') }}" class="flex items-center gap-2 px-4 py-2.5 rounded-xl {{ Route::is('frontend.journals.index') ? 'text-white border-b-2 border-white font-semibold' : 'text-white/85 hover:bg-white/10' }} transition-colors no-underline">
