@@ -29,7 +29,7 @@ class ExecutiveMinuteController extends Controller
 
         if ($request->hasFile('minute_file')) {
             $file = $request->file('minute_file');
-            $filename = time() . '_' . $file->getClientOriginalName();
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('minutes', $filename, 'public');
             $minute->minute_file = $path;
         }
@@ -71,7 +71,7 @@ class ExecutiveMinuteController extends Controller
                 Storage::disk('public')->delete($minute->minute_file);
             }
             $file = $request->file('minute_file');
-            $filename = time() . '_' . $file->getClientOriginalName();
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('minutes', $filename, 'public');
             $minute->minute_file = $path;
         }

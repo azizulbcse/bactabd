@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class HospitalSurgeryRecord extends Model
 {
+    use SoftDeletes;
+
+
     protected $fillable = ['hospital_id', 'surgery_type_id', 'year', 'data_count'];
 
     public function hospital(): BelongsTo

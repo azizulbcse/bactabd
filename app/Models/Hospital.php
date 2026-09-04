@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Hospital extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'name',
         'short_name',
@@ -14,7 +17,6 @@ class Hospital extends Model
         'created_by',
         'updated_by',
         'deleted_by',
-        'deleted_at'
     ];
    public function committeeMembers(): HasMany
     {

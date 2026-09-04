@@ -24,7 +24,7 @@ class NoticeController extends Controller
         ]);
 
         $notice = new Notice();
-        $notice->title = filter_var($request->title, FILTER_SANITIZE_STRING);
+        $notice->title = $request->title;
 
         if ($request->hasFile('notice_file')) {
             $file = $request->file('notice_file');
@@ -71,7 +71,7 @@ class NoticeController extends Controller
         ]);
 
         $notice = Notice::findOrFail($id);
-        $notice->title = filter_var($request->title, FILTER_SANITIZE_STRING);
+        $notice->title = $request->title;
 
         if ($request->hasFile('notice_file')) {
             if ($notice->notice_file && file_exists(public_path($notice->notice_file))) {

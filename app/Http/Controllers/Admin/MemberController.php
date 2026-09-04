@@ -31,8 +31,12 @@ class MemberController extends Controller
 
     public function approve($id)
     {
+        if ((int) $id === 1) {
+            abort(403, 'সুপার অ্যাডমিন অ্যাকাউন্ট পরিবর্তন করা যাবে না।');
+        }
+
         $user = User::findOrFail($id);
-        
+
         $user->update([
             'status' => 2,                      
             'approved_by' => Auth::id(),       
@@ -76,6 +80,10 @@ class MemberController extends Controller
 
     public function ajaxUpdate(Request $request, $id)
     {
+        if ((int) $id === 1 && (int) Auth::id() !== 1) {
+            abort(403, 'সুপার অ্যাডমিন অ্যাকাউন্ট পরিবর্তন করার অনুমতি নেই।');
+        }
+
         $user = User::findOrFail($id);
 
         $request->validate([
@@ -109,7 +117,19 @@ class MemberController extends Controller
 
     public function destroy($id)
     {
+        if ((int) $id === 1) {
+            abort(403, 'সুপার অ্যাডমিন অ্যাকাউন্ট ডিলিট করা যাবে না।');
+        }
+
+        if ((int) $id === (int) Auth::id()) {
+            abort(403, 'আপনি নিজের অ্যাকাউন্ট নিজে ডিলিট করতে পারবেন না।');
+        }
+
         $user = User::findOrFail($id);
+
+        if ($user->is_admin && User::where('is_admin', true)->count() <= 1) {
+            abort(403, 'শেষ অ্যাডমিন অ্যাকাউন্ট ডিলিট করা যাবে না।');
+        }
 
         $this->deleteProfilePicIfExists($user->profile_pic);
 

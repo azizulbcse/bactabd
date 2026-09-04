@@ -4,16 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MedicalDesignation extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'title',
         'status',
         'created_by',
         'updated_by',
         'deleted_by',
-        'deleted_at'
     ];
 
     public function committeeMembers(): HasMany
