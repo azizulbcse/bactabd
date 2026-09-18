@@ -137,37 +137,31 @@
 </div>
 
         {{-- President Card - bottom right overlay (desktop) --}}
-        <!--<div class="absolute bottom-10 right-8 lg:right-16 z-30 w-80 hidden sm:block">
-            <div class="bg-[#0F172A]/90 backdrop-blur-xl rounded-2xl border border-slate-700/60 p-5 shadow-2xl relative overflow-hidden group hover:border-slate-600 transition-all duration-300">
-                <div class="absolute -top-8 -right-8 w-28 h-28 bg-red-500/10 rounded-full blur-2xl pointer-events-none"></div>
-                <div class="flex items-center justify-between mb-3 pb-3 border-b border-slate-800/80">
-                    <span class="text-[10px] font-black tracking-[0.18em] text-[#DC2626] uppercase">From the President's Desk</span>
-                    <span class="w-2 h-2 rounded-full bg-[#DC2626] animate-pulse flex-shrink-0"></span>
+        <!--<div class="absolute bottom-6 right-6 lg:right-10 z-30 w-64 hidden sm:block">
+            <div class="bg-[#0F172A]/75 backdrop-blur-xl rounded-2xl border border-slate-700/60 p-3.5 shadow-2xl relative overflow-hidden group hover:bg-[#0F172A]/90 transition-all duration-300">
+                <div class="absolute -top-8 -right-8 w-24 h-24 bg-red-500/10 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="flex items-center justify-between mb-2.5 pb-2.5 border-b border-slate-800/80">
+                    <span class="text-[9px] font-black tracking-[0.15em] text-[#DC2626] uppercase">President's Desk</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#DC2626] animate-pulse flex-shrink-0"></span>
                 </div>
-                <div class="flex items-center gap-3">
-                    <div class="w-14 h-14 rounded-xl border border-slate-700 overflow-hidden flex-shrink-0 shadow-md">
+                <a href="{{ route('president.message') }}" class="flex items-center gap-2.5 no-underline group/link">
+                    <div class="w-11 h-11 rounded-lg border border-slate-700 overflow-hidden flex-shrink-0 shadow-md">
                         <img src="{{ asset('storage/committee_pics/president.jpg') }}"
                              alt="Prof. A. T. M. Khalilur Rahman"
                              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                              loading="lazy"
                              onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1 1\' fill=\'%231e293b\'/>';">
                     </div>
-                    <div>
-                        <h3 class="text-sm font-bold text-white leading-snug">Prof. A. T. M. Khalilur Rahman</h3>
-                        <p class="text-[9px] font-semibold text-[#DC2626] uppercase tracking-wider mt-0.5">Founder Member & President, BACTA</p>
-                        <p class="text-slate-500 text-[9px] mt-0.5">NHFH & Research Institute</p>
+                    <div class="min-w-0">
+                        <h3 class="text-xs font-bold text-white leading-snug truncate group-hover/link:text-[#0284C7] transition-colors">Prof. A. T. M. Khalilur Rahman</h3>
+                        <p class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider mt-0.5">President, BACTA</p>
                     </div>
-                </div>
-                <div class="mt-3 bg-slate-900/60 rounded-xl p-3 border border-slate-800/60">
-                    <p class="text-slate-300 text-[10px] leading-relaxed italic">
-                        "Welcome to the official digital portal of BACTA. Our mission remains steadfast in advancing perioperative patient safety, fostering thoracic research, and educating the next generation of anesthesiologists across Bangladesh."
-                    </p>
-                </div>
+                </a>
             </div>
         </div>-->
 
         {{-- Mobile: small badge bottom-left --}}
-        <!--<div class="absolute bottom-14 left-4 z-30 sm:hidden">
+        <div class="absolute bottom-14 left-4 z-30 sm:hidden">
             <div class="flex items-center gap-2 bg-[#0F172A]/90 backdrop-blur-md rounded-xl px-3 py-2 border border-slate-700/60 shadow-lg">
                 <div class="w-8 h-8 rounded-lg border border-slate-700 overflow-hidden flex-shrink-0">
                     <img src="{{ asset('storage/committee_pics/president.jpg') }}" alt="President" class="w-full h-full object-cover">
@@ -177,7 +171,7 @@
                     <p class="text-[9px] text-slate-300 font-medium">Prof. A. T. M. Khalilur Rahman</p>
                 </div>
             </div>
-        </div>-->
+        </div>
 
     </header>
 
@@ -193,7 +187,7 @@
                 <h3 class="text-base font-bold text-slate-900 group-hover:text-[#0284C7] transition-colors">Clinical Guidelines</h3>
                 <p class="text-xs text-slate-500 mt-2 leading-relaxed flex-grow">Download official perioperative protocols, echo standards, and medical PDFs.</p>
                 <div class="mt-4 flex items-center justify-between">
-                    <a href="{{ route('admin.gallery.index') }}" class="inline-flex items-center text-xs font-bold text-[#0284C7] no-underline hover:underline">Browse Library &rarr;</a>
+                    <a href="{{ route('frontend.gallery.index') }}" class="inline-flex items-center text-xs font-bold text-[#0284C7] no-underline hover:underline">Browse Library &rarr;</a>
                     <i class="fa-solid fa-chevron-right text-slate-300 text-xs transition-transform duration-300 group-hover:text-[#0284C7] group-hover:translate-x-1"></i>
                 </div>
             </div>
@@ -208,7 +202,7 @@
                 <h3 class="text-base font-bold text-slate-900 group-hover:text-[#00ADB5] transition-colors">Membership Portal</h3>
                 <p class="text-xs text-slate-500 mt-2 leading-relaxed flex-grow">Join the national elite network of thoracic and cardiac anesthesia veterans.</p>
                 <div class="mt-4 flex items-center justify-between">
-                    <a href="{{ route('login') }}" class="inline-flex items-center text-xs font-bold text-[#00ADB5] no-underline hover:underline">Register Portal &rarr;</a>
+                    <a href="{{ route('contact.archive') }}" class="inline-flex items-center text-xs font-bold text-[#00ADB5] no-underline hover:underline">Contact for Membership &rarr;</a>
                     <i class="fa-solid fa-chevron-right text-slate-300 text-xs transition-transform duration-300 group-hover:text-[#00ADB5] group-hover:translate-x-1"></i>
                 </div>
             </div>
@@ -223,7 +217,7 @@
                 <h3 class="text-base font-bold text-slate-900 group-hover:text-[#0284C7] transition-colors">CME & Events</h3>
                 <p class="text-xs text-slate-500 mt-2 leading-relaxed flex-grow">Access upcoming advanced workshops, scientific webinars, and annual congress.</p>
                 <div class="mt-4 flex items-center justify-between">
-                    <a href="{{ route('admin.gallery.index') }}" class="inline-flex items-center text-xs font-bold text-[#0284C7] no-underline hover:underline">View Calendar &rarr;</a>
+                    <a href="{{ route('frontend.events.index') }}" class="inline-flex items-center text-xs font-bold text-[#0284C7] no-underline hover:underline">View Calendar &rarr;</a>
                     <i class="fa-solid fa-chevron-right text-slate-300 text-xs transition-transform duration-300 group-hover:text-[#0284C7] group-hover:translate-x-1"></i>
                 </div>
             </div>
@@ -410,8 +404,8 @@
                     <h2 class="text-xl font-bold tracking-tight text-slate-900">Upcoming Scientific Sessions</h2>
                     <p class="text-xs text-slate-500 mt-1">Global and national medical knowledge sharing timelines</p>
                 </div>
-                {{-- 👑 ফিক্সড ইউআরএল: ওরিজিনাল আলাদা হওয়া ইভেন্টস ইন্ডেক্স পেজের জেনুইন রাউট কানেকশন ভাই --}}
-                <a href="{{ route('admin.events.index') }}" class="text-xs font-bold text-[#0284C7] no-underline hover:underline">View All Events</a>
+                {{-- fix: age eta bhulbhabe admin route (admin.events.index) e point korto, ekhon shothik public route --}}
+                <a href="{{ route('frontend.events.index') }}" class="text-xs font-bold text-[#0284C7] no-underline hover:underline">View All Events</a>
             </div>
             
             @php
@@ -428,16 +422,21 @@
                     $eventCarbonDate = $eRow->event_date ? \Carbon\Carbon::parse($eRow->event_date) : null;
                     $eventDay = $eventCarbonDate ? $eventCarbonDate->format('d') : date('d');
                     $eventMonth = $eventCarbonDate ? $eventCarbonDate->format('M') : date('M');
+                    // 🆕 defensive: exact column name na jene o kaj korar jonno kayekta shombhabbo field name try kora hocche
+                    $eventFile = $eRow->banner_image ?? $eRow->event_image ?? $eRow->attachment ?? $eRow->poster ?? $eRow->attachment_file ?? $eRow->file ?? null;
+                    $eventFileExists = $eventFile && file_exists(public_path($eventFile));
                 @endphp
                 
-                <div class="flex gap-6 bg-white p-5 rounded-2xl border border-slate-200/50 hover:shadow-md transition-all duration-300 group">
+                <a href="{{ $eventFileExists ? asset($eventFile) : route('frontend.events.index') }}"
+                   @if($eventFileExists) target="_blank" @endif
+                   class="flex gap-6 bg-white p-5 rounded-2xl border border-slate-200/50 hover:shadow-md transition-all duration-300 group no-underline">
                     <div class="flex-none w-16 h-20 bg-slate-50 border border-slate-200 rounded-xl flex flex-col items-center justify-center text-center transition-colors group-hover:border-[#0284C7] group-hover:bg-sky-50/20 shadow-sm">
                         <span class="text-[10px] text-slate-400 uppercase font-black tracking-wider">{{ $eventMonth }}</span>
                         <span class="text-2xl font-black text-slate-800 -mt-0.5">{{ $eventDay }}</span>
                     </div>
-                    <div>
+                    <div class="flex-1">
                         <span class="text-[10px] font-black uppercase tracking-wider text-[#0284C7]">BACTA Official Session</span>
-                        <h3 class="text-base font-bold text-slate-900 mt-1 hover:text-[#0284C7] cursor-pointer transition-colors leading-snug">
+                        <h3 class="text-base font-bold text-slate-900 mt-1 group-hover:text-[#0284C7] transition-colors leading-snug">
                             {{ $eRow->title }}
                         </h3>
                         @if($eRow->venue)
@@ -446,8 +445,11 @@
                                 <span>{{ $eRow->venue }}</span>
                             </p>
                         @endif
+                        @if($eventFileExists)
+                            <span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 mt-2"><i class="fa-solid fa-paperclip"></i> View Attachment</span>
+                        @endif
                     </div>
-                </div>
+                </a>
             @empty
                 <div class="flex flex-col items-center justify-center text-center p-8 bg-slate-50 border border-dashed border-slate-200 rounded-2xl">
                     <i class="fas fa-calendar-times text-slate-300 text-2xl mb-2"></i>
@@ -476,24 +478,34 @@
                 
                 @forelse($liveFeedJournals as $jKey => $jRow)
                     <div class="bacta-journal-slide-card absolute inset-0 w-full flex flex-col justify-between transition-all duration-500 {{ $jKey == 0 ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full pointer-events-none' }}">
-                        <div class="group cursor-pointer">
-                            <div class="aspect-[16/10] bg-[#0F172A] rounded-2xl overflow-hidden border border-slate-800 flex flex-col items-center justify-center p-6 text-center relative shadow-inner shadow-black/40">
-                                <div class="absolute inset-0 opacity-5 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:14px_14px]"></div>
-                                <i class="far fa-file-pdf text-red-500 text-3xl mb-2 animate-bounce"></i>
-                                <span class="text-[10px] uppercase text-slate-400 tracking-widest font-black block">{{ $jRow->volume_issue }}</span>
-                            </div>
+                        <a href="{{ route('frontend.journals.index') }}" class="group cursor-pointer no-underline block">
+                            {{-- কভার ইমেজ আপলোড করা থাকলে সেটা preview দেখাবে, না থাকলে আগের মতো PDF-icon fallback --}}
+                            @if(!empty($jRow->cover_image) && file_exists(public_path($jRow->cover_image)))
+                                <div class="aspect-[16/10] bg-[#0F172A] rounded-2xl overflow-hidden border border-slate-800 relative shadow-inner shadow-black/40">
+                                    <img src="{{ asset($jRow->cover_image) }}" alt="{{ $jRow->title }} cover" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3">
+                                        <span class="text-[10px] uppercase text-white/90 tracking-widest font-black block">{{ $jRow->volume_issue }}</span>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="aspect-[16/10] bg-[#0F172A] rounded-2xl overflow-hidden border border-slate-800 flex flex-col items-center justify-center p-6 text-center relative shadow-inner shadow-black/40">
+                                    <div class="absolute inset-0 opacity-5 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:14px_14px]"></div>
+                                    <i class="far fa-file-pdf text-red-500 text-3xl mb-2 animate-bounce"></i>
+                                    <span class="text-[10px] uppercase text-slate-400 tracking-widest font-black block">{{ $jRow->volume_issue }}</span>
+                                </div>
+                            @endif
                             <div class="mt-4">
                                 <span class="text-[10px] font-black text-slate-400 uppercase tracking-wider"><i class="fas fa-user-graduate text-[#0284C7] mr-1"></i> {{ $jRow->author_name }}</span>
                                 <h4 class="text-sm font-bold text-slate-900 mt-1.5 group-hover:text-[#0284C7] transition-colors leading-snug line-clamp-2">
                                     {{ $jRow->title }}
                                 </h4>
                             </div>
-                        </div>
+                        </a>
                         
                         <div class="flex gap-2 pt-3 border-t border-slate-100 mt-auto">
-                            {{-- 👑 ফিক্সড লিঙ্ক নোড: 'storage/' এর অবাধ্য জ্যাম কেটে সরাসরি রিয়েল জিরো-সিমলিঙ্ক ফাইলপাথ ডিরেক্টরি ট্র্যাকিং ভাই --}}
-                            <a href="{{ asset($jRow->journal_file) }}" target="_blank" class="flex-1 text-center bg-slate-50 hover:bg-sky-50 text-slate-700 hover:text-[#0284C7] border border-slate-200 py-2 rounded-xl text-xs font-bold no-underline transition-colors"><i class="fas fa-eye mr-1"></i> View</a>
-                            <a href="{{ asset($jRow->journal_file) }}" download class="flex-1 text-center bg-[#0F172A] hover:bg-[#DC2626] text-white py-2 rounded-xl text-xs font-bold no-underline transition-colors shadow-sm"><i class="fas fa-download mr-1"></i> Download</a>
+                            {{-- fix: raw journal_file link kore direct file/folder open korar bodole, /bacta-journals archive page e niye jawa hocche - shekhane already merged-PDF/article-list dutoi shothik bhabe handle kora ache --}}
+                            <a href="{{ route('frontend.journals.index') }}" class="flex-1 text-center bg-slate-50 hover:bg-sky-50 text-slate-700 hover:text-[#0284C7] border border-slate-200 py-2 rounded-xl text-xs font-bold no-underline transition-colors"><i class="fas fa-eye mr-1"></i> View</a>
+                            <a href="{{ route('frontend.journals.index') }}" class="flex-1 text-center bg-[#0F172A] hover:bg-[#DC2626] text-white py-2 rounded-xl text-xs font-bold no-underline transition-colors shadow-sm"><i class="fas fa-download mr-1"></i> Download</a>
                         </div>
                     </div>
                 @empty
