@@ -195,7 +195,7 @@
                 <div class="president-avatar-frame">
                     <div class="president-avatar-inner">
                         {{-- এখানে সভাপতির ছবি ডাইনামিক বা এন্ট্রি সোর্স পাথ অনুযায়ী রেন্ডার হবে --}}
-                        <img src="{{ asset('storage/committee_pics/president.jpg') }}" alt="Prof. A. T. M. Khalilur Rahman" onerror="this.onerror=null; this.src='https://unsplash.com';">
+                        <img src="{{ asset('uploads/committee_pics/president.jpg') }}" alt="Prof. A. T. M. Khalilur Rahman" onerror="this.onerror=null; this.src='https://unsplash.com';">
                     </div>
                 </div>
                 <h2 class="president-name-title">Prof. A. T. M. Khalilur Rahman</h2>

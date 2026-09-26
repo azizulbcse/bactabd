@@ -8,7 +8,6 @@ use App\Models\MedicalDesignation;
 use App\Models\BactaDesignation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class MemberHubController extends Controller
 {
@@ -58,7 +57,7 @@ class MemberHubController extends Controller
         if ($existingDeleted) {
             $picPath = $existingDeleted->member_pic;
             if ($request->hasFile('member_pic')) {
-                $picPath = $request->file('member_pic')->store('committee_pics', 'public');
+                $picPath = $this->storeMemberPic($request->file('member_pic'));
             }
 
             $existingDeleted->update([
@@ -81,7 +80,7 @@ class MemberHubController extends Controller
         $data['created_by'] = Auth::id();
 
         if ($request->hasFile('member_pic')) {
-            $data['member_pic'] = $request->file('member_pic')->store('committee_pics', 'public');
+            $data['member_pic'] = $this->storeMemberPic($request->file('member_pic'));
         }
 
         CommitteeMember::create($data);
@@ -105,10 +104,10 @@ class MemberHubController extends Controller
         $data['updated_by'] = Auth::id();
 
         if ($request->hasFile('member_pic')) {
-            if ($member->member_pic && Storage::disk('public')->exists($member->member_pic)) {
-                Storage::disk('public')->delete($member->member_pic);
+            if ($member->member_pic && file_exists(public_path($member->member_pic))) {
+                @unlink(public_path($member->member_pic));
             }
-            $data['member_pic'] = $request->file('member_pic')->store('committee_pics', 'public');
+            $data['member_pic'] = $this->storeMemberPic($request->file('member_pic'));
         }
 
         $member->update($data);
@@ -125,5 +124,19 @@ class MemberHubController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Member profile archived successfully.');
+    }
+
+    private function storeMemberPic($file): string
+    {
+        $filename = 'member_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $uploadPath = public_path('uploads/committee_pics');
+
+        if (! file_exists($uploadPath)) {
+            mkdir($uploadPath, 0777, true);
+        }
+
+        $file->move($uploadPath, $filename);
+
+        return 'uploads/committee_pics/' . $filename;
     }
 }

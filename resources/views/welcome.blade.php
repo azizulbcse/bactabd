@@ -146,7 +146,7 @@
                 </div>
                 <a href="{{ route('president.message') }}" class="flex items-center gap-2.5 no-underline group/link">
                     <div class="w-11 h-11 rounded-lg border border-slate-700 overflow-hidden flex-shrink-0 shadow-md">
-                        <img src="{{ asset('storage/committee_pics/president.jpg') }}"
+                        <img src="{{ asset('uploads/committee_pics/president.jpg') }}"
                              alt="Prof. A. T. M. Khalilur Rahman"
                              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                              loading="lazy"
@@ -164,7 +164,7 @@
         <div class="absolute bottom-14 left-4 z-30 sm:hidden">
             <div class="flex items-center gap-2 bg-[#0F172A]/90 backdrop-blur-md rounded-xl px-3 py-2 border border-slate-700/60 shadow-lg">
                 <div class="w-8 h-8 rounded-lg border border-slate-700 overflow-hidden flex-shrink-0">
-                    <img src="{{ asset('storage/committee_pics/president.jpg') }}" alt="President" class="w-full h-full object-cover">
+                    <img src="{{ asset('uploads/committee_pics/president.jpg') }}" alt="President" class="w-full h-full object-cover">
                 </div>
                 <div>
                     <p class="text-[9px] font-black text-[#DC2626] uppercase tracking-wider">President's Message</p>
@@ -422,8 +422,7 @@
                     $eventCarbonDate = $eRow->event_date ? \Carbon\Carbon::parse($eRow->event_date) : null;
                     $eventDay = $eventCarbonDate ? $eventCarbonDate->format('d') : date('d');
                     $eventMonth = $eventCarbonDate ? $eventCarbonDate->format('M') : date('M');
-                    // 🆕 defensive: exact column name na jene o kaj korar jonno kayekta shombhabbo field name try kora hocche
-                    $eventFile = $eRow->banner_image ?? $eRow->event_image ?? $eRow->attachment ?? $eRow->poster ?? $eRow->attachment_file ?? $eRow->file ?? null;
+                    $eventFile = $eRow->event_banner ?? null;
                     $eventFileExists = $eventFile && file_exists(public_path($eventFile));
                 @endphp
                 

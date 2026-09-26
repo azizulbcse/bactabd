@@ -125,7 +125,7 @@
                             {{-- 🎯 ফটো শিরোনামের সোজা আলাদা সেল কলাম ফিক্সড ভাই --}}
                             <td style="padding: 16px 20px; text-align: center;">
                                 @if($row->member_pic)
-                                    <img src="{{ asset('storage/' . $row->member_pic) }}" class="rounded-circle" style="width: 38px; height: 38px; object-fit: cover; border-radius: 50%; border: 2px solid #0284C7; display: inline-block;" loading="lazy">
+                                    <img src="{{ asset($row->member_pic) }}" class="rounded-circle" style="width: 38px; height: 38px; object-fit: cover; border-radius: 50%; border: 2px solid #0284C7; display: inline-block;" loading="lazy">
                                 @else
                                     <div style="width: 38px; height: 38px; border-radius: 50%; background: #F1F5F9; display: inline-flex; align-items: center; justify-content: center; color: #94A3B8; font-size: 15px; border: 1px dashed #CBD5E1; margin: 0 auto;"><i class="fas fa-user-md"></i></div>
                                 @endif

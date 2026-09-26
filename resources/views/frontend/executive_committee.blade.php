@@ -49,7 +49,7 @@
                         <div class="flex justify-center mb-5">
                             <div class="w-28 h-28 rounded-2xl overflow-hidden bg-slate-50 shadow-sm flex items-center justify-center">
                                 @if($row->member_pic)
-                                    <img src="{{ asset('storage/' . $row->member_pic) }}" alt="{{ $row->name }}" class="w-full h-full object-cover" loading="lazy">
+                                    <img src="{{ asset($row->member_pic) }}" alt="{{ $row->name }}" class="w-full h-full object-cover" loading="lazy">
                                 @else
                                     <i class="fas fa-user-md text-4xl text-slate-300"></i>
                                 @endif

@@ -194,7 +194,7 @@
                     <div class="fellow-avatar-zone">
                         <div class="fellow-avatar-inner">
                             @if($row->member_pic)
-                                <img src="{{ asset('storage/' . $row->member_pic) }}" alt="{{ $row->name }}" loading="lazy">
+                                <img src="{{ asset($row->member_pic) }}" alt="{{ $row->name }}" loading="lazy">
                             @else
                                 <div style="font-size:32px; color:#64748B;"><i class="fas fa-user-md"></i></div>
                             @endif

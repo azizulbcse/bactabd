@@ -9,7 +9,6 @@ use App\Models\MedicalDesignation;
 use App\Models\BactaDesignation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class CommitteeMemberController extends Controller
 {
@@ -52,7 +51,7 @@ class CommitteeMemberController extends Controller
 
         // প্রোফাইল ছবি আপলোড ট্র্যাকিং লজিক
         if ($request->hasFile('member_pic')) {
-            $data['member_pic'] = $request->file('member_pic')->store('committee_pics', 'public');
+            $data['member_pic'] = $this->storeMemberPic($request->file('member_pic'));
         }
 
         CommitteeMember::create($data);
@@ -79,15 +78,29 @@ class CommitteeMemberController extends Controller
 
         // নতুন ছবি আপলোড হলে পুরোনো ছবি সার্ভার স্টোরেজ থেকে চিরতরে ডিলিট করার সিকিউর লজিক
         if ($request->hasFile('member_pic')) {
-            if ($member->member_pic && Storage::disk('public')->exists($member->member_pic)) {
-                Storage::disk('public')->delete($member->member_pic);
+            if ($member->member_pic && file_exists(public_path($member->member_pic))) {
+                @unlink(public_path($member->member_pic));
             }
-            $data['member_pic'] = $request->file('member_pic')->store('committee_pics', 'public');
+            $data['member_pic'] = $this->storeMemberPic($request->file('member_pic'));
         }
 
         $member->update($data);
 
         return redirect()->back()->with('success', 'Committee member configuration updated successfully.');
+    }
+
+    private function storeMemberPic($file): string
+    {
+        $filename = 'member_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $uploadPath = public_path('uploads/committee_pics');
+
+        if (! file_exists($uploadPath)) {
+            mkdir($uploadPath, 0777, true);
+        }
+
+        $file->move($uploadPath, $filename);
+
+        return 'uploads/committee_pics/' . $filename;
     }
 
     /**
