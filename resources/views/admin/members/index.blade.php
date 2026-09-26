@@ -98,15 +98,21 @@
                                 <td class="font-weight-bold text-muted align-middle">{{ $admin->mobile_no ?? 'Not Provided' }}</td>
                                 <td class="align-middle"><span class="badge bg-info p-2">{{ $admin->designation ?? 'Staff' }}</span></td>
                                 <td class="align-middle">
-                                    {{-- আপনার ওরিজিনাল ২-বাটন স্লিক কম্বাইন গ্রিড --}}
-                                    <div class="btn-group btn-group-sm">
-                                        <button class="btn btn-warning font-weight-bold edit-staff-btn" data-id="{{ $admin->id }}" style="border-radius: 6px 0 0 6px;">
-                                            <i class="fas fa-edit mr-1"></i> Edit
-                                        </button>
-                                        <button class="btn btn-danger font-weight-bold delete-staff-btn" data-id="{{ $admin->id }}" style="border-radius: 0 6px 6px 0;">
-                                            <i class="fas fa-trash-alt mr-1"></i> Delete
-                                        </button>
-                                    </div>
+                                    @if($admin->id == 1)
+                                        <span class="badge bg-secondary p-2" title="Super Admin account is protected from edits/deletion">
+                                            <i class="fas fa-shield-alt mr-1"></i> Protected
+                                        </span>
+                                    @else
+                                        {{-- আপনার ওরিজিনাল ২-বাটন স্লিক কম্বাইন গ্রিড --}}
+                                        <div class="btn-group btn-group-sm">
+                                            <button class="btn btn-warning font-weight-bold edit-staff-btn" data-id="{{ $admin->id }}" style="border-radius: 6px 0 0 6px;">
+                                                <i class="fas fa-edit mr-1"></i> Edit
+                                            </button>
+                                            <button class="btn btn-danger font-weight-bold delete-staff-btn" data-id="{{ $admin->id }}" style="border-radius: 0 6px 6px 0;">
+                                                <i class="fas fa-trash-alt mr-1"></i> Delete
+                                            </button>
+                                        </div>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

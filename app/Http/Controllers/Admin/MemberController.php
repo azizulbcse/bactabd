@@ -11,21 +11,19 @@ class MemberController extends Controller
 {
     public function adminList()
     {
-        $records = User::where('id', '!=', 1)
-                       ->where('status', 2)
+        $records = User::where('status', 2)
                        ->orderBy('id', 'desc')
                        ->get();
-                       
-        return view('admin.members.index', compact('records')); 
+
+        return view('admin.members.index', compact('records'));
     }
 
     public function pendingList()
     {
-        $pendingMembers = User::where('id', '!=', 1)
-                            ->where('status', 1)
+        $pendingMembers = User::where('status', 1)
                             ->orderBy('created_at', 'desc')
                             ->get();
-                            
+
         return view('admin.members.pending', compact('pendingMembers'));
     }
 
