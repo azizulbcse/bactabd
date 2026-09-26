@@ -108,6 +108,15 @@ class FrontendController extends Controller
         return redirect()->back()->with('success', 'Your message has been securely saved and transmitted via email dispatch gateway!');
     }
 
+    public function guidelinesArchive()
+    {
+        $guidelines = \App\Models\ClinicalGuideline::where('status', 2)
+                                                    ->orderBy('id', 'desc')
+                                                    ->get();
+
+        return view('frontend.clinical_guidelines', compact('guidelines'));
+    }
+
     public function minutesArchive()
     {
         $minutes = \App\Models\ExecutiveMinute::where('status', 2)

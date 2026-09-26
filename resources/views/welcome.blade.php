@@ -187,7 +187,7 @@
                 <h3 class="text-base font-bold text-slate-900 group-hover:text-[#0284C7] transition-colors">Clinical Guidelines</h3>
                 <p class="text-xs text-slate-500 mt-2 leading-relaxed flex-grow">Download official perioperative protocols, echo standards, and medical PDFs.</p>
                 <div class="mt-4 flex items-center justify-between">
-                    <a href="{{ route('frontend.gallery.index') }}" class="inline-flex items-center text-xs font-bold text-[#0284C7] no-underline hover:underline">Browse Library &rarr;</a>
+                    <a href="{{ route('frontend.guidelines.index') }}" class="inline-flex items-center text-xs font-bold text-[#0284C7] no-underline hover:underline">Browse Library &rarr;</a>
                     <i class="fa-solid fa-chevron-right text-slate-300 text-xs transition-transform duration-300 group-hover:text-[#0284C7] group-hover:translate-x-1"></i>
                 </div>
             </div>

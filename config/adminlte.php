@@ -212,6 +212,11 @@ return [
                 'route' => 'admin.popups.index',
                 'icon'  => 'fas fa-fw fa-window-restore',
             ],
+            [
+                'text'  => 'Clinical Guidelines',
+                'route' => 'admin.guidelines.index',
+                'icon'  => 'fas fa-fw fa-file-medical',
+            ],
         ],
     ],
     [

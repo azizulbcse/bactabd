@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\SurgeryTypeController;
 use App\Http\Controllers\Admin\CongenitalSurgeryController;
 use App\Http\Controllers\Admin\ValvularSurgeryController;
 use App\Http\Controllers\Admin\PopupBannerController;
+use App\Http\Controllers\Admin\ClinicalGuidelineController;
 use App\Http\Controllers\BactaJournalFrontController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -36,6 +37,7 @@ Route::get('/announcements', [FrontendController::class, 'noticeArchive'])->name
 Route::get('/executive-minutes', [FrontendController::class, 'minutesArchive'])->middleware(['auth'])->name('minutes.list');
 Route::get('/events', [FrontendController::class, 'eventsPage'])->name('frontend.events.index');
 Route::get('/gallery', [FrontendController::class, 'galleryPage'])->name('frontend.gallery.index');
+Route::get('/clinical-guidelines', [FrontendController::class, 'guidelinesArchive'])->name('frontend.guidelines.index');
 Route::get('/education-research', [FrontendController::class, 'educationResearch'])->name('frontend.education.research');
 Route::get('/bacta-journals', [BactaJournalFrontController::class, 'index'])->name('frontend.journals.index');
 Route::get('/contact-us', [FrontendController::class, 'contactPage'])->name('contact.archive');
@@ -185,6 +187,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/surgery-types-config/store', [SurgeryTypeController::class, 'store'])->name('admin.surgery_types.store');
     Route::post('/surgery-types-config/update/{id}', [SurgeryTypeController::class, 'update'])->name('admin.surgery_types.update');
     Route::delete('/surgery-types-config/delete/{id}', [SurgeryTypeController::class, 'destroy'])->name('admin.surgery_types.delete');
+
+    Route::get('/clinical-guidelines', [ClinicalGuidelineController::class, 'index'])->name('admin.guidelines.index');
+    Route::post('/clinical-guidelines/store', [ClinicalGuidelineController::class, 'store'])->name('admin.guidelines.store');
+    Route::post('/clinical-guidelines/{id}/update', [ClinicalGuidelineController::class, 'update'])->name('admin.guidelines.update');
+    Route::post('/clinical-guidelines/{id}/publish-direct', [ClinicalGuidelineController::class, 'publishDirect'])->name('admin.guidelines.publish_direct');
+    Route::delete('/clinical-guidelines/{id}/destroy', [ClinicalGuidelineController::class, 'destroy'])->name('admin.guidelines.delete');
 
     Route::get('/popup-banners', [PopupBannerController::class, 'index'])->name('admin.popups.index');
     Route::post('/popup-banners/store', [PopupBannerController::class, 'store'])->name('admin.popups.store');
