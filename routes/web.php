@@ -18,11 +18,15 @@ use App\Http\Controllers\Admin\HospitalSurgeryController;
 use App\Http\Controllers\Admin\SurgeryTypeController;
 use App\Http\Controllers\Admin\CongenitalSurgeryController;
 use App\Http\Controllers\Admin\ValvularSurgeryController;
+use App\Http\Controllers\Admin\PopupBannerController;
 use App\Http\Controllers\BactaJournalFrontController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function () { return view('welcome'); })->name('home');
+Route::get('/', function () {
+    $activePopup = \App\Models\PopupBanner::where('is_active', true)->latest()->first();
+    return view('welcome', compact('activePopup'));
+})->name('home');
 Route::get('/about-bacta', function () { return view('about'); })->name('about');
 Route::get('/executive-committee', [FrontendController::class, 'executiveCommittee'])->name('committee');
 Route::get('/members/lifetime-fellows', [FrontendController::class, 'lifetimeFellows'])->name('members.lifetime');
@@ -181,7 +185,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::post('/surgery-types-config/store', [SurgeryTypeController::class, 'store'])->name('admin.surgery_types.store');
     Route::post('/surgery-types-config/update/{id}', [SurgeryTypeController::class, 'update'])->name('admin.surgery_types.update');
     Route::delete('/surgery-types-config/delete/{id}', [SurgeryTypeController::class, 'destroy'])->name('admin.surgery_types.delete');
-}); 
+
+    Route::get('/popup-banners', [PopupBannerController::class, 'index'])->name('admin.popups.index');
+    Route::post('/popup-banners/store', [PopupBannerController::class, 'store'])->name('admin.popups.store');
+    Route::post('/popup-banners/{id}/activate', [PopupBannerController::class, 'activate'])->name('admin.popups.activate');
+    Route::post('/popup-banners/{id}/deactivate', [PopupBannerController::class, 'deactivate'])->name('admin.popups.deactivate');
+    Route::delete('/popup-banners/{id}/destroy', [PopupBannerController::class, 'destroy'])->name('admin.popups.delete');
+});
     Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

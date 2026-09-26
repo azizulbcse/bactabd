@@ -581,4 +581,52 @@
         });
     </script>
 </div>{{-- .bacta-page-bg --}}
+
+@if($activePopup ?? null)
+<div id="bactaHomepagePopupOverlay" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(15,23,42,0.6); align-items:center; justify-content:center; padding:16px;">
+    <div style="position:relative; max-width:520px; width:100%;">
+        <button type="button" onclick="closeBactaHomepagePopup()" aria-label="Close"
+            style="position:absolute; top:-14px; right:-14px; width:34px; height:34px; border-radius:9999px; background:#fff; color:#0F172A; border:none; box-shadow:0 4px 12px rgba(0,0,0,0.25); font-size:16px; font-weight:700; cursor:pointer;">
+            &times;
+        </button>
+        @if($activePopup->link_url)
+        <a href="{{ $activePopup->link_url }}" target="_blank" rel="noopener noreferrer">
+        @endif
+            <img src="{{ asset('storage/' . $activePopup->image) }}" alt="{{ $activePopup->title ?: 'BACTA Announcement' }}"
+                style="width:100%; max-height:80vh; object-fit:contain; border-radius:12px; box-shadow:0 20px 50px rgba(0,0,0,0.35); display:block;">
+        @if($activePopup->link_url)
+        </a>
+        @endif
+    </div>
+</div>
+<script>
+    (function () {
+        var POPUP_KEY = 'bacta_popup_dismissed_{{ $activePopup->id }}';
+        document.addEventListener('DOMContentLoaded', function () {
+            var alreadyDismissed = false;
+            try { alreadyDismissed = sessionStorage.getItem(POPUP_KEY) === '1'; } catch (e) {}
+
+            if (!alreadyDismissed) {
+                var overlay = document.getElementById('bactaHomepagePopupOverlay');
+                if (overlay) overlay.style.display = 'flex';
+            }
+        });
+
+        window.closeBactaHomepagePopup = function () {
+            var overlay = document.getElementById('bactaHomepagePopupOverlay');
+            if (overlay) overlay.style.display = 'none';
+            try { sessionStorage.setItem(POPUP_KEY, '1'); } catch (e) {}
+        };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var overlay = document.getElementById('bactaHomepagePopupOverlay');
+            if (overlay) {
+                overlay.addEventListener('click', function (e) {
+                    if (e.target === overlay) window.closeBactaHomepagePopup();
+                });
+            }
+        });
+    })();
+</script>
+@endif
 @endsection

@@ -207,6 +207,11 @@ return [
                 'route' => 'admin.contacts.index',
                 'icon'  => 'fas fa-fw fa-envelope-open-text',
             ],
+            [
+                'text'  => 'Homepage Popup',
+                'route' => 'admin.popups.index',
+                'icon'  => 'fas fa-fw fa-window-restore',
+            ],
         ],
     ],
     [
