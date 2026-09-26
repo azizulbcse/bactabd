@@ -202,7 +202,7 @@
                 <h3 class="text-base font-bold text-slate-900 group-hover:text-[#00ADB5] transition-colors">Membership Portal</h3>
                 <p class="text-xs text-slate-500 mt-2 leading-relaxed flex-grow">Join the national elite network of thoracic and cardiac anesthesia veterans.</p>
                 <div class="mt-4 flex items-center justify-between">
-                    <a href="{{ route('contact.archive') }}" class="inline-flex items-center text-xs font-bold text-[#00ADB5] no-underline hover:underline">Contact for Membership &rarr;</a>
+                    <a href="{{ route('membership.apply') }}" class="inline-flex items-center text-xs font-bold text-[#00ADB5] no-underline hover:underline">Apply for Membership &rarr;</a>
                     <i class="fa-solid fa-chevron-right text-slate-300 text-xs transition-transform duration-300 group-hover:text-[#00ADB5] group-hover:translate-x-1"></i>
                 </div>
             </div>

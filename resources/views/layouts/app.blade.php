@@ -125,7 +125,7 @@
             </form>
         </div>
         <div class="flex items-center gap-3 shrink-0 w-full md:w-auto justify-center md:justify-end mt-1 md:mt-0 border-t border-white/5 md:border-t-0 pt-3 md:pt-0">
-            <a href="{{ route('login') }}" class="inline-flex items-center justify-center border border-white/60 rounded-md px-4 py-1.5 text-xs sm:text-sm font-bold text-white bg-white/5 hover:bg-white/20 hover:border-white transition-all duration-300 no-underline whitespace-nowrap">
+            <a href="{{ route('membership.apply') }}" class="inline-flex items-center justify-center border border-white/60 rounded-md px-4 py-1.5 text-xs sm:text-sm font-bold text-white bg-white/5 hover:bg-white/20 hover:border-white transition-all duration-300 no-underline whitespace-nowrap">
                 Become a Member
             </a>
             <a href="{{ route('login') }}" class="inline-flex items-center justify-center border border-white/60 rounded-md px-4 py-1.5 text-xs sm:text-sm font-bold text-white bg-white/5 hover:bg-white/20 hover:border-white transition-all duration-300 no-underline whitespace-nowrap">

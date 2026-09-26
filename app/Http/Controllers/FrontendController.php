@@ -108,6 +108,42 @@ class FrontendController extends Controller
         return redirect()->back()->with('success', 'Your message has been securely saved and transmitted via email dispatch gateway!');
     }
 
+    public function membershipApplyPage()
+    {
+        $designations = \App\Models\MedicalDesignation::where('status', 1)->orderBy('title')->get();
+        return view('frontend.membership_apply', compact('designations'));
+    }
+
+    public function membershipApplyStore(Request $request)
+    {
+        if ($request->filled('bacta_security_verification_field')) {
+            return abort(422, 'Spam request detected and blocked.');
+        }
+
+        $request->validate([
+            'name'         => 'required|string|max:255',
+            'email'        => 'required|email|max:255',
+            'mobile_no'    => 'required|regex:/^01[3-9]\d{8}$/',
+            'bmdc_reg_no'  => 'required|string|max:100',
+            'designation'  => 'required|string|max:255',
+            'member_type'  => 'required|string|in:Lifetime,Active',
+            'message'      => 'nullable|string|max:2000',
+        ]);
+
+        \App\Models\MembershipApplication::create([
+            'name'        => $request->name,
+            'email'       => $request->email,
+            'mobile_no'   => $request->mobile_no,
+            'bmdc_reg_no' => $request->bmdc_reg_no,
+            'designation' => $request->designation,
+            'member_type' => $request->member_type,
+            'message'     => $request->message,
+            'status'      => 1,
+        ]);
+
+        return redirect()->back()->with('success', 'Your membership application has been submitted! Our team will review it and contact you soon.');
+    }
+
     public function guidelinesArchive()
     {
         $guidelines = \App\Models\ClinicalGuideline::where('status', 2)

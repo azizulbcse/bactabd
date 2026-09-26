@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\CongenitalSurgeryController;
 use App\Http\Controllers\Admin\ValvularSurgeryController;
 use App\Http\Controllers\Admin\PopupBannerController;
 use App\Http\Controllers\Admin\ClinicalGuidelineController;
+use App\Http\Controllers\Admin\MembershipApplicationController;
 use App\Http\Controllers\BactaJournalFrontController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -42,6 +43,8 @@ Route::get('/education-research', [FrontendController::class, 'educationResearch
 Route::get('/bacta-journals', [BactaJournalFrontController::class, 'index'])->name('frontend.journals.index');
 Route::get('/contact-us', [FrontendController::class, 'contactPage'])->name('contact.archive');
 Route::post('/contact/store', [FrontendController::class, 'contactStore'])->name('contact.store');
+Route::get('/membership/apply', [FrontendController::class, 'membershipApplyPage'])->name('membership.apply');
+Route::post('/membership/apply', [FrontendController::class, 'membershipApplyStore'])->middleware('throttle:5,1')->name('membership.apply.store');
 Route::get('/cardiac-surgery-statistics', [FrontendController::class, 'cardiacSurgeryStats'])->name('frontend.surgeries.stats');
 Route::get('/congenital-surgery-statistics', [FrontendController::class, 'congenitalSurgeryStats'])->name('frontend.congenital.stats');
 Route::get('/valvular-surgery-statistics', [FrontendController::class, 'valvularSurgeryStats'])->name('frontend.valvular.stats');
@@ -182,6 +185,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     
     Route::get('/contacts', [ContactMessageController::class, 'index'])->name('admin.contacts.index');
     Route::delete('/contacts/delete/{id}', [ContactMessageController::class, 'destroy'])->name('admin.contacts.delete');
+
+    Route::get('/membership-applications', [MembershipApplicationController::class, 'index'])->name('admin.membership_applications.index');
+    Route::post('/membership-applications/{id}/approve', [MembershipApplicationController::class, 'approve'])->name('admin.membership_applications.approve');
+    Route::post('/membership-applications/{id}/reject', [MembershipApplicationController::class, 'reject'])->name('admin.membership_applications.reject');
+    Route::delete('/membership-applications/{id}/destroy', [MembershipApplicationController::class, 'destroy'])->name('admin.membership_applications.delete');
 
     Route::get('/surgery-types-config', [SurgeryTypeController::class, 'index'])->name('admin.surgery_types.index');
     Route::post('/surgery-types-config/store', [SurgeryTypeController::class, 'store'])->name('admin.surgery_types.store');

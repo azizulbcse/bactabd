@@ -208,6 +208,11 @@ return [
                 'icon'  => 'fas fa-fw fa-envelope-open-text',
             ],
             [
+                'text'  => 'Membership Applications',
+                'route' => 'admin.membership_applications.index',
+                'icon'  => 'fas fa-fw fa-user-plus',
+            ],
+            [
                 'text'  => 'Homepage Popup',
                 'route' => 'admin.popups.index',
                 'icon'  => 'fas fa-fw fa-window-restore',
