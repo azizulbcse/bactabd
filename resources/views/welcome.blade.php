@@ -584,16 +584,16 @@
 
 @if($activePopup ?? null)
 <div id="bactaHomepagePopupOverlay" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(15,23,42,0.6); align-items:center; justify-content:center; padding:16px;">
-    <div style="position:relative; max-width:520px; width:100%;">
+    <div style="position:relative; width:min(90vw, 900px);">
         <button type="button" onclick="closeBactaHomepagePopup()" aria-label="Close"
-            style="position:absolute; top:-14px; right:-14px; width:34px; height:34px; border-radius:9999px; background:#fff; color:#0F172A; border:none; box-shadow:0 4px 12px rgba(0,0,0,0.25); font-size:16px; font-weight:700; cursor:pointer;">
+            style="position:absolute; top:-16px; right:-16px; width:36px; height:36px; border-radius:9999px; background:#fff; color:#0F172A; border:none; box-shadow:0 4px 12px rgba(0,0,0,0.25); font-size:18px; font-weight:700; cursor:pointer; z-index:1;">
             &times;
         </button>
         @if($activePopup->link_url)
         <a href="{{ $activePopup->link_url }}" target="_blank" rel="noopener noreferrer">
         @endif
             <img src="{{ asset($activePopup->image) }}" alt="{{ $activePopup->title ?: 'BACTA Announcement' }}"
-                style="width:100%; max-height:80vh; object-fit:contain; border-radius:12px; box-shadow:0 20px 50px rgba(0,0,0,0.35); display:block;">
+                style="width:100%; max-height:88vh; object-fit:contain; border-radius:12px; box-shadow:0 20px 50px rgba(0,0,0,0.35); display:block;">
         @if($activePopup->link_url)
         </a>
         @endif
