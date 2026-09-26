@@ -27,4 +27,22 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Avatar shown in the AdminLTE navbar user menu.
+     */
+    public function adminlte_image()
+    {
+        return $this->profile_pic
+            ? asset($this->profile_pic)
+            : asset('images/logo.png');
+    }
+
+    /**
+     * Subtitle shown under the name in the AdminLTE navbar user menu.
+     */
+    public function adminlte_desc()
+    {
+        return $this->is_admin ? 'Administrator' : 'Member';
+    }
 }
