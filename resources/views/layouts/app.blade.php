@@ -530,14 +530,7 @@
         </div>       
         
 
-        <div class="flex items-center text-[#64748B]">
-            <span>Crafted with</span>
-            <span class="text-red-500 mx-1 text-[11px] animate-pulse">❤️</span>
-            <span class="mr-1">by</span>
-            <a href="https://www.facebook.com/fringebytetech" target="_blank" rel="noopener noreferrer" class="font-bold text-[#0F172A] hover:text-[#0284C7] transition-colors tracking-wide">
-                FringeByte Technologies
-            </a>
-        </div>
+        @include('partials.branding-credit')
 
     </div>
 </footer>

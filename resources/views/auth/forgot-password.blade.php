@@ -154,9 +154,8 @@
                     <p class="mb-1 text-muted small">
                         Copyright &copy; {{ date('Y') }} <span class="font-weight-bold text-dark">BACTA</span>
                     </p>
-                    <p class="small text-muted mb-0">
-                        Crafted with <i class="fas fa-heart heartbeat"></i> by 
-                        <a href="https://matrik.com.bd" target="_blank" class="matrik-link font-weight-bold">Matrik</a>
+                    <p class="small text-muted mb-0 text-center">
+                        @include('partials.branding-credit')
                     </p>
                 </div>
             </div>

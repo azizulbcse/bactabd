@@ -263,9 +263,8 @@
                     <p class="mb-1 text-muted small">
                         Copyright &copy; {{ date('Y') }} <span class="font-weight-bold text-dark">BACTA</span>
                     </p>
-                    <p class="small text-muted mb-0">
-                        Crafted with <i class="fas fa-heart heartbeat"></i> by 
-                        <a href="https://www.facebook.com/fringebytetech" target="_blank" class="smart-link text-dark font-weight-bold">FringeByte Technologies</a>
+                    <p class="small text-muted mb-0 text-center">
+                        @include('partials.branding-credit')
                     </p>
                 </div>
             </div>
