@@ -47,6 +47,45 @@ class PopupBannerController extends Controller
         return redirect()->back()->with('success', 'Popup banner uploaded and set as active!');
     }
 
+    public function update(Request $request, $id)
+    {
+        $popup = PopupBanner::findOrFail($id);
+
+        $request->validate([
+            'title'    => 'nullable|string|max:255',
+            'link_url' => 'nullable|url|max:2048',
+            'image'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+        ]);
+
+        $data = [
+            'title'      => $request->title,
+            'link_url'   => $request->link_url,
+            'updated_by' => Auth::id(),
+        ];
+
+        if ($request->hasFile('image')) {
+            $oldImagePath = public_path($popup->image);
+            if ($popup->image && file_exists($oldImagePath)) {
+                @unlink($oldImagePath);
+            }
+
+            $file = $request->file('image');
+            $filename = 'popup_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $uploadPath = public_path('uploads/popups');
+
+            if (! file_exists($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
+
+            $file->move($uploadPath, $filename);
+            $data['image'] = 'uploads/popups/' . $filename;
+        }
+
+        $popup->update($data);
+
+        return redirect()->back()->with('success', 'Popup banner updated successfully!');
+    }
+
     public function activate($id)
     {
         $popup = PopupBanner::findOrFail($id);

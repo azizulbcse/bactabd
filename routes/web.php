@@ -188,6 +188,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     Route::get('/popup-banners', [PopupBannerController::class, 'index'])->name('admin.popups.index');
     Route::post('/popup-banners/store', [PopupBannerController::class, 'store'])->name('admin.popups.store');
+    Route::post('/popup-banners/{id}/update', [PopupBannerController::class, 'update'])->name('admin.popups.update');
     Route::post('/popup-banners/{id}/activate', [PopupBannerController::class, 'activate'])->name('admin.popups.activate');
     Route::post('/popup-banners/{id}/deactivate', [PopupBannerController::class, 'deactivate'])->name('admin.popups.deactivate');
     Route::delete('/popup-banners/{id}/destroy', [PopupBannerController::class, 'destroy'])->name('admin.popups.delete');

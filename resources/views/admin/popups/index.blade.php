@@ -114,18 +114,21 @@
     <div class="popup-split-layout">
         <div class="popup-column-left">
             <div class="popup-card">
-                <div class="popup-card-header"><i class="fas fa-window-restore text-[#0284C7] mr-1"></i> Upload New Popup</div>
+                <div class="popup-card-header" style="display:flex; align-items:center; justify-content:space-between;">
+                    <span id="popupFormTitleText"><i class="fas fa-window-restore text-[#0284C7] mr-1"></i> Upload New Popup</span>
+                    <span id="popupFormModeBadge" style="font-size: 10px; background: #EFF6FF; color: #1E40AF; padding: 3px 8px; border-radius: 4px; font-weight: 700; text-transform: none; letter-spacing: 0;">CREATE MODE</span>
+                </div>
 
-                <form id="popupUploadForm" action="{{ route('admin.popups.store') }}" method="POST" enctype="multipart/form-data" novalidate>
+                <form id="popupUploadForm" action="{{ route('admin.popups.store') }}" method="POST" enctype="multipart/form-data" data-mode="create" novalidate>
                     @csrf
                     <div style="margin-bottom: 18px;">
                         <label class="popup-label"><i class="fas fa-heading text-slate-400 mr-1"></i> Title (internal reference only, optional)</label>
-                        <input type="text" name="title" value="{{ old('title') }}" class="popup-control" placeholder="e.g., Conference 2026 Announcement">
+                        <input type="text" name="title" id="popupTitleInput" value="{{ old('title') }}" class="popup-control" placeholder="e.g., Conference 2026 Announcement">
                     </div>
 
                     <div style="margin-bottom: 18px;">
                         <label class="popup-label"><i class="fas fa-link text-slate-400 mr-1"></i> Click-through Link (optional)</label>
-                        <input type="url" name="link_url" value="{{ old('link_url') }}" class="popup-control" placeholder="https://...">
+                        <input type="url" name="link_url" id="popupLinkInput" value="{{ old('link_url') }}" class="popup-control" placeholder="https://...">
                     </div>
 
                     <div style="margin-bottom: 22px;">
@@ -143,12 +146,17 @@
                         <div id="popupImageError" class="popup-error-msg">
                             <i class="fas fa-exclamation-triangle"></i> <span>Please choose an image to upload (JPG, PNG or WEBP, max 4MB).</span>
                         </div>
+                        <div id="popupImageOptionalNote" style="display:none; font-size: 11px; color: #94A3B8; margin-top: 6px;">
+                            <i class="fas fa-circle-info"></i> Leave empty to keep the current image.
+                        </div>
                     </div>
 
-                    <button type="button" onclick="validateAndSubmitPopup()" class="btn-popup-submit">
-                        <i class="fas fa-upload"></i> Upload &amp; Set Active
-                    </button>
-                    <p style="font-size: 11px; color: #94A3B8; margin-top: 10px;">
+                    <div id="popupFormButtons" style="display:flex; flex-direction:column; gap:10px;">
+                        <button type="button" onclick="validateAndSubmitPopup()" class="btn-popup-submit">
+                            <i class="fas fa-upload"></i> Upload &amp; Set Active
+                        </button>
+                    </div>
+                    <p id="popupFormHint" style="font-size: 11px; color: #94A3B8; margin-top: 10px;">
                         <i class="fas fa-circle-info"></i> Uploading a new image automatically deactivates the currently active popup.
                     </p>
                 </form>
@@ -213,6 +221,9 @@
                                                 </button>
                                             </form>
                                         @endif
+                                        <button type="button" onclick="switchPopupToEditMode({{ $popup->id }}, @js($popup->title), @js($popup->link_url), @js(asset($popup->image)))" class="btn-popup-action" title="Edit">
+                                            <i class="fas fa-edit" style="color:#0284C7;"></i>
+                                        </button>
                                         <form id="popup-delete-form-{{ $popup->id }}" action="{{ route('admin.popups.delete', $popup->id) }}" method="POST" style="display:inline-block;margin:0;">
                                             @csrf
                                             @method('DELETE')
@@ -292,7 +303,8 @@
         var errorNode = document.getElementById('popupImageError');
         var form = document.getElementById('popupUploadForm');
 
-        if (!input.files || !input.files[0]) {
+        // In edit mode an image is optional - the existing one is kept if none is chosen.
+        if (form.dataset.mode !== 'edit' && (!input.files || !input.files[0])) {
             errorNode.style.display = 'flex';
             dropzone.classList.add('popup-input-error-shake');
             setTimeout(function () { dropzone.classList.remove('popup-input-error-shake'); }, 420);
@@ -301,6 +313,87 @@
 
         errorNode.style.display = 'none';
         form.submit();
+    }
+
+    function switchPopupToEditMode(id, title, linkUrl, imageUrl) {
+        var form = document.getElementById('popupUploadForm');
+        var titleInput = document.getElementById('popupTitleInput');
+        var linkInput = document.getElementById('popupLinkInput');
+        var preview = document.getElementById('popupImagePreview');
+        var dzText = document.getElementById('popupDropzoneText');
+        var fileNameNode = document.getElementById('popupFileName');
+        var dropzone = document.getElementById('popupDropzone');
+        var formTitleText = document.getElementById('popupFormTitleText');
+        var formModeBadge = document.getElementById('popupFormModeBadge');
+        var buttonsGroup = document.getElementById('popupFormButtons');
+        var optionalNote = document.getElementById('popupImageOptionalNote');
+        var errorNode = document.getElementById('popupImageError');
+
+        document.getElementById('popupImageInput').value = '';
+        errorNode.style.display = 'none';
+
+        titleInput.value = title || '';
+        linkInput.value = linkUrl || '';
+        titleInput.focus();
+
+        preview.src = imageUrl;
+        preview.style.display = 'block';
+        dzText.querySelector('div').textContent = 'Current image — click to replace';
+        fileNameNode.style.display = 'none';
+        dropzone.classList.add('has-file');
+        optionalNote.style.display = 'block';
+
+        form.action = '/admin/popup-banners/' + id + '/update';
+        form.dataset.mode = 'edit';
+
+        formTitleText.innerHTML = '<i class="fas fa-edit text-[#1D4ED8] mr-1"></i> Edit Popup';
+        formModeBadge.textContent = 'EDIT MODE';
+        formModeBadge.style.background = '#EFF6FF';
+        formModeBadge.style.color = '#1D4ED8';
+
+        buttonsGroup.innerHTML = `
+            <button type="button" onclick="validateAndSubmitPopup()" class="btn-popup-submit">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+            <button type="button" onclick="cancelPopupEditMode()" class="btn-popup-submit" style="background:#F1F5F9; color:#475569;">
+                <i class="fas fa-times"></i> Cancel
+            </button>
+        `;
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function cancelPopupEditMode() {
+        var form = document.getElementById('popupUploadForm');
+        var preview = document.getElementById('popupImagePreview');
+        var dzText = document.getElementById('popupDropzoneText');
+        var fileNameNode = document.getElementById('popupFileName');
+        var dropzone = document.getElementById('popupDropzone');
+        var formTitleText = document.getElementById('popupFormTitleText');
+        var formModeBadge = document.getElementById('popupFormModeBadge');
+        var buttonsGroup = document.getElementById('popupFormButtons');
+        var optionalNote = document.getElementById('popupImageOptionalNote');
+
+        form.reset();
+        form.action = "{{ route('admin.popups.store') }}";
+        form.dataset.mode = 'create';
+
+        preview.style.display = 'none';
+        dzText.querySelector('div').textContent = 'Click to choose an image';
+        fileNameNode.style.display = 'none';
+        dropzone.classList.remove('has-file');
+        optionalNote.style.display = 'none';
+
+        formTitleText.innerHTML = '<i class="fas fa-window-restore text-[#0284C7] mr-1"></i> Upload New Popup';
+        formModeBadge.textContent = 'CREATE MODE';
+        formModeBadge.style.background = '#EFF6FF';
+        formModeBadge.style.color = '#1E40AF';
+
+        buttonsGroup.innerHTML = `
+            <button type="button" onclick="validateAndSubmitPopup()" class="btn-popup-submit">
+                <i class="fas fa-upload"></i> Upload &amp; Set Active
+            </button>
+        `;
     }
 
     // Smart SweetAlert2 confirmation used for activate / deactivate / delete
