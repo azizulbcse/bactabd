@@ -56,12 +56,36 @@
         color: #0F172A;
         outline: none;
         box-sizing: border-box;
+        transition: all 0.2s ease;
     }
     .popup-control:focus { border-color: #0284C7; box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1); }
+    @keyframes popupShake {
+        0%, 100% { transform: translateX(0); }
+        20%, 60% { transform: translateX(-5px); }
+        40%, 80% { transform: translateX(5px); }
+    }
+    .popup-input-error-shake {
+        animation: popupShake 0.4s ease-in-out;
+        border-color: #EF4444 !important;
+        background-color: #FEF2F2 !important;
+    }
+    .popup-error-msg {
+        display: none; color: #EF4444; font-size: 11.5px; font-weight: 600;
+        margin-top: 6px; align-items: center; gap: 5px;
+    }
     .btn-popup-submit {
         background: linear-gradient(135deg, #0284C7 0%, #1E40AF 100%); color: #ffffff;
         font-weight: 600; padding: 10px 20px; border-radius: 8px; font-size: 12.5px;
-        border: none; cursor: pointer; width: 100%; height: 42px;
+        border: none; cursor: pointer; width: 100%; height: 42px; transition: all 0.2s ease;
+    }
+    .btn-popup-submit:hover { opacity: 0.95; transform: translateY(-1px); }
+    .popup-dropzone {
+        border: 2px dashed #CBD5E1; border-radius: 10px; padding: 16px; text-align: center;
+        cursor: pointer; transition: all 0.2s ease; background: #F8FAFC;
+    }
+    .popup-dropzone:hover, .popup-dropzone.has-file { border-color: #0284C7; background: #EFF6FF; }
+    .popup-dropzone-preview {
+        width: 100%; max-height: 140px; object-fit: contain; border-radius: 8px; margin-bottom: 10px; display: none;
     }
     .popup-thumb {
         width: 56px; height: 56px; object-fit: cover; border-radius: 8px; border: 1px solid #E2E8F0;
@@ -77,8 +101,9 @@
     .btn-popup-action {
         display: inline-flex; align-items: center; justify-content: center;
         width: 30px; height: 30px; border-radius: 6px; border: 1px solid #CBD5E1;
-        background: #F1F5F9; color: #475569; cursor: pointer;
+        background: #F1F5F9; color: #475569; cursor: pointer; transition: all 0.2s ease;
     }
+    .btn-popup-action:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
     @media (max-width: 1024px) {
         .popup-split-layout { flex-direction: column; }
         .popup-column-left, .popup-column-right { width: 100%; }
@@ -86,39 +111,45 @@
 </style>
 
 <div class="popup-admin-wrapper">
-    @if(session('success'))
-        <div style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: #ffffff; padding: 14px 18px; border-radius: 8px; margin-bottom: 25px; font-weight: 600; font-size: 13.5px;">
-            <i class="fas fa-check-circle"></i> {{ session('success') }}
-        </div>
-    @endif
-
     <div class="popup-split-layout">
         <div class="popup-column-left">
             <div class="popup-card">
                 <div class="popup-card-header"><i class="fas fa-window-restore text-[#0284C7] mr-1"></i> Upload New Popup</div>
 
-                <form action="{{ route('admin.popups.store') }}" method="POST" enctype="multipart/form-data">
+                <form id="popupUploadForm" action="{{ route('admin.popups.store') }}" method="POST" enctype="multipart/form-data" novalidate>
                     @csrf
                     <div style="margin-bottom: 18px;">
-                        <label class="popup-label">Title (internal reference only, optional)</label>
-                        <input type="text" name="title" class="popup-control" placeholder="e.g., Conference 2026 Announcement">
+                        <label class="popup-label"><i class="fas fa-heading text-slate-400 mr-1"></i> Title (internal reference only, optional)</label>
+                        <input type="text" name="title" value="{{ old('title') }}" class="popup-control" placeholder="e.g., Conference 2026 Announcement">
                     </div>
 
                     <div style="margin-bottom: 18px;">
-                        <label class="popup-label">Click-through Link (optional)</label>
-                        <input type="url" name="link_url" class="popup-control" placeholder="https://...">
+                        <label class="popup-label"><i class="fas fa-link text-slate-400 mr-1"></i> Click-through Link (optional)</label>
+                        <input type="url" name="link_url" value="{{ old('link_url') }}" class="popup-control" placeholder="https://...">
                     </div>
 
                     <div style="margin-bottom: 22px;">
-                        <label class="popup-label">Popup Image (jpg, jpeg, png, webp — max 4MB)</label>
-                        <input type="file" name="image" required class="popup-control" style="padding-top: 8px;" accept=".jpg,.jpeg,.png,.webp">
+                        <label class="popup-label"><i class="fas fa-image text-slate-400 mr-1"></i> Popup Image (jpg, jpeg, png, webp — max 4MB)</label>
+                        <div class="popup-dropzone" id="popupDropzone" onclick="document.getElementById('popupImageInput').click();">
+                            <img id="popupImagePreview" class="popup-dropzone-preview" alt="preview">
+                            <div id="popupDropzoneText">
+                                <i class="fas fa-cloud-upload-alt" style="font-size: 22px; color: #94A3B8;"></i>
+                                <div style="font-size: 12px; font-weight: 600; color: #475569; margin-top: 6px;">Click to choose an image</div>
+                                <div style="font-size: 10.5px; color: #94A3B8; margin-top: 2px;">or drag and drop it here</div>
+                            </div>
+                            <div id="popupFileName" style="font-size: 11.5px; font-weight: 600; color: #0284C7; margin-top: 8px; display: none;"></div>
+                        </div>
+                        <input type="file" name="image" id="popupImageInput" style="display:none;" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+                        <div id="popupImageError" class="popup-error-msg">
+                            <i class="fas fa-exclamation-triangle"></i> <span>Please choose an image to upload (JPG, PNG or WEBP, max 4MB).</span>
+                        </div>
                     </div>
 
-                    <button type="submit" class="btn-popup-submit">
+                    <button type="button" onclick="validateAndSubmitPopup()" class="btn-popup-submit">
                         <i class="fas fa-upload"></i> Upload &amp; Set Active
                     </button>
                     <p style="font-size: 11px; color: #94A3B8; margin-top: 10px;">
-                        Uploading a new image automatically deactivates the currently active popup.
+                        <i class="fas fa-circle-info"></i> Uploading a new image automatically deactivates the currently active popup.
                     </p>
                 </form>
             </div>
@@ -156,7 +187,7 @@
                                 </td>
                                 <td style="padding: 14px 20px; text-align: center;">
                                     @if($popup->is_active)
-                                        <span class="popup-badge-active">Active</span>
+                                        <span class="popup-badge-active"><i class="fas fa-circle-check"></i> Active</span>
                                     @else
                                         <span class="popup-badge-inactive">Inactive</span>
                                     @endif
@@ -168,24 +199,24 @@
                                 <td style="padding: 14px 20px; text-align: center;">
                                     <div style="display: flex; gap: 6px; justify-content: center;">
                                         @if(!$popup->is_active)
-                                            <form action="{{ route('admin.popups.activate', $popup->id) }}" method="POST" style="display:inline-block;margin:0;">
+                                            <form id="popup-activate-form-{{ $popup->id }}" action="{{ route('admin.popups.activate', $popup->id) }}" method="POST" style="display:inline-block;margin:0;">
                                                 @csrf
-                                                <button type="submit" class="btn-popup-action" title="Set Active">
+                                                <button type="button" onclick="confirmPopupAction('popup-activate-form-{{ $popup->id }}', 'Set this popup as active?', 'It will replace the currently active popup on the homepage.', 'success', '#10B981', 'Yes, activate it')" class="btn-popup-action" title="Set Active">
                                                     <i class="fas fa-toggle-on" style="color:#10B981;"></i>
                                                 </button>
                                             </form>
                                         @else
-                                            <form action="{{ route('admin.popups.deactivate', $popup->id) }}" method="POST" style="display:inline-block;margin:0;">
+                                            <form id="popup-deactivate-form-{{ $popup->id }}" action="{{ route('admin.popups.deactivate', $popup->id) }}" method="POST" style="display:inline-block;margin:0;">
                                                 @csrf
-                                                <button type="submit" class="btn-popup-action" title="Deactivate">
+                                                <button type="button" onclick="confirmPopupAction('popup-deactivate-form-{{ $popup->id }}', 'Deactivate this popup?', 'It will stop showing on the homepage immediately.', 'question', '#64748B', 'Yes, deactivate')" class="btn-popup-action" title="Deactivate">
                                                     <i class="fas fa-toggle-off"></i>
                                                 </button>
                                             </form>
                                         @endif
-                                        <form action="{{ route('admin.popups.delete', $popup->id) }}" method="POST" onsubmit="return confirm('Delete this popup banner?');" style="display:inline-block;margin:0;">
+                                        <form id="popup-delete-form-{{ $popup->id }}" action="{{ route('admin.popups.delete', $popup->id) }}" method="POST" style="display:inline-block;margin:0;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn-popup-action" title="Delete">
+                                            <button type="button" onclick="confirmPopupAction('popup-delete-form-{{ $popup->id }}', 'Delete this popup banner?', 'This cannot be undone from the homepage. The record can still be recovered from backups if needed.', 'warning', '#EF4444', 'Yes, delete it')" class="btn-popup-action" title="Delete">
                                                 <i class="fas fa-trash-alt" style="color:#EF4444;"></i>
                                             </button>
                                         </form>
@@ -195,7 +226,7 @@
                             @empty
                             <tr>
                                 <td colspan="5" style="padding: 40px; text-align: center; color: #94A3B8; font-weight: 600;">
-                                    <i class="fas fa-folder-open" style="font-size: 26px; display: block; margin-bottom: 8px;"></i>
+                                    <i class="fas fa-image" style="font-size: 26px; display: block; margin-bottom: 8px; color: #CBD5E1;"></i>
                                     No popup banners uploaded yet.
                                 </td>
                             </tr>
@@ -207,4 +238,117 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Live preview + drag-drop for the popup image dropzone
+    (function () {
+        var input = document.getElementById('popupImageInput');
+        var dropzone = document.getElementById('popupDropzone');
+        var preview = document.getElementById('popupImagePreview');
+        var dzText = document.getElementById('popupDropzoneText');
+        var fileNameNode = document.getElementById('popupFileName');
+        var errorNode = document.getElementById('popupImageError');
+
+        function showFile(file) {
+            if (!file) return;
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+                dzText.querySelector('div').textContent = 'Looks good — click to change';
+            };
+            reader.readAsDataURL(file);
+            fileNameNode.textContent = file.name;
+            fileNameNode.style.display = 'block';
+            dropzone.classList.add('has-file');
+            errorNode.style.display = 'none';
+            input.classList.remove('popup-input-error-shake');
+        }
+
+        input.addEventListener('change', function () {
+            if (input.files && input.files[0]) showFile(input.files[0]);
+        });
+
+        dropzone.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            dropzone.style.borderColor = '#0284C7';
+        });
+        dropzone.addEventListener('dragleave', function () {
+            dropzone.style.borderColor = '';
+        });
+        dropzone.addEventListener('drop', function (e) {
+            e.preventDefault();
+            dropzone.style.borderColor = '';
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                input.files = e.dataTransfer.files;
+                showFile(e.dataTransfer.files[0]);
+            }
+        });
+    })();
+
+    function validateAndSubmitPopup() {
+        var input = document.getElementById('popupImageInput');
+        var dropzone = document.getElementById('popupDropzone');
+        var errorNode = document.getElementById('popupImageError');
+        var form = document.getElementById('popupUploadForm');
+
+        if (!input.files || !input.files[0]) {
+            errorNode.style.display = 'flex';
+            dropzone.classList.add('popup-input-error-shake');
+            setTimeout(function () { dropzone.classList.remove('popup-input-error-shake'); }, 420);
+            return;
+        }
+
+        errorNode.style.display = 'none';
+        form.submit();
+    }
+
+    // Smart SweetAlert2 confirmation used for activate / deactivate / delete
+    // Note: this project pins SweetAlert2 v8, which uses `type` instead of `icon`.
+    function confirmPopupAction(formId, title, text, type, confirmColor, confirmText) {
+        if (typeof Swal === 'undefined') {
+            if (confirm(title)) document.getElementById(formId).submit();
+            return;
+        }
+        Swal.fire({
+            title: title,
+            text: text,
+            type: type,
+            showCancelButton: true,
+            confirmButtonColor: confirmColor,
+            cancelButtonColor: '#94A3B8',
+            confirmButtonText: confirmText,
+            cancelButtonText: 'Cancel',
+            reverseButtons: true
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                document.getElementById(formId).submit();
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        if (typeof Swal === 'undefined') return;
+
+        @if(session('success'))
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                type: 'success',
+                title: @json(session('success')),
+                showConfirmButton: false,
+                timer: 3000
+            });
+        @endif
+
+        @if($errors->any())
+            Swal.fire({
+                type: 'error',
+                title: 'Please check the form',
+                html: @json(implode('<br>', $errors->all())),
+                confirmButtonColor: '#0284C7'
+            });
+        @endif
+    });
+</script>
 @endsection
