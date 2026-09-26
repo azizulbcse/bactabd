@@ -43,6 +43,8 @@ class User extends Authenticatable
      */
     public function adminlte_desc()
     {
-        return $this->is_admin ? 'Administrator' : 'Member';
+        $role = ((int) $this->id === 1) ? 'Super Admin' : ($this->is_admin ? 'Administrator' : 'Member');
+
+        return $this->designation ? $role . ' • ' . $this->designation : $role;
     }
 }
