@@ -321,7 +321,9 @@
             cancelButtonText: 'Cancel',
             reverseButtons: true
         }).then(function (result) {
-            if (result.isConfirmed) {
+            // SweetAlert2 v8 resolves confirmation as {value: true}, not {isConfirmed: true}
+            // (isConfirmed was only added in v9+) - check both so this survives a future upgrade.
+            if (result && (result.value || result.isConfirmed)) {
                 document.getElementById(formId).submit();
             }
         });
