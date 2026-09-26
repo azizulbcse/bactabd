@@ -144,7 +144,7 @@
                             @forelse($popups as $popup)
                             <tr style="border-bottom: 1px solid #E2E8F0;">
                                 <td style="padding: 10px 20px;">
-                                    <img src="{{ asset('storage/' . $popup->image) }}" class="popup-thumb" alt="popup preview">
+                                    <img src="{{ asset($popup->image) }}" class="popup-thumb" alt="popup preview">
                                 </td>
                                 <td style="padding: 14px 20px; font-weight: 700; color: #0F172A;">
                                     {{ $popup->title ?: '(no title)' }}

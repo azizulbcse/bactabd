@@ -592,7 +592,7 @@
         @if($activePopup->link_url)
         <a href="{{ $activePopup->link_url }}" target="_blank" rel="noopener noreferrer">
         @endif
-            <img src="{{ asset('storage/' . $activePopup->image) }}" alt="{{ $activePopup->title ?: 'BACTA Announcement' }}"
+            <img src="{{ asset($activePopup->image) }}" alt="{{ $activePopup->title ?: 'BACTA Announcement' }}"
                 style="width:100%; max-height:80vh; object-fit:contain; border-radius:12px; box-shadow:0 20px 50px rgba(0,0,0,0.35); display:block;">
         @if($activePopup->link_url)
         </a>

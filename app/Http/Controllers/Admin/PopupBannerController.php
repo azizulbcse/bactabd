@@ -27,7 +27,14 @@ class PopupBannerController extends Controller
 
         $file = $request->file('image');
         $filename = 'popup_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-        $path = $file->storeAs('popups', $filename, 'public');
+        $uploadPath = public_path('uploads/popups');
+
+        if (! file_exists($uploadPath)) {
+            mkdir($uploadPath, 0777, true);
+        }
+
+        $file->move($uploadPath, $filename);
+        $path = 'uploads/popups/' . $filename;
 
         PopupBanner::create([
             'title'      => $request->title,
