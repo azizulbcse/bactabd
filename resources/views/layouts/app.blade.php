@@ -27,6 +27,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
     
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -128,8 +129,8 @@
             <a href="{{ route('membership.apply') }}" class="inline-flex items-center justify-center border border-white/60 rounded-md px-4 py-1.5 text-xs sm:text-sm font-bold text-white bg-white/5 hover:bg-white/20 hover:border-white transition-all duration-300 no-underline whitespace-nowrap">
                 Become a Member
             </a>
-            <a href="{{ route('login') }}" class="inline-flex items-center justify-center border border-white/60 rounded-md px-4 py-1.5 text-xs sm:text-sm font-bold text-white bg-white/5 hover:bg-white/20 hover:border-white transition-all duration-300 no-underline whitespace-nowrap">
-                Log In
+            <a href="{{ route('login') }}" class="inline-flex items-center justify-center gap-1.5 border border-white/60 rounded-md px-4 py-1.5 text-xs sm:text-sm font-bold text-white bg-white/5 hover:bg-white/20 hover:border-white transition-all duration-300 no-underline whitespace-nowrap">
+                <i class="fa-solid fa-right-to-bracket text-[11px]"></i> Sign In
             </a>
             {{-- 🍔 Mobile Hamburger Button --}}
             <button id="mobile-menu-button" type="button" class="md:hidden flex items-center justify-center w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 border border-white/30 text-white transition-all focus:outline-none" aria-label="Toggle menu">
