@@ -1,70 +1,83 @@
-# 🏥 BACTA Central ERP & National Surgical Registry Portal
+# BACTA — Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists
 
-Welcome to the official repository of **BACTA Bangladesh** (Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists). This is an enterprise-grade medical registry and membership management application built with **Laravel 11**, designed to unify surgical statistics, academic publications, and national membership directory tracking.
+Official web platform and administration system for **BACTA**, the national professional body for cardiovascular and thoracic anesthesiologists in Bangladesh. The platform serves as the association's public-facing website and a full membership/content management system for its executive committee.
 
----
-
-## 🚀 Key Core Modules Built (From Genesis to Live)
-
-### 🥇 1. National Surgical Registries Hub (The Master Matrix)
-A unified, real-time data ingestion engine mapped under the admin sidebar (`National Surgical Hub`). Designed with **Zero-Row Suppression Architecture** and **Asynchronous AJAX Fetch Matrix Engine**.
-*   **Module A: Overall Cardiac Surgery Statistics**
-    *   Tracks dynamic surgery types (e.g., CABG, Valve, Congenital) across all active registered institutes.
-    *   3-Layer Eloquent `groupBy(['year', 'hospital_id', 'surgery_type_id'])` JSON dispatch gateway.
-*   **Module B: Congenital Heart Surgery Grid**
-    *   Dedicated dynamic grid for congenital anomalies: **ASD, VSD, TOF/ICR, and PDA**.
-    *   Upsert automation via Laravel's native `updateOrCreate` engine linked with a real-time horizontal/vertical automated JavaScript live summation calculator.
-*   **Module C: Valvular Heart Surgery Grid**
-    *   Strict 3-column targeted schema tracking: **MVR (Mitral Valve Replacement), AVR (Aortic Valve Replacement), and DVR (Double Valve Replacement)**.
-    *   Optimized database level constraint with unique tracking index `['hospital_id', 'year']` to prevent duplicate ledger entry vulnerabilities.
-
-### 👥 2. Membership Control Hub & Governance Directory
-*   **Multi-tier Approval System:** Pending member request workflows with live status tracking counters directly computed via the Admin Dashboard Panel.
-*   **Directory Classification:** Dynamic segregation of Executive Committee members, Lifetime Fellows, and General Members.
-*   **Next-Gen 2-Layer Nested Navigation:** 
-    *   *Desktop:* Micro-engineered multi-layer CSS hover fly-out submenu under `Associate Members`.
-    *   *Mobile:* Unified nested accordion slide-down handler mapped under a centralized `DOMContentLoaded` bubble-proof javascript driver to accommodate **Paramedics, Technicians, and Perfusionists** on smaller viewports.
-
-### 📰 3. News & Publications Gateway
-*   **Announcements & Executive Minutes:** One-click direct publishing system integrated with secure middleware protection layer to safeguard highly confidential medical board minutes from unauthorized scraping.
-*   **BJCTA Academic Journals & Event Gallery:** Scalable media archival module managing file streams and clinical publications.
-
-### 🎨 4. Premium Front-End Optimization (BSEcho Inspired UI)
-*   **Infinite Auto-Scrolling Partner Loop:** Pure CSS `@keyframes` marquee container equipped with a smart interactive pause feature on hover (`hover:animation-paused`) tracking global healthcare leaders (GE, Philips, Siemens, etc.).
-*   **BSEcho Modern Multi-Row Logo Grid:** High-fidelity standard block layout optimizing image cross-contrast scaling configurations (`image-rendering: -webkit-optimize-contrast`) ensuring 100% blur-free color rendering across responsive breakpoints.
-*   **Pixel-Perfect Sticky Ledger Headers:** Cross-browser native scroll management preventing duplicate vertical overflow scrollbars via forced CSS layout overrides (`overflow: visible !important`).
+![PHP](https://img.shields.io/badge/PHP-8.3-777BB4?logo=php&logoColor=white)
+![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20?logo=laravel&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.x-4479A1?logo=mysql&logoColor=white)
+![License](https://img.shields.io/badge/License-Proprietary-lightgrey)
 
 ---
 
-## 🛠️ Tech Stack & Architecture
+## Screenshots
 
-*   **Framework:** Laravel 11.x (PHP 8.2+)
-*   **Database:** MySQL / MariaDB (Fully Indexed Schema Optimization)
-*   **UI/UX Component System:** Tailwind CSS, Bootstrap & AdminLTE v3
-*   **Runtime Web Gateway:** CyberPanel / OpenLiteSpeed Deployment Architecture
+<table>
+  <tr>
+    <td width="60%"><img src="docs/screenshots/homepage.png" alt="BACTA public homepage"></td>
+    <td width="40%"><img src="docs/screenshots/login.png" alt="Admin sign-in page"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Public homepage</sub></td>
+    <td align="center"><sub>Admin sign-in</sub></td>
+  </tr>
+</table>
 
 ---
 
-## ⚙️ Automated Deployment & Live Sync Commands
+## What it does
 
-To deploy, maintain, or update this multi-tier architecture on production servers, run the integrated server-side optimization routing pipeline:
+- **Public website** — association info, executive committee, membership tiers, event calendar, media gallery, BJCTA academic journal archive, clinical guidelines library, and a contact/secretariat inbox.
+- **Membership pipeline** — visitors submit a membership application (no account created); the secretariat reviews and approves/rejects it, then manually provisions a login for approved members from the admin panel.
+- **Admin panel** — a full back office (AdminLTE-based) for managing every piece of public content, plus a national surgical statistics registry (overall, congenital, and valvular procedure counts per hospital per year).
+- **Homepage popup banner** — admins can upload/replace/schedule a promotional popup shown on the homepage, without touching any code.
+
+## Core modules
+
+| Module | What it covers |
+|---|---|
+| Governance & Membership | Executive committee directory, lifetime fellows, active members, membership applications |
+| News & Publications | Announcements, executive minutes, events & seminars, media gallery, BJCTA journals, clinical guidelines, secretariat inbox |
+| National Surgical Hub | Cardiac / congenital / valvular surgery statistics by hospital and year |
+| Homepage Popup | Admin-managed promotional banner shown on the public homepage |
+| Admin & Staff Directory | Role-gated staff accounts, provisioned only by existing admins |
+
+## Security
+
+- Role-gated admin middleware on every back-office route, with the primary administrator account additionally protected from edit/deletion by any other admin
+- Soft-deletes across all content tables — an accidental or malicious delete is recoverable, not permanent
+- Automated encrypted database backups (`spatie/laravel-backup`), scheduled daily
+- CSRF protection on every form, honeypot + rate-limiting on public-facing forms (contact, membership application)
+- File uploads validated by real content type (not just file extension), with generated filenames — never the client-supplied name
+
+## Tech stack
+
+- **Backend:** Laravel 13 (PHP 8.3)
+- **Database:** MySQL
+- **Admin UI:** AdminLTE 3 (Bootstrap)
+- **Public site:** Tailwind CSS
+- **Auth:** Laravel Breeze
+
+## Getting started
 
 ```bash
-# 📦 Phase 1: Flush and Purge Old Application Views and Cached Layers
-php artisan view:clear && php artisan cache:clear && php artisan route:clear
+git clone https://github.com/azizulbcse/bactabd.git
+cd bactabd
+composer install
+npm install && npm run build
 
-# 🚀 Phase 2: Cache Configurations and Optimize Framework Class Map Injections
-php artisan config:clear && php artisan config:cache && php artisan optimize:clear
+cp .env.example .env
+php artisan key:generate
+# set your DB_* credentials in .env, then:
+php artisan migrate
+php artisan storage:link
 
-# 🗄️ Phase 3: Execute Live Non-Destructive Database Schema Migrations via Remote Gateway
-php artisan migrate --force
+php artisan serve
 ```
 
 ---
 
-## 🔒 Security Gateways & Safeguards
-*   **Strict CSRF Injection Blocks:** Native token protection dynamically binded across the unified single-sign-out JavaScript dispatch gateway.
-*   **Anti-Spam Secretariat Guard:** Integrated invisible security-trapped honey-pot verification systems blocking automated message transmission loops inside the contact ledger.
+## Copyright
 
----
-*Developed with ❤️ for the Advancement of Cardiovascular & Thoracic Anesthesia Science.*
+© 2026 BACTA Bangladesh. All rights reserved.
+
+This is proprietary software built for BACTA Bangladesh's internal and public use. The source is visible for portfolio/reference purposes only — no permission is granted to use, copy, modify, or distribute this code without the express written consent of the copyright holder.
