@@ -248,9 +248,9 @@ return [
 
     ['header' => 'ACCOUNT SECURITY'],
     [
-        'text'  => 'Change Password',
+        'text'  => 'My Profile',
         'route' => 'profile.edit',
-        'icon'  => 'fas fa-fw fa-key',
+        'icon'  => 'fas fa-fw fa-user-circle',
     ],
     [
         'text'        => 'Sign Out Application',
