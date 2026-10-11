@@ -21,28 +21,26 @@ class PopupBannerController extends Controller
             'title'    => 'nullable|string|max:255',
             'link_url' => 'nullable|url|max:2048',
             'image'    => 'required|image|mimes:jpg,jpeg,png,webp|max:4096',
+            'pdf_file' => 'nullable|file|mimes:pdf|max:10240',
         ]);
 
         PopupBanner::where('is_active', true)->update(['is_active' => false]);
 
-        $file = $request->file('image');
-        $filename = 'popup_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-        $uploadPath = public_path('uploads/popups');
+        $path = $this->storePopupFile($request->file('image'), 'popup');
 
-        if (! file_exists($uploadPath)) {
-            mkdir($uploadPath, 0777, true);
-        }
-
-        $file->move($uploadPath, $filename);
-        $path = 'uploads/popups/' . $filename;
-
-        PopupBanner::create([
+        $data = [
             'title'      => $request->title,
             'link_url'   => $request->link_url,
             'image'      => $path,
             'is_active'  => true,
             'created_by' => Auth::id(),
-        ]);
+        ];
+
+        if ($request->hasFile('pdf_file')) {
+            $data['pdf_file'] = $this->storePopupFile($request->file('pdf_file'), 'popup_pdf');
+        }
+
+        PopupBanner::create($data);
 
         return redirect()->back()->with('success', 'Popup banner uploaded and set as active!');
     }
@@ -55,6 +53,7 @@ class PopupBannerController extends Controller
             'title'    => 'nullable|string|max:255',
             'link_url' => 'nullable|url|max:2048',
             'image'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+            'pdf_file' => 'nullable|file|mimes:pdf|max:10240',
         ]);
 
         $data = [
@@ -64,26 +63,39 @@ class PopupBannerController extends Controller
         ];
 
         if ($request->hasFile('image')) {
-            $oldImagePath = public_path($popup->image);
-            if ($popup->image && file_exists($oldImagePath)) {
-                @unlink($oldImagePath);
-            }
+            $this->deletePopupFile($popup->image);
+            $data['image'] = $this->storePopupFile($request->file('image'), 'popup');
+        }
 
-            $file = $request->file('image');
-            $filename = 'popup_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $uploadPath = public_path('uploads/popups');
-
-            if (! file_exists($uploadPath)) {
-                mkdir($uploadPath, 0777, true);
-            }
-
-            $file->move($uploadPath, $filename);
-            $data['image'] = 'uploads/popups/' . $filename;
+        if ($request->hasFile('pdf_file')) {
+            $this->deletePopupFile($popup->pdf_file);
+            $data['pdf_file'] = $this->storePopupFile($request->file('pdf_file'), 'popup_pdf');
         }
 
         $popup->update($data);
 
         return redirect()->back()->with('success', 'Popup banner updated successfully!');
+    }
+
+    private function storePopupFile($file, string $prefix): string
+    {
+        $filename = $prefix . '_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $uploadPath = public_path('uploads/popups');
+
+        if (! file_exists($uploadPath)) {
+            mkdir($uploadPath, 0777, true);
+        }
+
+        $file->move($uploadPath, $filename);
+
+        return 'uploads/popups/' . $filename;
+    }
+
+    private function deletePopupFile(?string $path): void
+    {
+        if ($path && file_exists(public_path($path))) {
+            @unlink(public_path($path));
+        }
     }
 
     public function activate($id)

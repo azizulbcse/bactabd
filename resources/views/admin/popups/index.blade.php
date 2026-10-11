@@ -151,6 +151,22 @@
                         </div>
                     </div>
 
+                    <div style="margin-bottom: 22px;">
+                        <label class="popup-label"><i class="fas fa-file-pdf text-slate-400 mr-1"></i> Attach PDF (optional, max 10MB)</label>
+                        <div class="popup-dropzone" id="popupPdfDropzone" onclick="document.getElementById('popupPdfInput').click();">
+                            <div id="popupPdfDropzoneText">
+                                <i class="fas fa-file-pdf" style="font-size: 22px; color: #94A3B8;"></i>
+                                <div style="font-size: 12px; font-weight: 600; color: #475569; margin-top: 6px;">Click to choose a PDF</div>
+                                <div style="font-size: 10.5px; color: #94A3B8; margin-top: 2px;">or drag and drop it here</div>
+                            </div>
+                            <div id="popupPdfFileName" style="font-size: 11.5px; font-weight: 600; color: #0284C7; margin-top: 8px; display: none;"></div>
+                        </div>
+                        <input type="file" name="pdf_file" id="popupPdfInput" style="display:none;" accept=".pdf,application/pdf">
+                        <div id="popupPdfOptionalNote" style="display:none; font-size: 11px; color: #94A3B8; margin-top: 6px;">
+                            <i class="fas fa-circle-info"></i> Leave empty to keep the current PDF.
+                        </div>
+                    </div>
+
                     <div id="popupFormButtons" style="display:flex; flex-direction:column; gap:10px;">
                         <button type="button" onclick="validateAndSubmitPopup()" class="btn-popup-submit">
                             <i class="fas fa-upload"></i> Upload &amp; Set Active
@@ -192,6 +208,11 @@
                                             <i class="fas fa-link"></i> {{ Str::limit($popup->link_url, 40) }}
                                         </div>
                                     @endif
+                                    @if($popup->pdf_file)
+                                        <div style="font-size: 10.5px; font-weight: 500; color: #DC2626;">
+                                            <i class="fas fa-file-pdf"></i> PDF attached
+                                        </div>
+                                    @endif
                                 </td>
                                 <td style="padding: 14px 20px; text-align: center;">
                                     @if($popup->is_active)
@@ -221,7 +242,12 @@
                                                 </button>
                                             </form>
                                         @endif
-                                        <button type="button" onclick="switchPopupToEditMode({{ $popup->id }}, @js($popup->title), @js($popup->link_url), @js(asset($popup->image)))" class="btn-popup-action" title="Edit">
+                                        @if($popup->pdf_file)
+                                            <a href="{{ asset($popup->pdf_file) }}" target="_blank" class="btn-popup-action" title="View PDF">
+                                                <i class="fas fa-file-pdf" style="color:#DC2626;"></i>
+                                            </a>
+                                        @endif
+                                        <button type="button" onclick="switchPopupToEditMode({{ $popup->id }}, @js($popup->title), @js($popup->link_url), @js(asset($popup->image)), @js($popup->pdf_file ? asset($popup->pdf_file) : null))" class="btn-popup-action" title="Edit">
                                             <i class="fas fa-edit" style="color:#0284C7;"></i>
                                         </button>
                                         <form id="popup-delete-form-{{ $popup->id }}" action="{{ route('admin.popups.delete', $popup->id) }}" method="POST" style="display:inline-block;margin:0;">
@@ -297,6 +323,42 @@
         });
     })();
 
+    // Live preview + drag-drop for the optional PDF dropzone
+    (function () {
+        var input = document.getElementById('popupPdfInput');
+        var dropzone = document.getElementById('popupPdfDropzone');
+        var dzText = document.getElementById('popupPdfDropzoneText');
+        var fileNameNode = document.getElementById('popupPdfFileName');
+
+        function showFile(file) {
+            if (!file) return;
+            dzText.querySelector('div').textContent = 'Selected — click to change';
+            fileNameNode.innerHTML = '<i class="fas fa-file-pdf"></i> ' + file.name;
+            fileNameNode.style.display = 'block';
+            dropzone.classList.add('has-file');
+        }
+
+        input.addEventListener('change', function () {
+            if (input.files && input.files[0]) showFile(input.files[0]);
+        });
+
+        dropzone.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            dropzone.style.borderColor = '#0284C7';
+        });
+        dropzone.addEventListener('dragleave', function () {
+            dropzone.style.borderColor = '';
+        });
+        dropzone.addEventListener('drop', function (e) {
+            e.preventDefault();
+            dropzone.style.borderColor = '';
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                input.files = e.dataTransfer.files;
+                showFile(e.dataTransfer.files[0]);
+            }
+        });
+    })();
+
     function validateAndSubmitPopup() {
         var input = document.getElementById('popupImageInput');
         var dropzone = document.getElementById('popupDropzone');
@@ -315,7 +377,7 @@
         form.submit();
     }
 
-    function switchPopupToEditMode(id, title, linkUrl, imageUrl) {
+    function switchPopupToEditMode(id, title, linkUrl, imageUrl, pdfUrl) {
         var form = document.getElementById('popupUploadForm');
         var titleInput = document.getElementById('popupTitleInput');
         var linkInput = document.getElementById('popupLinkInput');
@@ -328,9 +390,15 @@
         var buttonsGroup = document.getElementById('popupFormButtons');
         var optionalNote = document.getElementById('popupImageOptionalNote');
         var errorNode = document.getElementById('popupImageError');
+        var pdfInput = document.getElementById('popupPdfInput');
+        var pdfDzText = document.getElementById('popupPdfDropzoneText');
+        var pdfFileNameNode = document.getElementById('popupPdfFileName');
+        var pdfDropzone = document.getElementById('popupPdfDropzone');
+        var pdfOptionalNote = document.getElementById('popupPdfOptionalNote');
 
         document.getElementById('popupImageInput').value = '';
         errorNode.style.display = 'none';
+        pdfInput.value = '';
 
         titleInput.value = title || '';
         linkInput.value = linkUrl || '';
@@ -342,6 +410,18 @@
         fileNameNode.style.display = 'none';
         dropzone.classList.add('has-file');
         optionalNote.style.display = 'block';
+
+        if (pdfUrl) {
+            pdfDzText.querySelector('div').textContent = 'Current PDF — click to replace';
+            pdfFileNameNode.innerHTML = '<a href="' + pdfUrl + '" target="_blank" onclick="event.stopPropagation();"><i class="fas fa-file-pdf"></i> View current PDF</a>';
+            pdfFileNameNode.style.display = 'block';
+            pdfDropzone.classList.add('has-file');
+        } else {
+            pdfDzText.querySelector('div').textContent = 'Click to choose a PDF';
+            pdfFileNameNode.style.display = 'none';
+            pdfDropzone.classList.remove('has-file');
+        }
+        pdfOptionalNote.style.display = 'block';
 
         form.action = '/admin/popup-banners/' + id + '/update';
         form.dataset.mode = 'edit';
@@ -373,6 +453,10 @@
         var formModeBadge = document.getElementById('popupFormModeBadge');
         var buttonsGroup = document.getElementById('popupFormButtons');
         var optionalNote = document.getElementById('popupImageOptionalNote');
+        var pdfDzText = document.getElementById('popupPdfDropzoneText');
+        var pdfFileNameNode = document.getElementById('popupPdfFileName');
+        var pdfDropzone = document.getElementById('popupPdfDropzone');
+        var pdfOptionalNote = document.getElementById('popupPdfOptionalNote');
 
         form.reset();
         form.action = "{{ route('admin.popups.store') }}";
@@ -383,6 +467,11 @@
         fileNameNode.style.display = 'none';
         dropzone.classList.remove('has-file');
         optionalNote.style.display = 'none';
+
+        pdfDzText.querySelector('div').textContent = 'Click to choose a PDF';
+        pdfFileNameNode.style.display = 'none';
+        pdfDropzone.classList.remove('has-file');
+        pdfOptionalNote.style.display = 'none';
 
         formTitleText.innerHTML = '<i class="fas fa-window-restore text-[#0284C7] mr-1"></i> Upload New Popup';
         formModeBadge.textContent = 'CREATE MODE';

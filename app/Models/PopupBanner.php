@@ -12,6 +12,7 @@ class PopupBanner extends Model
     protected $fillable = [
         'title',
         'image',
+        'pdf_file',
         'link_url',
         'is_active',
         'created_by',

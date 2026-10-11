@@ -596,6 +596,14 @@
         @if($activePopup->link_url)
         </a>
         @endif
+        @if($activePopup->pdf_file)
+        <div style="text-align:center; margin-top:14px;">
+            <a href="{{ asset($activePopup->pdf_file) }}" target="_blank" rel="noopener noreferrer"
+                style="display:inline-flex; align-items:center; gap:8px; background:#fff; color:#0F172A; font-weight:700; font-size:13px; padding:10px 20px; border-radius:9999px; text-decoration:none; box-shadow:0 8px 20px rgba(0,0,0,0.25);">
+                <i class="fa-solid fa-file-pdf" style="color:#DC2626;"></i> Download PDF
+            </a>
+        </div>
+        @endif
     </div>
 </div>
 <script>
