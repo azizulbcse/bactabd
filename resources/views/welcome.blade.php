@@ -588,21 +588,32 @@
             style="position:absolute; top:-16px; right:-16px; width:36px; height:36px; border-radius:9999px; background:#fff; color:#0F172A; border:none; box-shadow:0 4px 12px rgba(0,0,0,0.25); font-size:18px; font-weight:700; cursor:pointer; z-index:1;">
             &times;
         </button>
-        @if($activePopup->link_url)
-        <a href="{{ $activePopup->link_url }}" target="_blank" rel="noopener noreferrer">
-        @endif
-            <img src="{{ asset($activePopup->image) }}" alt="{{ $activePopup->title ?: 'BACTA Announcement' }}"
-                style="width:100%; max-height:88vh; object-fit:contain; border-radius:12px; box-shadow:0 20px 50px rgba(0,0,0,0.35); display:block;">
-        @if($activePopup->link_url)
-        </a>
-        @endif
         @if($activePopup->pdf_file)
-        <div style="text-align:center; margin-top:14px;">
-            <a href="{{ asset($activePopup->pdf_file) }}" target="_blank" rel="noopener noreferrer"
-                style="display:inline-flex; align-items:center; gap:8px; background:#fff; color:#0F172A; font-weight:700; font-size:13px; padding:10px 20px; border-radius:9999px; text-decoration:none; box-shadow:0 8px 20px rgba(0,0,0,0.25);">
-                <i class="fa-solid fa-file-pdf" style="color:#DC2626;"></i> Download PDF
+            <div style="width:100%; background:#fff; border-radius:12px; box-shadow:0 20px 50px rgba(0,0,0,0.35); overflow:hidden;">
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 16px; border-bottom:1px solid #E2E8F0;">
+                    <div style="display:flex; align-items:center; gap:8px; min-width:0;">
+                        <i class="fa-solid fa-file-pdf" style="color:#DC2626; font-size:18px; flex-shrink:0;"></i>
+                        <span style="font-weight:700; font-size:13.5px; color:#0F172A; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                            {{ $activePopup->title ?: 'BACTA Announcement' }}
+                        </span>
+                    </div>
+                    <a href="{{ asset($activePopup->pdf_file) }}" target="_blank" rel="noopener noreferrer"
+                        style="display:inline-flex; align-items:center; gap:6px; background:#0284C7; color:#fff; font-weight:700; font-size:11.5px; padding:7px 14px; border-radius:9999px; text-decoration:none; flex-shrink:0;">
+                        <i class="fa-solid fa-download"></i> Download
+                    </a>
+                </div>
+                <iframe src="{{ asset($activePopup->pdf_file) }}" title="{{ $activePopup->title ?: 'BACTA Announcement' }}"
+                    style="width:100%; height:75vh; border:none; display:block;"></iframe>
+            </div>
+        @else
+            @if($activePopup->link_url)
+            <a href="{{ $activePopup->link_url }}" target="_blank" rel="noopener noreferrer">
+            @endif
+                <img src="{{ asset($activePopup->image) }}" alt="{{ $activePopup->title ?: 'BACTA Announcement' }}"
+                    style="width:100%; max-height:88vh; object-fit:contain; border-radius:12px; box-shadow:0 20px 50px rgba(0,0,0,0.35); display:block;">
+            @if($activePopup->link_url)
             </a>
-        </div>
+            @endif
         @endif
     </div>
 </div>

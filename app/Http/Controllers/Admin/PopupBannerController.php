@@ -20,25 +20,21 @@ class PopupBannerController extends Controller
         $request->validate([
             'title'    => 'nullable|string|max:255',
             'link_url' => 'nullable|url|max:2048',
-            'image'    => 'required|image|mimes:jpg,jpeg,png,webp|max:4096',
-            'pdf_file' => 'nullable|file|mimes:pdf|max:10240',
+            'file'     => 'required|file|mimes:jpg,jpeg,png,webp,pdf|max:10240',
         ]);
 
         PopupBanner::where('is_active', true)->update(['is_active' => false]);
 
-        $path = $this->storePopupFile($request->file('image'), 'popup');
-
         $data = [
             'title'      => $request->title,
             'link_url'   => $request->link_url,
-            'image'      => $path,
+            'image'      => null,
+            'pdf_file'   => null,
             'is_active'  => true,
             'created_by' => Auth::id(),
         ];
 
-        if ($request->hasFile('pdf_file')) {
-            $data['pdf_file'] = $this->storePopupFile($request->file('pdf_file'), 'popup_pdf');
-        }
+        $this->assignUploadedFile($data, $request->file('file'));
 
         PopupBanner::create($data);
 
@@ -52,8 +48,7 @@ class PopupBannerController extends Controller
         $request->validate([
             'title'    => 'nullable|string|max:255',
             'link_url' => 'nullable|url|max:2048',
-            'image'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
-            'pdf_file' => 'nullable|file|mimes:pdf|max:10240',
+            'file'     => 'nullable|file|mimes:jpg,jpeg,png,webp,pdf|max:10240',
         ]);
 
         $data = [
@@ -62,19 +57,26 @@ class PopupBannerController extends Controller
             'updated_by' => Auth::id(),
         ];
 
-        if ($request->hasFile('image')) {
+        if ($request->hasFile('file')) {
             $this->deletePopupFile($popup->image);
-            $data['image'] = $this->storePopupFile($request->file('image'), 'popup');
-        }
-
-        if ($request->hasFile('pdf_file')) {
             $this->deletePopupFile($popup->pdf_file);
-            $data['pdf_file'] = $this->storePopupFile($request->file('pdf_file'), 'popup_pdf');
+            $data['image'] = null;
+            $data['pdf_file'] = null;
+            $this->assignUploadedFile($data, $request->file('file'));
         }
 
         $popup->update($data);
 
         return redirect()->back()->with('success', 'Popup banner updated successfully!');
+    }
+
+    private function assignUploadedFile(array &$data, $file): void
+    {
+        if (strtolower($file->getClientOriginalExtension()) === 'pdf') {
+            $data['pdf_file'] = $this->storePopupFile($file, 'popup_pdf');
+        } else {
+            $data['image'] = $this->storePopupFile($file, 'popup');
+        }
     }
 
     private function storePopupFile($file, string $prefix): string

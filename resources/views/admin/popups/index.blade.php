@@ -132,38 +132,22 @@
                     </div>
 
                     <div style="margin-bottom: 22px;">
-                        <label class="popup-label"><i class="fas fa-image text-slate-400 mr-1"></i> Popup Image (jpg, jpeg, png, webp — max 4MB)</label>
+                        <label class="popup-label"><i class="fas fa-file text-slate-400 mr-1"></i> Popup File — image <strong>or</strong> PDF (max 10MB)</label>
                         <div class="popup-dropzone" id="popupDropzone" onclick="document.getElementById('popupImageInput').click();">
                             <img id="popupImagePreview" class="popup-dropzone-preview" alt="preview">
                             <div id="popupDropzoneText">
                                 <i class="fas fa-cloud-upload-alt" style="font-size: 22px; color: #94A3B8;"></i>
-                                <div style="font-size: 12px; font-weight: 600; color: #475569; margin-top: 6px;">Click to choose an image</div>
-                                <div style="font-size: 10.5px; color: #94A3B8; margin-top: 2px;">or drag and drop it here</div>
+                                <div style="font-size: 12px; font-weight: 600; color: #475569; margin-top: 6px;">Click to choose an image or a PDF</div>
+                                <div style="font-size: 10.5px; color: #94A3B8; margin-top: 2px;">or drag and drop it here — pick one file</div>
                             </div>
                             <div id="popupFileName" style="font-size: 11.5px; font-weight: 600; color: #0284C7; margin-top: 8px; display: none;"></div>
                         </div>
-                        <input type="file" name="image" id="popupImageInput" style="display:none;" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+                        <input type="file" name="file" id="popupImageInput" style="display:none;" accept=".jpg,.jpeg,.png,.webp,.pdf,image/jpeg,image/png,image/webp,application/pdf">
                         <div id="popupImageError" class="popup-error-msg">
-                            <i class="fas fa-exclamation-triangle"></i> <span>Please choose an image to upload (JPG, PNG or WEBP, max 4MB).</span>
+                            <i class="fas fa-exclamation-triangle"></i> <span>Please choose a file to upload (JPG, PNG, WEBP or PDF, max 10MB).</span>
                         </div>
                         <div id="popupImageOptionalNote" style="display:none; font-size: 11px; color: #94A3B8; margin-top: 6px;">
-                            <i class="fas fa-circle-info"></i> Leave empty to keep the current image.
-                        </div>
-                    </div>
-
-                    <div style="margin-bottom: 22px;">
-                        <label class="popup-label"><i class="fas fa-file-pdf text-slate-400 mr-1"></i> Attach PDF (optional, max 10MB)</label>
-                        <div class="popup-dropzone" id="popupPdfDropzone" onclick="document.getElementById('popupPdfInput').click();">
-                            <div id="popupPdfDropzoneText">
-                                <i class="fas fa-file-pdf" style="font-size: 22px; color: #94A3B8;"></i>
-                                <div style="font-size: 12px; font-weight: 600; color: #475569; margin-top: 6px;">Click to choose a PDF</div>
-                                <div style="font-size: 10.5px; color: #94A3B8; margin-top: 2px;">or drag and drop it here</div>
-                            </div>
-                            <div id="popupPdfFileName" style="font-size: 11.5px; font-weight: 600; color: #0284C7; margin-top: 8px; display: none;"></div>
-                        </div>
-                        <input type="file" name="pdf_file" id="popupPdfInput" style="display:none;" accept=".pdf,application/pdf">
-                        <div id="popupPdfOptionalNote" style="display:none; font-size: 11px; color: #94A3B8; margin-top: 6px;">
-                            <i class="fas fa-circle-info"></i> Leave empty to keep the current PDF.
+                            <i class="fas fa-circle-info"></i> Leave empty to keep the current file.
                         </div>
                     </div>
 
@@ -173,7 +157,7 @@
                         </button>
                     </div>
                     <p id="popupFormHint" style="font-size: 11px; color: #94A3B8; margin-top: 10px;">
-                        <i class="fas fa-circle-info"></i> Uploading a new image automatically deactivates the currently active popup.
+                        <i class="fas fa-circle-info"></i> Uploading a new file automatically deactivates the currently active popup.
                     </p>
                 </form>
             </div>
@@ -199,7 +183,13 @@
                             @forelse($popups as $popup)
                             <tr style="border-bottom: 1px solid #E2E8F0;">
                                 <td style="padding: 10px 20px;">
-                                    <img src="{{ asset($popup->image) }}" class="popup-thumb" alt="popup preview">
+                                    @if($popup->image)
+                                        <img src="{{ asset($popup->image) }}" class="popup-thumb" alt="popup preview">
+                                    @else
+                                        <div class="popup-thumb" style="display:flex; align-items:center; justify-content:center; background:#FEF2F2;">
+                                            <i class="fas fa-file-pdf" style="color:#DC2626; font-size:20px;"></i>
+                                        </div>
+                                    @endif
                                 </td>
                                 <td style="padding: 14px 20px; font-weight: 700; color: #0F172A;">
                                     {{ $popup->title ?: '(no title)' }}
@@ -247,7 +237,7 @@
                                                 <i class="fas fa-file-pdf" style="color:#DC2626;"></i>
                                             </a>
                                         @endif
-                                        <button type="button" onclick="switchPopupToEditMode({{ $popup->id }}, @js($popup->title), @js($popup->link_url), @js(asset($popup->image)), @js($popup->pdf_file ? asset($popup->pdf_file) : null))" class="btn-popup-action" title="Edit">
+                                        <button type="button" onclick="switchPopupToEditMode({{ $popup->id }}, @js($popup->title), @js($popup->link_url), @js($popup->image ? asset($popup->image) : null), @js($popup->pdf_file ? asset($popup->pdf_file) : null))" class="btn-popup-action" title="Edit">
                                             <i class="fas fa-edit" style="color:#0284C7;"></i>
                                         </button>
                                         <form id="popup-delete-form-{{ $popup->id }}" action="{{ route('admin.popups.delete', $popup->id) }}" method="POST" style="display:inline-block;margin:0;">
@@ -277,7 +267,7 @@
 </div>
 
 <script>
-    // Live preview + drag-drop for the popup image dropzone
+    // Live preview + drag-drop for the single image-or-PDF dropzone
     (function () {
         var input = document.getElementById('popupImageInput');
         var dropzone = document.getElementById('popupDropzone');
@@ -286,56 +276,33 @@
         var fileNameNode = document.getElementById('popupFileName');
         var errorNode = document.getElementById('popupImageError');
 
+        function isPdf(file) {
+            return file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+        }
+
         function showFile(file) {
             if (!file) return;
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                preview.src = e.target.result;
-                preview.style.display = 'block';
+
+            if (isPdf(file)) {
+                preview.style.display = 'none';
+                preview.src = '';
+                dzText.querySelector('div').textContent = 'PDF selected — click to change';
+                fileNameNode.innerHTML = '<i class="fas fa-file-pdf"></i> ' + file.name;
+            } else {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
                 dzText.querySelector('div').textContent = 'Looks good — click to change';
-            };
-            reader.readAsDataURL(file);
-            fileNameNode.textContent = file.name;
+                fileNameNode.textContent = file.name;
+            }
+
             fileNameNode.style.display = 'block';
             dropzone.classList.add('has-file');
             errorNode.style.display = 'none';
             input.classList.remove('popup-input-error-shake');
-        }
-
-        input.addEventListener('change', function () {
-            if (input.files && input.files[0]) showFile(input.files[0]);
-        });
-
-        dropzone.addEventListener('dragover', function (e) {
-            e.preventDefault();
-            dropzone.style.borderColor = '#0284C7';
-        });
-        dropzone.addEventListener('dragleave', function () {
-            dropzone.style.borderColor = '';
-        });
-        dropzone.addEventListener('drop', function (e) {
-            e.preventDefault();
-            dropzone.style.borderColor = '';
-            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-                input.files = e.dataTransfer.files;
-                showFile(e.dataTransfer.files[0]);
-            }
-        });
-    })();
-
-    // Live preview + drag-drop for the optional PDF dropzone
-    (function () {
-        var input = document.getElementById('popupPdfInput');
-        var dropzone = document.getElementById('popupPdfDropzone');
-        var dzText = document.getElementById('popupPdfDropzoneText');
-        var fileNameNode = document.getElementById('popupPdfFileName');
-
-        function showFile(file) {
-            if (!file) return;
-            dzText.querySelector('div').textContent = 'Selected — click to change';
-            fileNameNode.innerHTML = '<i class="fas fa-file-pdf"></i> ' + file.name;
-            fileNameNode.style.display = 'block';
-            dropzone.classList.add('has-file');
         }
 
         input.addEventListener('change', function () {
@@ -390,38 +357,28 @@
         var buttonsGroup = document.getElementById('popupFormButtons');
         var optionalNote = document.getElementById('popupImageOptionalNote');
         var errorNode = document.getElementById('popupImageError');
-        var pdfInput = document.getElementById('popupPdfInput');
-        var pdfDzText = document.getElementById('popupPdfDropzoneText');
-        var pdfFileNameNode = document.getElementById('popupPdfFileName');
-        var pdfDropzone = document.getElementById('popupPdfDropzone');
-        var pdfOptionalNote = document.getElementById('popupPdfOptionalNote');
 
         document.getElementById('popupImageInput').value = '';
         errorNode.style.display = 'none';
-        pdfInput.value = '';
 
         titleInput.value = title || '';
         linkInput.value = linkUrl || '';
         titleInput.focus();
 
-        preview.src = imageUrl;
-        preview.style.display = 'block';
-        dzText.querySelector('div').textContent = 'Current image — click to replace';
-        fileNameNode.style.display = 'none';
+        if (pdfUrl) {
+            preview.style.display = 'none';
+            preview.src = '';
+            dzText.querySelector('div').textContent = 'Current PDF — click to replace';
+            fileNameNode.innerHTML = '<a href="' + pdfUrl + '" target="_blank" onclick="event.stopPropagation();"><i class="fas fa-file-pdf"></i> View current PDF</a>';
+            fileNameNode.style.display = 'block';
+        } else {
+            preview.src = imageUrl;
+            preview.style.display = 'block';
+            dzText.querySelector('div').textContent = 'Current image — click to replace';
+            fileNameNode.style.display = 'none';
+        }
         dropzone.classList.add('has-file');
         optionalNote.style.display = 'block';
-
-        if (pdfUrl) {
-            pdfDzText.querySelector('div').textContent = 'Current PDF — click to replace';
-            pdfFileNameNode.innerHTML = '<a href="' + pdfUrl + '" target="_blank" onclick="event.stopPropagation();"><i class="fas fa-file-pdf"></i> View current PDF</a>';
-            pdfFileNameNode.style.display = 'block';
-            pdfDropzone.classList.add('has-file');
-        } else {
-            pdfDzText.querySelector('div').textContent = 'Click to choose a PDF';
-            pdfFileNameNode.style.display = 'none';
-            pdfDropzone.classList.remove('has-file');
-        }
-        pdfOptionalNote.style.display = 'block';
 
         form.action = '/admin/popup-banners/' + id + '/update';
         form.dataset.mode = 'edit';
@@ -453,25 +410,17 @@
         var formModeBadge = document.getElementById('popupFormModeBadge');
         var buttonsGroup = document.getElementById('popupFormButtons');
         var optionalNote = document.getElementById('popupImageOptionalNote');
-        var pdfDzText = document.getElementById('popupPdfDropzoneText');
-        var pdfFileNameNode = document.getElementById('popupPdfFileName');
-        var pdfDropzone = document.getElementById('popupPdfDropzone');
-        var pdfOptionalNote = document.getElementById('popupPdfOptionalNote');
 
         form.reset();
         form.action = "{{ route('admin.popups.store') }}";
         form.dataset.mode = 'create';
 
         preview.style.display = 'none';
-        dzText.querySelector('div').textContent = 'Click to choose an image';
+        preview.src = '';
+        dzText.querySelector('div').textContent = 'Click to choose an image or a PDF';
         fileNameNode.style.display = 'none';
         dropzone.classList.remove('has-file');
         optionalNote.style.display = 'none';
-
-        pdfDzText.querySelector('div').textContent = 'Click to choose a PDF';
-        pdfFileNameNode.style.display = 'none';
-        pdfDropzone.classList.remove('has-file');
-        pdfOptionalNote.style.display = 'none';
 
         formTitleText.innerHTML = '<i class="fas fa-window-restore text-[#0284C7] mr-1"></i> Upload New Popup';
         formModeBadge.textContent = 'CREATE MODE';
