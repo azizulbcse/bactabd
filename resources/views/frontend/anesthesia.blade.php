@@ -3,6 +3,7 @@
 
 {{-- 👑 আল্ট্রা-স্মার্ট আন্তর্জাতিক ক্লিনিক্যাল টাইটেল লক ভাই --}}
 @section('title', 'Intraoperative Cardiac Anesthesia Management | BACTA')
+@section('description', "Explore BACTA's guidance on intraoperative cardiac anesthesia management, covering monitoring, drug protocols, and best practices for cardiac surgery patients.")
 
 {{-- 👑 ফন্টওসাম ৬.৭.২ এর লেটেস্ট লাইব্রেরি মেগা শিল্ড পুশ নোড ভাই --}}
 @push('css')

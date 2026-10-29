@@ -3,6 +3,7 @@
 @extends('layouts.app')
 
 @section('title', 'Official Announcements & Circulars | BACTA Bangladesh')
+@section('description', 'Browse official announcements, circulars, and notices published by BACTA for its members and the medical community.')
 
 @section('content')
     <!-- 🚀 ১. আপনার About Us পেজ থেকে নেওয়া প্রিমিয়াম ডার্ক হেডার ব্যানার (টেলউইন্ড সিঙ্কড) -->

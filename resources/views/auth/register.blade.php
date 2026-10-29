@@ -11,7 +11,8 @@
     <!-- Primary Meta Tags -->
     <meta name="title" content="Register | BACTA" />
     <meta name="description" content="Official Member Registration Portal for Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists."/>
-    <meta name="author" content="Matrik" />
+    <meta name="author" content="FringeByte Technologies" />
+    <meta name="robots" content="noindex, follow" />
 
     <title>Register | BACTA</title>
 

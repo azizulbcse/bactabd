@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Active Members Directory | BACTA Bangladesh')
+@section('description', "Browse the official directory of active members of BACTA, Bangladesh's professional body for cardiovascular and thoracic anesthesiologists.")
 
 @section('content')
 

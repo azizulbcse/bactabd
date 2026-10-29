@@ -1,6 +1,7 @@
 @extends('layouts.app')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 @section('title', 'Events | BACTA Bangladesh')
+@section('description', "Stay updated on BACTA's conferences, seminars, workshops, and scientific events for cardiovascular and thoracic anesthesiologists in Bangladesh.")
 
 @section('content')
 <style>
@@ -130,7 +131,33 @@
     }
     .theater-close-btn:hover { color: #ef4444; }
 </style>
+@php
+    $ldEvents = $events->where('event_date', '>=', date('Y-m-d'))->take(10)->map(fn ($e) => [
+        '@type' => 'Event',
+        'name' => $e->title,
+        'startDate' => \Carbon\Carbon::parse($e->event_date)->toDateString(),
+        'eventAttendanceMode' => 'https://schema.org/OfflineEventAttendanceMode',
+        'eventStatus' => 'https://schema.org/EventScheduled',
+        'location' => [
+            '@type' => 'Place',
+            'name' => $e->venue ?: 'BACTA, Bangladesh',
+        ],
+        'image' => $e->event_banner ? asset($e->event_banner) : asset('images/logo.png'),
+        'organizer' => [
+            '@type' => 'Organization',
+            'name' => 'BACTA — Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists',
+            'url' => url('/'),
+        ],
+    ])->values();
+@endphp
+@if($ldEvents->isNotEmpty())
+    @push('structured-data')
+    <script type="application/ld+json">{!! json_encode($ldEvents, JSON_UNESCAPED_SLASHES) !!}</script>
+    @endpush
+@endif
+
 {{-- 👑 পুরো কন্টেন্ট মাঝ বরাবর (Center) সোজা লক রাখার মেইন কন্টেইনার ভাই --}}
+<h1 class="sr-only">BACTA Events, Conferences & Scientific Seminars</h1>
 <div class="bct-events-main-container py-5 animate__animated animate__fadeIn">
     
     <!-- ==========================================

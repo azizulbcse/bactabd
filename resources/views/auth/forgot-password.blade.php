@@ -11,7 +11,8 @@
     <!-- Primary Meta Tags -->
     <meta name="title" content="Forgot Password | BACTA" />
     <meta name="description" content="Official Password Recovery Portal for Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists."/>
-    <meta name="author" content="Matrik" />
+    <meta name="author" content="FringeByte Technologies" />
+    <meta name="robots" content="noindex, follow" />
 
     <title>Forgot Password | BACTA</title>
 

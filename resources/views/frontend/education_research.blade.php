@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', 'Education & Research | BACTA Bangladesh')
+@section('description', 'Educational resources and research initiatives from BACTA, supporting training and academic development in cardiovascular and thoracic anesthesia.')
+
 @section('content')
 <!-- =========================================================================
      👑 🔒 BACTA ACADEMIC COMPLIANCE ENGINE: GLOBAL MEDICAL ENGLISH THEME LUXURY BUILD

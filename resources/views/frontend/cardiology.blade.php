@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Cardiology | BACTA Bangladesh')
+@section('description', "Resources and clinical insights on cardiology from BACTA, supporting anesthesiologists and cardiac care teams across Bangladesh.")
 
 @section('content')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Pre-Anesthesia Cardiovascular Evaluation Registry | BACTA')
+@section('description', "BACTA's pre-anesthesia cardiovascular evaluation registry, supporting risk assessment protocols before cardiac surgery.")
 
 @push('css')
     <link rel="stylesheet" href="https://cloudflare.com" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />

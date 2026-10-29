@@ -3,6 +3,7 @@
 
 {{-- 👑 আপনার রিকোয়ারমেন্ট অনুযায়ী আল্ট্রা-স্মার্ট ও আন্তর্জাতিক অ্যাকাডেমিক টাইটেল লক ভাই --}}
 @section('title', 'Transesophageal Echocardiography (TOE) Registry | BACTA')
+@section('description', "BACTA's Transesophageal Echocardiography (TOE) registry, documenting intraoperative cardiac imaging practice in Bangladesh.")
 
 {{-- 👑 ফন্টওসাম ৬.৭.২ এর লেটেস্ট লাইব্রেরি মেগা শিল্ড পুশ নোড ভাই --}}
 @push('css')

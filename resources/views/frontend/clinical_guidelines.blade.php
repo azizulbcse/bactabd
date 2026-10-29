@@ -3,6 +3,7 @@
 @extends('layouts.app')
 
 @section('title', 'Clinical Guidelines | BACTA Bangladesh')
+@section('description', "Access BACTA's clinical practice guidelines for cardiovascular and thoracic anesthesia, developed to standardize perioperative care across Bangladesh.")
 
 @section('content')
 

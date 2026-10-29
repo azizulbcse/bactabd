@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Contact Us | BACTA Bangladesh')
+@section('description', 'Get in touch with BACTA — Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists. Find contact details, office address, and an inquiry form.')
 
 @section('content')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">

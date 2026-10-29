@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Apply for Membership | BACTA Bangladesh')
+@section('description', "Apply for BACTA membership — join Bangladesh's professional community of cardiovascular and thoracic anesthesiologists.")
 
 @section('content')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">

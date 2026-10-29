@@ -11,7 +11,8 @@
     <!-- Primary Meta Tags -->
     <meta name="title" content="Login | BACTA" />
     <meta name="description" content="Official Administration and Member Management system for Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists."/>
-    <meta name="author" content="Matrik" />
+    <meta name="author" content="FringeByte Technologies" />
+    <meta name="robots" content="noindex, follow" />
 
     <title>Login | BACTA</title>
 

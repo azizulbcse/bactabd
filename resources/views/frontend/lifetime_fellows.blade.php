@@ -3,6 +3,7 @@
 @extends('layouts.app')
 
 @section('title', 'Lifetime Fellows | BACTA Bangladesh')
+@section('description', 'List of Lifetime Fellows honored by BACTA for their distinguished contribution to cardiovascular and thoracic anesthesiology in Bangladesh.')
 
 @section('content')
     <!-- 🚀 ১. আপনার About Us পেজ থেকে নেওয়া প্রিমিয়াম ডার্ক হেডার ব্যানার (টেলউইন্ড সিঙ্কড) -->

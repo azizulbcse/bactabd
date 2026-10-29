@@ -3,6 +3,7 @@
 @extends('layouts.app')
 
 @section('title', 'Valvular Heart Surgery Statistics in Bangladesh | BACTA')
+@section('description', 'National statistics on valvular heart surgery outcomes in Bangladesh, compiled by BACTA to monitor surgical care quality.')
 
 @section('content')
 

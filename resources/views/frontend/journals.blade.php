@@ -3,6 +3,7 @@
 @extends('layouts.app')
 
 @section('title', 'Scientific Journals & Publications | BACTA Bangladesh')
+@section('description', "Read scientific journals and publications from BACTA, including the Bangladesh Journal of Cardiothoracic Anesthesia (BJCTA) and member research.")
 
 @section('content')
 

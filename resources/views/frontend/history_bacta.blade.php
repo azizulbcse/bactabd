@@ -3,6 +3,7 @@
 @extends('layouts.app')
 
 @section('title', 'History of BACTA | Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists')
+@section('description', 'Discover the history and founding journey of BACTA — Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists — since its establishment.')
 
 @section('content')
 

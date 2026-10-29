@@ -3,6 +3,7 @@
 
 {{-- 👑 আল্ট্রা-স্মার্ট আন্তর্জাতিক ক্লিনিক্যাল টাইটেল লক ভাই --}}
 @section('title', 'Postoperative Cardiothoracic Intensive Care Registry | BACTA')
+@section('description', "Explore BACTA's postoperative cardiothoracic intensive care registry, covering patient monitoring and outcomes data for cardiac ICU care in Bangladesh.")
 
 {{-- 👑 ফন্টওসাম ৬.৭.২ এর লেটেস্ট লাইব্রেরি মেগা শিল্ড পুশ নোড ভাই --}}
 @push('css')

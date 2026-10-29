@@ -3,6 +3,7 @@
 @extends('layouts.app')
 
 @section('title', 'Executive Committee | BACTA Bangladesh')
+@section('description', 'Meet the Executive Committee leading BACTA — Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists.')
 
 @section('content')
 

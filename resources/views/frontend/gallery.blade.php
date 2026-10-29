@@ -1,6 +1,7 @@
 @extends('layouts.app')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 @section('title', 'Gallery | BACTA Bangladesh')
+@section('description', "Photo gallery of BACTA's conferences, workshops, and events — a visual archive of Bangladesh's cardiovascular and thoracic anesthesia community.")
 
 @section('content')
 

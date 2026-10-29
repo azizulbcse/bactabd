@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Home | BACTA Bangladesh')
+@section('description', 'Official website of BACTA — Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists. News, events, clinical guidelines, journals, and member services.')
 
 @section('content')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
@@ -101,6 +102,8 @@
         100% { transform: translateX(-100%); }
     }
 </style>
+
+    <h1 class="sr-only">BACTA — Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists</h1>
 
     <header class="relative bg-slate-950 overflow-hidden w-full" style="aspect-ratio: 2 / 1; max-height: 650px;">
         <div id="bacta-image-track" class="absolute inset-0 w-full h-full z-0">

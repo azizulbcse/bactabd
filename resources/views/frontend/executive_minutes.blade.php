@@ -3,6 +3,8 @@
 @extends('layouts.app')
 
 @section('title', 'Executive Minutes & Resolutions | BACTA Bangladesh')
+@section('description', 'Official executive meeting minutes and resolutions of BACTA, documenting key decisions and governance activities.')
+@section('robots', 'noindex, follow')
 
 @section('content')
 <link rel="stylesheet" href="https://cloudflare.com">

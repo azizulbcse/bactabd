@@ -22,8 +22,11 @@ use App\Http\Controllers\Admin\PopupBannerController;
 use App\Http\Controllers\Admin\ClinicalGuidelineController;
 use App\Http\Controllers\Admin\MembershipApplicationController;
 use App\Http\Controllers\BactaJournalFrontController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 Route::get('/', function () {
     $activePopup = \App\Models\PopupBanner::where('is_active', true)->latest()->first();

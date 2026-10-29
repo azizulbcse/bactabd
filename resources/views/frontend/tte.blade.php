@@ -2,6 +2,7 @@
 
 {{-- 👑 আল্ট্রা-স্মার্ট আন্তর্জাতিক অ্যাকাডেমিক টাইটেল লক ভাই --}}
 @section('title', 'Transthoracic Echocardiography (TTE) Registry | BACTA')
+@section('description', "BACTA's Transthoracic Echocardiography (TTE) registry, tracking cardiac imaging data and practice standards in Bangladesh.")
 
 {{-- 👑 ফন্টওসাম ৬.৭.২ এর লেটেস্ট লাইব্রেরি মেগা শিল্ড পুশ নোড ভাই --}}
 @push('css')

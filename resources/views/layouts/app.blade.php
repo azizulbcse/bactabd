@@ -4,24 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'BACTA | Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists')</title>
-    <meta name="description" content="Official website of Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists (BACTA). Advancing perioperative care and thoracic anesthesia research.">
+    <meta name="description" content="@yield('description', 'Official website of Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists (BACTA). Advancing perioperative care and thoracic anesthesia research.')">
     <meta name="keywords" content="BACTA, BACTA Bangladesh, Cardiac Anesthesia Bangladesh, Thoracic Anesthesiologists, Cardiovascular Anesthesia, BJCTA Journal">
-    <meta name="author" content="Matrik Solutions">
-    <meta name="robots" content="index, follow">
+    <meta name="author" content="FringeByte Technologies">
+    <meta name="robots" content="@yield('robots', 'index, follow')">
     <link rel="canonical" href="{{ url()->current() }}">
-    
+
     <meta property="og:type" content="website">
     <meta property="og:locale" content="en_US">
     <meta property="og:site_name" content="BACTA Bangladesh">
     <meta property="og:title" content="@yield('title', 'BACTA | Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists')">
-    <meta property="og:description" content="Official website of Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists (BACTA).">
+    <meta property="og:description" content="@yield('description', 'Official website of Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists (BACTA).')">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:image" content="{{ asset('images/logo.png') }}">
     <meta property="og:image:alt" content="BACTA Bangladesh Logo">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="@yield('title', 'BACTA | Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists')">
-    <meta name="twitter:description" content="Official website of Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists (BACTA).">
+    <meta name="twitter:description" content="@yield('description', 'Official website of Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists (BACTA).')">
     <meta name="twitter:image" content="{{ asset('images/logo.png') }}">
+
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "MedicalOrganization",
+        "name": "Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists",
+        "alternateName": "BACTA",
+        "url": "{{ url('/') }}",
+        "logo": "{{ asset('images/logo.png') }}",
+        "sameAs": [
+            "https://facebook.com"
+        ]
+    }
+    </script>
+    @stack('structured-data')
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="referrer" content="no-referrer-when-downgrade">

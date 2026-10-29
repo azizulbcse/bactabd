@@ -3,6 +3,7 @@
 @extends('layouts.app')
 
 @section('title', 'Cardiac Surgery Statistics in Bangladesh | BACTA')
+@section('description', 'National statistics on cardiac surgery outcomes in Bangladesh, compiled and published by BACTA.')
 
 @section('content')
 

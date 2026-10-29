@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'About Us | BACTA Bangladesh')
+@section('description', 'Learn about BACTA — Bangladesh Association of Cardiovascular & Thoracic Anesthesiologists — our mission, history, and commitment to advancing perioperative cardiac care nationwide.')
 
 @section('content')
 
